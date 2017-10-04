@@ -1,0 +1,28 @@
+.SelectedValue {
+  margin: 0px;
+  margin-top: 5px;
+  padding: 5px 10px;
+
+  height: 28px;
+
+  font-size: 14px;
+  line-height: 16px;
+
+  background: $color-lighter-grey;
+  border: 1px solid $color-light-grey;
+  border-radius: $border-radius-base;
+
+  cursor: pointer;
+
+  &:not(:last-child) {
+    margin-right: 5px;
+  }
+
+  &:hover {
+    color: $color-red;
+  }
+}
+
+.SelectedValue__icon {
+  font-size: 14px;
+}

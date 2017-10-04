@@ -1,0 +1,19 @@
+.SubNavItem {
+  padding: 7.5px 12.5px;
+
+  font-size: 13px;
+  color: white;
+
+  background: $color-blue;
+  text-decoration: none;
+  text-transform: uppercase;
+
+  &:not(:last-child) {
+    margin-right: 2.5px;
+  }
+}
+
+.SubNavItem--active {
+  padding-bottom: 2.5px;
+  border-bottom: 4px solid $color-lighter-blue;
+}

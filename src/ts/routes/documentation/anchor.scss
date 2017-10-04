@@ -1,0 +1,44 @@
+.Anchor__container {
+  padding: 25px 0px;
+  background: $color-blue;
+}
+
+.Anchor {
+  font-size: 22px;
+  font-weight: 200;
+  color: white;
+
+  > * {
+    display: inline-block;
+    line-height: 25px;
+    vertical-align: top;
+  }
+}
+
+.Anchor__method {
+  padding-right: 10px;
+  font-weight: bold;
+}
+
+.Anchor__content {
+  padding-right: 10px;
+}
+
+.Anchor__link {
+  color: inherit;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: initial;
+  }
+}
+
+.Anchor__code {
+  padding: 0px 5px;
+
+  font-size: 16px;
+  color: $color-blue;
+
+  background: white;
+  border-radius: $border-radius-base;
+}

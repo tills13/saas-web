@@ -1,0 +1,28 @@
+.Grid {
+
+}
+
+$items-per-row: 5;
+
+.Grid__row {
+  display: flex;
+  flex-wrap: wrap;
+  // flex-wrap: nowrap;
+  justify-content: space-between;
+  margin: 0px -10px;
+}
+
+.Grid__item {
+  height: 150px;
+
+  flex: 1 0;
+  padding: 10px;
+  margin: 10px;
+
+  border: 1px solid $brand-primary;
+  border-radius: $border-radius-base;
+
+  h2 {
+    white-space: nowrap;
+  }
+}

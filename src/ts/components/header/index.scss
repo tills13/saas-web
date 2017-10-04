@@ -1,0 +1,23 @@
+.Header {
+  display: flex;
+  padding: 10px 0px;
+
+  > * {
+    flex: 1 1 auto;
+
+    &:first-child {
+      justify-content: flex-start;
+      text-align: left;
+
+      .Header__title {
+        font-size: 30px;
+        line-height: 30px;
+      }
+    }
+
+    &:last-child:not(:first-child) {
+      justify-content: flex-end;
+      text-align: right;
+    }
+  }
+}

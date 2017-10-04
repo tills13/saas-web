@@ -1,0 +1,54 @@
+.GameListItem {
+  display: flex;
+  padding: 10px;
+
+  color: $font-color-blue;
+  line-height: 25px;
+  text-decoration: none;
+  border-radius: $border-radius-base;
+
+  &:not(:last-child) {
+    // border-bottom: 1px solid $color-lighter-grey;
+  }
+
+  > * {
+    flex: 1 1 auto;
+    align-items: center;
+  }
+
+  &:hover {
+    color: white;
+    background: $color-blue;
+  }
+}
+
+.GameListItem__left {
+  .GameListItem__creator {
+    margin-left: 10px;
+  }
+}
+
+.GameListItem__right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.GameListItem__snakes {
+  display: flex;
+  padding: 0px 10px;
+  align-items: center;
+
+  .SnakeAvatar {
+    &:not(:last-of-type) {
+      margin-right: 5px;
+    }
+  }
+
+  div.more {
+    padding-left: 5px;
+  }
+}
+
+.GameListItem__viewCount {
+  margin-right: 10px;
+}

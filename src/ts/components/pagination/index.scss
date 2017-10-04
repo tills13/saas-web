@@ -1,0 +1,39 @@
+$pagination-height: 30px;
+
+.Pagination {
+  display: flex;
+  justify-content: space-between;
+}
+
+.Pagination > div {
+  flex: 1 1 auto;
+
+  .Button {
+    height: $pagination-height;
+    min-width: $pagination-height;
+    font-size: 20px;
+  }
+
+  &.Pagination__right {
+    text-align: right;
+
+    .Pagination__total {
+      display: inline-block;
+      margin-right: 10px;
+      font-size: 12px;
+      color: $color-grey;
+      line-height: $pagination-height;
+    }
+
+    .Select__container {
+      margin: 0px 10px;
+
+      .Select {
+        min-width: 100px;
+        max-width: 100px;
+      }
+    }
+  }
+
+  > * { vertical-align: top; }
+}

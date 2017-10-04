@@ -1,0 +1,36 @@
+.Toggle {
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  height: 30px;
+  padding: 2px;
+
+  background-color: $color-blue;
+  border-radius: $border-radius-base;
+}
+
+.Toggle__option {
+  width: 26px;
+
+  color: white;
+  text-align: center;
+  line-height: 26px;
+
+  border-radius: $border-radius-base;
+
+  cursor: pointer;
+
+  &:not(:last-child) {
+    margin-right: 2px;
+  }
+
+  &:hover:not(.Toggle__option--active) {
+    background: $color-light-blue;
+  }
+
+  &.Toggle__option--active {
+    color: $color-blue;
+    background: white;
+  }
+}
+

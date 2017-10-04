@@ -1,0 +1,11 @@
+$mdi-icon-aliases: (
+  "times": "close"
+);
+
+@each $alias, $target in $mdi-icon-aliases {
+  $value: map-get($mdi-icons, $target);
+
+  .#{$mdi-css-prefix}-#{$alias}:before {
+      content: char($value);
+  }
+}

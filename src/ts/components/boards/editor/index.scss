@@ -1,0 +1,16 @@
+.BoardEditor {
+  display: flex;
+  flex-direction: row;
+
+  > * { flex: 1; }
+}
+
+.BoardEditor__board {
+  flex-shrink: 1;
+  flex-basis: auto;
+  padding-right: 20px;
+}
+
+.BoardEditor__sidebarContainer {
+  flex: 0 0 300px;
+}

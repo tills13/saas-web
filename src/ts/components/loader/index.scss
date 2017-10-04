@@ -1,0 +1,29 @@
+$cell-width: 20px;
+$cell-height: 20px;
+
+.Loader {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.Loader__row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.Loader__cell {
+  display: block;
+  margin: 1px;
+  width: $cell-width;
+  height: $cell-height;
+
+  background: $color-blue;
+  border-radius: $border-radius-base;
+
+  // transition: background 0.5s ease;
+
+  &.Loader__cell--active {
+    background: $color-yellow;
+  }
+}

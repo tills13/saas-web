@@ -1,0 +1,54 @@
+.SnakeList__container {
+  display: flex;
+  flex-direction: row;
+  padding-top: 30px;
+
+  .SnakeDetails {
+    margin-left: 20px;
+  }
+}
+
+.SnakeList__list {
+  flex: 1 0 auto;
+
+  .List {
+    padding-bottom: 30px;
+  }
+}
+
+.SnakeList__item {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+
+  border-radius: $border-radius-base;
+
+  cursor: pointer;
+
+  &.SnakeList__item--selected {
+    color: white;
+    background: $color-lighter-blue;
+  }
+
+  &:hover {
+    color: white;
+    background: $color-blue;
+  }
+}
+
+.SnakeAvatar {
+  margin-right: 10px;
+}
+
+.SnakeList__itemInfo {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: row;
+  justify-content: space-between;
+
+  line-height: 20px;
+
+  .SnakeList__name {
+    font-size: 20px;
+  }
+}

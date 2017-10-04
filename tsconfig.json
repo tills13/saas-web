@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "noImplicitAny": false,
+    "sourceMap": true,
+    "jsx": "react",
+    "outDir": "./build/",
+    "suppressExcessPropertyErrors": false,
+    "removeComments": true,
+    "forceConsistentCasingInFileNames": true,
+    "pretty": true,
+    "baseUrl": "./src/ts/",
+    "paths": {
+      "components": [
+        "components"
+      ],
+      "modals/*": [
+        "components/modal/*"
+      ],
+      "mutations": [
+        "relay/mutations"
+      ],
+      "relay": [
+        "relay"
+      ],
+      "utils": [
+        "utils"
+      ]
+    },
+    "allowUnusedLabels": false,
+    "noUnusedLocals": false
+  },
+  "awesomeTypescriptLoaderOptions": {
+    "transpileOnly": false,
+    "useBabel": true,
+    "useCache": false
+  },
+  "include": [
+    "./@types/**/*.d.ts",
+    "./src/**/*"
+  ],
+  "typeRoots": [
+    "./node_modules/@types"
+  ]
+}

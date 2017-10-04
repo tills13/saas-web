@@ -1,0 +1,68 @@
+$notification-timing: 0.2s;
+
+.Notification {
+  position: relative;
+
+  display: inline-flex;
+  padding: 5px 10px;
+  min-width: 200px;
+
+  color: white;
+  background-color: $color-blue;
+
+  transition: margin $notification-timing ease;
+  cursor: pointer;
+
+  &:first-child {
+    border-top-left-radius: $border-radius-base;
+  }
+
+  &:last-child {
+    border-bottom-right-radius: $border-radius-base;
+  }
+
+  &:hover {
+    background-color: $color-lighter-blue;
+  }
+}
+
+.Notification--error {
+  background-color: $color-red;
+
+  &:hover {
+    background-color: $color-lighter-red;
+  }
+}
+
+.Notification__message {
+  line-height: 30px;
+}
+
+.NotificationTransition--enter {
+  top: 20px;
+  opacity: 0.01;
+}
+
+.NotificationTransition--enter.NotificationTransition--enterActive {
+  top: 0px;
+  opacity: 1;
+
+  transition:
+    top $notification-timing ease,
+    opacity $notification-timing ease;
+}
+
+.NotificationTransition--exit {
+  opacity: 1;
+}
+
+.NotificationTransition--exit.NotificationTransition--exitActive {
+  opacity: 0.01;
+  height: 0px;
+  padding: 0px;
+
+  transition:
+    opacity $notification-timing ease,
+    height $notification-timing ease,
+    padding $notification-timing ease;
+}

@@ -1,0 +1,32 @@
+@import "grid";
+@import "dropdown";
+
+.input-button-container {
+    display: flex;
+    margin-bottom: 15px;
+
+    .form-group, .form-control {
+        width: 100%;
+        margin-bottom: 0px;
+    }
+
+    > button, input[type=button] {
+        flex-shrink: 1;
+    }
+
+    > *:not(:last-child) {
+        margin-right: 10px;
+    }
+}
+
+.m-container {
+    display: flex;
+
+    &.horizontal {
+        justify-content: center;
+    }
+
+    &.vertical {
+        align-items: center;
+    }
+}

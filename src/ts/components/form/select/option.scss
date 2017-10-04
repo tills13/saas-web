@@ -1,0 +1,35 @@
+.SelectOption {
+  display: block;
+  flex-direction: row;
+
+  padding: 0px 10px;
+  line-height: 38px;
+
+  white-space: nowrap;
+  cursor: pointer;
+
+  > * {
+    display: inline-block;
+  }
+
+  &:hover {
+    background: $color-light-grey;
+  }
+}
+
+.SelectOption--disabled,
+.SelectOption--selected {
+  color: $font-color-grey;
+}
+
+.SelectOption__label {
+  flex: 1 0 auto;
+}
+
+.SelectOption__value {
+  flex: 1 1 auto;
+  margin-left: 10px;
+
+  font-size: 90%;
+  color: $font-color-grey;
+}

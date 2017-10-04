@@ -1,0 +1,58 @@
+.SnakeListItem {
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
+}
+
+.SnakeListItem__info {
+
+}
+
+.SnakeListItem__healthContainer {
+  position: relative;
+  height: 40px;
+  margin-bottom: 10px;
+  padding: 0px 10px;
+  line-height: 40px;
+  background: $color-lighter-grey;
+  border-radius: $border-radius-base;
+}
+
+.SnakeListItem__health {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  border-radius: $border-radius-base;
+  z-index: 0;
+
+  transition: width 0.1s linear, right 0.1s linear;
+}
+
+.SnakeListItem__snakeInfo {
+  position: relative;
+  z-index: 1;
+}
+
+.SnakeListItem__taunt {
+  height: 50px;
+  overflow-y: hidden;
+}
+
+.SnakeListItem__goldContainer {
+  margin: 10px 0px;
+}
+
+$gold-size: 20px;
+.SnakeListItem__gold {
+  display: inline-block;
+  width: $gold-size;
+  height: $gold-size;
+  background: gold;
+  border-radius: $gold-size / 2;
+  border: 1px solid orange;
+
+  &:not(:last-child) {
+    padding-right: 5px;
+  }
+}

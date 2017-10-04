@@ -1,0 +1,34 @@
+.SnakeGameList {
+  width: 100%;
+
+  td, th {
+    padding: 10px;
+    text-align: center;
+
+    &:first-child {
+      padding-left: 0px;
+      text-align: left;
+    }
+
+    &:last-child {
+      padding-right: 0px;
+      text-align: right;
+    }
+  }
+
+  th {
+    font-weight: bold;
+  }
+}
+
+.SnakeGameList__id {
+  max-width: 100px;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+}
+
+.SnakeGameList__row {
+  &:nth-child(odd) {
+    // background: $color-light-grey;
+  }
+}

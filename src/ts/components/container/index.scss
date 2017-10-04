@@ -1,0 +1,17 @@
+.Container {
+  width: 1000px;
+  max-width: 100%;
+  flex: 0 1 1000px;
+  margin: 0px auto;
+}
+
+.Container.RouteContainer {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+@media screen and (max-width: $screen-size-md) {
+  .Container {
+    padding: 0px 20px;
+  }
+}

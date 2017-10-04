@@ -1,0 +1,44 @@
+.Modal {
+  position: relative;
+  padding: 10px;
+
+  min-width: 500px;
+  max-width: 500px;
+
+  background: white;
+  border: 2px solid $color-blue;
+  border-radius: $border-radius-base;
+}
+
+.Modal--noHeader {
+  padding-top: 40px;
+}
+
+.Modal__close {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+
+  padding: 10px;
+
+  background: white;
+  cursor: pointer;
+
+  &:hover {
+    color: $color-lighter-blue;
+  }
+}
+
+.Modal__header {
+  margin-bottom: 10px;
+
+  h1, h2, h3, h4, h5 {
+    font-weight: bold;
+  }
+
+  h1 { font-size: 20px; }
+  h2 { font-size: 18px; }
+  h3 { font-size: 16px; }
+  h4 { font-size: 14px; }
+  h5 { font-size: 12px; }
+}

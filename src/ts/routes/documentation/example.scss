@@ -1,0 +1,43 @@
+.Example {
+
+}
+
+.Example__title {
+  padding: 15px 0px;
+  font-weight: normal;
+  color: $font-color-blue;
+
+  &:first-child {
+    padding-top: 0px;
+    margin-top: 0px;
+  }
+}
+
+h4.Example__title {
+  font-size: 20px;
+}
+
+h5.Example__title {
+  font-size: 15px;
+}
+
+.Example__code {
+  margin-bottom: 20px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.Example__error {
+  color: $font-color-red;
+}
+
+.Example__footer {
+  text-align: right;
+
+  code {
+    padding: 0px 4px;
+    margin-right: 10px;
+    line-height: 32px;
+    vertical-align: top;
+  }
+}

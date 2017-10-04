@@ -1,0 +1,35 @@
+.FieldGroup {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+
+  > *:not(:last-child) {
+    margin-right: 10px;
+  }
+}
+
+.FieldGroup--equalWidth {
+  > * {
+    flex: 1;
+  }
+}
+
+.FieldGroup__labelOffset {
+  margin-top: 11px;
+}
+
+.FieldGroup__label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.FieldGroup--vertical {
+  flex-direction: column;
+
+  > * {
+    flex: none;
+    width: 100%;
+  }
+}

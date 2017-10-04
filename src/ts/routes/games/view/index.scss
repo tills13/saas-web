@@ -1,0 +1,20 @@
+.ViewGame {
+  display: flex;
+  flex-direction: row;
+}
+
+.ViewGame__boardContainer {
+  flex: 1 0 auto;
+  padding-right: 20px;
+}
+
+.ViewGame__sidebarContainer {
+  flex: 0 1 250px;
+  width: 250px;
+}
+
+@media (max-size: $screen-size-xs) {
+  .ViewGame {
+    flex-direction: column;
+  }
+}

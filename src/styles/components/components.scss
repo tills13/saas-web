@@ -1,0 +1,68 @@
+@import "layout/layout";
+@import "modal/modals";
+@import "form/form";
+
+@import "input";
+@import "game";
+@import "board";
+@import "board-config-editor";
+@import "snake";
+@import "icon";
+
+.game-container, .snake-container {
+    margin-bottom: 30px;
+
+    .header {
+        padding: 10px;
+        border: 1px solid $brand-primary;
+    }
+
+    .content {
+        border-left: 1px solid $brand-primary;
+        border-right: 1px solid $brand-primary;
+    }
+
+    .footer {
+        padding: 10px;
+        background: $brand-primary;
+    }
+
+    > *:first-child {
+        border-bottom: none;
+        border-top-left-radius: $border-radius-base;
+        border-top-right-radius: $border-radius-base;
+    }
+
+    > *:last-child {
+        border-top: none;
+        border-bottom-left-radius: $border-radius-base;
+        border-bottom-right-radius: $border-radius-base;
+    }
+}
+
+.medal {
+    display: inline-block;
+    padding: 5px 10px;
+    color: white;
+    line-height: 25px;
+    background: $brand-primary;
+    border-radius: 2px;
+
+    > * { vertical-align: top; }
+
+    .indicator {
+        display: inline-block;
+        margin-top: 6.25px;
+        margin-right: 12.5px;
+        width: 12.5px;
+        height: 12.5px;
+        background: white;
+        border-radius: 6.25px;
+    }
+
+    &.bronze .indicator { background: #D1A684; }
+    &.silver .indicator { background: silver; }
+    &.gold .indicator { background: gold; }
+    &.platinum .indicator { background: silver;}
+    &.onyx .indicator { background: black; }
+}

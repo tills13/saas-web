@@ -1,0 +1,34 @@
+.ViewGameSidebar {
+
+}
+
+.ViewGameSidebar__header {
+  display: flex;
+  flex-direction: row;
+
+  > * {
+    padding: 10px;
+    border-radius: $border-radius-base;
+    white-space: nowrap;
+
+    &:not(:last-child) {
+      margin-right: 5px;
+    }
+  }
+}
+
+.ViewGameSidebar__viewerCount {
+  flex: 1 1 auto;
+  color: white;
+  background: $brand-primary;
+}
+
+.ViewGameSidebar__turnNumber {
+  flex: 0 1 auto;
+  border: 1px solid $brand-primary;
+}
+
+.ViewGameSidebar__snakes,
+.ViewGameSidebar__daemon {
+  margin-top: 20px;
+}

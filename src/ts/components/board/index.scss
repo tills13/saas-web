@@ -1,0 +1,55 @@
+.Board {
+  position: relative;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.Board__row {
+  display: flex;
+  margin: auto;
+
+  > *:first-child { margin-left: 0px; }
+  > *:last-child { margin-right: 0px; }
+
+  &:first-child {
+    .Board__cell {
+      margin-top: 0px;
+    }
+  }
+
+  &:last-child {
+    .Board__cell {
+      margin-bottom: 0px;
+    }
+  }
+}
+
+.Board__cell {
+  flex: 1 0 auto;
+  margin: 1px;
+  height: auto;
+  background: $brand-primary;
+  border-radius: $border-radius-base;
+
+  &:before {
+    content: '';
+    float: left;
+    padding-top: 100%;
+  }
+}
+
+.Board__cell--clickable {
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.5;
+  }
+}
+
+.Board__overlay {
+  position: absolute;
+  top: 0px; left: 0px;
+  bottom: 0px; right: 0px;
+
+  display: flex;
+}

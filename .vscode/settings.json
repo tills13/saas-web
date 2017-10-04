@@ -1,0 +1,32 @@
+{
+    "typescript.tsdk": "./node_modules/typescript/lib",
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/.DS_Store": true,
+        "**/node_modules": false,
+        "**/.awcache": true
+    },
+    "gitlens.blame.line.annotationType": "trailing",
+    "gitlens.advanced.telemetry.enabled": false,
+    "gitlens.blame.file.annotationType": "gutter",
+    "gitlens.blame.line.enabled": false,
+    "gitlens.codeLens.enabled": false,
+    "gitlens.blame.file.lineHighlight.enabled": false,
+    "rest-client.rememberCookiesForSubsequentRequests": true,
+    "rest-client.environmentVariables": {
+        "development": {
+            "base_url": "http://localhost:8000/api"
+        }
+    },
+    "editor.minimap.enabled": true,
+    "path-intellisense.mappings": {
+        "components": "${workspaceRoot}/src/ts/components",
+        "relay": "${workspaceRoot}/src/ts/relay"
+    },
+    "emmet.excludeLanguages": [
+        "markdown",
+        "typescript"
+    ]
+}

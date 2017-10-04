@@ -1,0 +1,33 @@
+.SnakeDetails, .SnakeDetailsEmpty {
+  flex: 1 1 auto;
+  padding: 0px 10px;
+}
+
+.SnakeDetails__header {
+  display: flex;
+  margin-bottom: 10px;
+  font-size: 24px;
+  line-height: 60px;
+}
+
+.SnakeDetails__head {
+  margin-right: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: $border-radius-base;
+}
+
+.SnakeDetailsEmpty {
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.SnakeDetails__title {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+h4.SnakeDetails__title {
+  font-size: 20px;
+}

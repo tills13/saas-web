@@ -1,0 +1,61 @@
+$fa-font-path: "../fonts/fa";
+$mdi-font-path: "../fonts/mdi" !default;
+
+$color-blue: #114B5F;
+$color-dark-blue: darken($color-blue, 30%);
+$color-darker-blue: lighten($color-blue, 20%);
+$color-light-blue: lighten($color-blue, 15%);
+$color-lighter-blue: lighten($color-blue, 10%);
+
+$color-red: #D65555;
+$color-dark-red: darken($color-red, 30%);
+$color-darker-red: darken($color-red, 20%);
+$color-light-red: lighten($color-red, 15%);
+$color-lighter-red: lighten($color-red, 10%);
+
+$color-green: #32D194;
+$color-dark-green: darken($color-green, 30%);
+$color-darker-green: darken($color-green, 20%);
+$color-light-green: lighten($color-green, 30%);
+$color-lighter-green: lighten($color-green, 20%);
+
+$color-yellow: #F8F08D;
+$color-dark-yellow: darken($color-yellow, 30%);
+$color-darker-yellow: darken($color-yellow, 20%);
+$color-light-yellow: lighten($color-yellow, 30%);
+$color-lighter-yellow: lighten($color-yellow, 20%);
+
+$color-grey: #afafaf;
+$color-dark-grey: darken($color-grey, 30%);
+$color-darker-grey: darken($color-grey, 20%);
+$color-light-grey: lighten($color-grey, 30%);
+$color-lighter-grey: lighten($color-grey, 20%);
+
+$font-color-red: $color-red;
+$font-color-blue: $color-blue;
+$font-color-grey: $color-grey;
+
+$font-color-dark-blue: $color-dark-blue;
+$font-color-dark-grey: $color-dark-grey;
+
+$brand-primary: #114B5F;
+$brand-success: #32D194 !default;
+$brand-info: #5bc0de !default;
+$brand-warning: #FFE066 !default;
+$brand-danger: #F25F5C !default;
+
+// overrides
+$border-radius-base: 2px;
+
+$input-height-base: 40px;
+$input-border: $brand-primary;
+$input-border-focus: lighten($brand-primary, 25%);
+
+$btn-default-color: $brand-primary;
+$btn-default-bg: #fff !default;
+$btn-default-border: $brand-primary;
+
+$screen-size-xs: 320px;
+$screen-size-sm: 480px;
+$screen-size-md: 720px;
+$screen-size-lg: 960px;

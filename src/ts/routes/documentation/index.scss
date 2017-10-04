@@ -1,0 +1,49 @@
+.Documentation {
+  p {
+    margin-bottom: 10px;
+    font-size: 14px;
+    line-height: 22px;
+  }
+}
+
+.Documentation__settings {
+  margin-bottom: 40px;
+}
+
+.Documentation__anchor {
+  text-decoration: none;
+}
+
+.Documentation__title {
+  padding: 15px 0px;
+  font-weight: normal;
+  color: $font-color-blue;
+}
+
+h2.Documentation__title {
+  font-size: 30px;
+}
+
+h3.Documentation__title {
+  font-size: 25px;
+}
+
+h4.Documentation__title {
+  font-size: 20px;
+}
+
+.Documentation__p {
+
+}
+
+.Documentation__table {
+  margin-bottom: 20px;
+}
+
+.Documentation__code {
+  margin-bottom: 20px;
+}
+
+.Documentation__more {
+  text-align: right;
+}

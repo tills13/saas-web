@@ -1,0 +1,27 @@
+.List {
+  margin: 0px -10px;
+}
+
+.List__item {
+  display: flex;
+  padding: 10px;
+
+  color: $font-color-blue;
+  line-height: 25px;
+  text-decoration: none;
+  border-radius: $border-radius-base;
+
+  > * {
+    flex: 1 1 auto;
+    align-items: center;
+  }
+
+  &:hover {
+    color: white;
+    background: $color-blue;
+  }
+}
+
+.List__right {
+  text-align: right;
+}

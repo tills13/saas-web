@@ -1,0 +1,88 @@
+.Button {
+  display: inline-block;
+  padding: 6px 12px;
+
+  font-size: 16px;
+  line-height: 20px;
+
+  background: none;
+
+  border-radius: 2px;
+  border-width: 1px;
+  border-style: solid;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+  outline: none;
+}
+
+.Button--block {
+  display: block;
+  width: 100%;
+}
+
+.Button--block {
+  display: block;
+}
+
+.Button--disabled {
+  color: $color-grey;
+  border-color: $color-grey;
+  cursor: not-allowed;
+
+  &.Button--fill {
+    color: $color-dark-grey;
+    background-color: $color-lighter-grey;
+    border-color: $color-lighter-grey;
+  }
+}
+
+.Button--tall {
+  padding: 8px 12px;
+  line-height: 22px;
+}
+
+.Button--small {
+  padding: 4px 8px;
+  line-height: 20px;
+}
+
+/* colors */
+@mixin colored-button($primary, $secondary, $tertiary) {
+  &:not(.Button--disabled) {
+    color: $secondary;
+    background-color: $primary;
+    border-color: $tertiary;
+
+    &:hover {
+      color: if($secondary == white, white, darken($secondary, 20%));
+      border-color: darken($tertiary, 20%);
+
+      &.Button--fill {
+        color: white;
+        background-color: darken($tertiary, 5%);
+        border-color: darken($tertiary, 5%);
+      }
+    }
+
+    &.Button--fill {
+      background-color: $tertiary;
+      color: white;
+      border-color: $tertiary;
+    }
+  }
+}
+
+.Button--blue,
+.Button--default {
+  @include colored-button(white, $color-blue, $color-blue)
+}
+
+.Button--green {
+  @include colored-button(white, $color-green, $color-green)
+}
+
+.Button--red {
+  @include colored-button(white, $color-red, $color-red)
+}
