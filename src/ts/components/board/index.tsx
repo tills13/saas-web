@@ -57,7 +57,7 @@ class Board extends React.Component<BoardComponentOwnProps, {}> {
   }
 
   getColoredCells() {
-    const { food, gold, snakes = [], teleporters, walls } = this.props
+    const { food = [], gold = [], snakes = [], teleporters = [], walls = [] } = this.props
 
     const coloredCells: { [position: string]: string } = {}
 

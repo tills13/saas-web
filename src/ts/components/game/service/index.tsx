@@ -15,12 +15,12 @@ export const gameService = (Component: React.ComponentType<any>) => {
         viewers: 0
       }
 
-      componentDidMount () {
+      componentDidMount() {
         document.addEventListener("keypress", this.handleKeyPress)
 
       }
 
-      componentDidUpdate (prevProps, prevState) {
+      componentDidUpdate(prevProps, prevState) {
         const { params: { gameId: prevGameId } } = prevProps
         const { params: { gameId: currGameId } } = this.props
 
@@ -29,19 +29,19 @@ export const gameService = (Component: React.ComponentType<any>) => {
         }
       }
 
-      componentWillReceiveProps (nextProps) {
+      componentWillReceiveProps(nextProps) {
         const { params: { gameId } } = this.props
         const { params: { gameId: nextGameId } } = this.props
 
         if (gameId !== nextGameId) this.disconnect()
       }
 
-      componentWillUnmount () {
+      componentWillUnmount() {
         document.removeEventListener("keypress", this.handleKeyPress)
         this.socket && this.socket.close()
       }
 
-      connect () {
+      connect() {
         const { game } = this.props
 
         this.socket = io.connect(`${ location.origin }`)
@@ -52,11 +52,11 @@ export const gameService = (Component: React.ComponentType<any>) => {
 
         // this.socket.on("redirect", this.handleRedirect)
         // this.socket.on("message", this.handleSocketIO)
-        this.socket.on("update", this.handleUpdate)
+        // this.socket.on("update", this.handleUpdate)
         this.socket.on("viewer_count", (viewers) => this.setState({ viewers }))
       }
 
-      disconnect () {
+      disconnect() {
         this.socket.disconnect()
       }
 
@@ -70,12 +70,11 @@ export const gameService = (Component: React.ComponentType<any>) => {
         })
       }
 
-      render () {
+      render() {
         const { game } = this.props
 
         return (
           <Component
-            { }
             { ...this.state }
             { ...this.props }
           />
