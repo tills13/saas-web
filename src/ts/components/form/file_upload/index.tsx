@@ -4,7 +4,7 @@ import * as classnames from "classnames"
 import * as React from "react"
 import { compose, defaultProps, mapProps, SetStateCallback, withState } from "recompose"
 
-import { isArray } from "lodash"
+import { isArray, uniqueId } from "lodash"
 import { pluralize } from "utils"
 import Upload from "./upload"
 
@@ -14,7 +14,7 @@ interface FileUploadInnerProps extends FileUploadOuterProps {
   setDragActive: SetStateCallback<boolean>
   setDraggedFiles: SetStateCallback<any>
   setFiles: SetStateCallback<any>
-  files: any[]
+  files: TempFile[]
 }
 
 interface FileUploadOuterProps extends React.Props<any> {
@@ -33,7 +33,8 @@ interface FileUploadOuterProps extends React.Props<any> {
   value?: any
 }
 
-type UploadFile = File | Models.FileInterface
+type TempFile = File & { tempId: string }
+type UploadFile = TempFile | Models.FileInterface
 
 class FileUpload extends React.Component<FileUploadInnerProps, {}> {
   container: HTMLElement
@@ -88,7 +89,7 @@ class FileUpload extends React.Component<FileUploadInnerProps, {}> {
     setDragActive(false)
   }
 
-  onDrop = (event: React.DragEvent<HTMLDivElement>) => {
+  onDrop = (event: React.DragEvent<HTMLDivElement> | DragEvent | Event) => {
     const { files, limit, setDragActive, setDraggedFiles, setFiles } = this.props
 
     event.preventDefault()
@@ -99,21 +100,21 @@ class FileUpload extends React.Component<FileUploadInnerProps, {}> {
 
     this.dragTargets = []
 
-    let mFiles = this.getDataTransferFiles(event)
+    let mFiles: any = this.getDataTransferFiles(event).map(f => ({ ...f, tempId: uniqueId("UploadFiles") }))
     mFiles = (files || []).concat(mFiles)
     if (limit != null) mFiles = mFiles.slice(0, limit)
 
     setFiles(mFiles)
   }
 
-  componentDidMount() {
-    // document.addEventListener("drop", this.onDrop, false)
-    // document.addEventListener("dropover", this.onDrop, false)
+  componentDidMount () {
+    document.addEventListener("drop", this.onDrop, false)
+    document.addEventListener("dropover", this.onDrop, false)
   }
 
-  getDataTransferFiles(event: React.DragEvent<any>): (File | DataTransferItem)[] {
-    if (event.dataTransfer) {
-      const dataTransfer = event.dataTransfer
+  getDataTransferFiles (event: React.DragEvent<any> | DragEvent | Event): (TempFile | DataTransferItem)[] {
+    if ((event as any).dataTransfer) {
+      const dataTransfer = (event as any).dataTransfer
 
       if (dataTransfer.files && dataTransfer.files.length) {
         let dataTransferFileList = []
@@ -137,31 +138,47 @@ class FileUpload extends React.Component<FileUploadInnerProps, {}> {
     return []
   }
 
-  renderFiles() {
-    const { files, uploadType } = this.props
+  renderFiles () {
+    const { onChange, files, uploadType, setFiles, value } = this.props
 
     return files && files.map((mFile: UploadFile, index) => {
-      const key = mFile instanceof File
-        ? `${ mFile.name }${ mFile.size }${ mFile.type }`
-        : mFile.id
+      const key = (mFile as any).id
+        || (mFile as any).tempId
+        || `${ (mFile as any).name }${ (mFile as any).size }${ (mFile as any).type }`
+
+      const onClickClear = (event: React.MouseEvent<any>) => {
+        event.stopPropagation()
+        event.preventDefault()
+
+        files.splice(index, 1)
+        setFiles(files)
+
+        const mValue = isArray(value)
+          ? value.filter(v => v.id === (mFile as TempFile).tempId || v.id === (mFile as Models.FileInterface).id)
+          : null
+
+        onChange(mValue)
+      }
 
       return (
         <Upload
           key={ key }
           file={ mFile }
           uploadType={ uploadType }
+          onClickClear={ onClickClear }
           onUploadComplete={ this.onUploadComplete }
-          clearUpload={ () => files.splice(index, 1) }
         />
       )
     })
   }
 
-  renderInput() {
+  renderInput () {
     const { id, multiple, setFiles } = this.props
 
     const onChange = (event) => {
-      setFiles([event.target.files[0]])
+      const file: TempFile = event.target.files[0]
+      file.tempId = uniqueId("UploadFile")
+      setFiles([file])
     }
 
     return (
@@ -175,7 +192,7 @@ class FileUpload extends React.Component<FileUploadInnerProps, {}> {
     )
   }
 
-  renderLabel() {
+  renderLabel () {
     const { id, label, name } = this.props
 
     return label && (
@@ -185,7 +202,7 @@ class FileUpload extends React.Component<FileUploadInnerProps, {}> {
     )
   }
 
-  renderMessage() {
+  renderMessage () {
     const { dragActive, draggedFiles, files, limit } = this.props
 
     return (!files || files.length < limit) && (
@@ -198,7 +215,7 @@ class FileUpload extends React.Component<FileUploadInnerProps, {}> {
     )
   }
 
-  render() {
+  render () {
     const {
       className, containerClassName, dragActive, draggedFiles, id, files, label, limit,
       meta, multiple, name, onChange, setDragActive, setDraggedFiles, setFiles, uploadType,

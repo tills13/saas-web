@@ -9,9 +9,7 @@
 }
 
 .FieldGroup--equalWidth {
-  > * {
-    flex: 1;
-  }
+  > * { flex: 1; }
 }
 
 .FieldGroup__labelOffset {

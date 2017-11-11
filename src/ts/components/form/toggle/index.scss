@@ -1,0 +1,128 @@
+$toggle-width: 60px;
+$toggle-height: $toggle-width / 2;
+$toggle-padding: 3px;
+
+$toggle-nub-width: $toggle-height - 2 * $toggle-padding;
+$toggle-nub-height: $toggle-nub-width;
+
+$toggle-width-compact: 34px;
+$toggle-height-compact: $toggle-width-compact / 2;
+$toggle-padding-compact: 3px;
+
+$toggle-nub-width-compact: $toggle-height-compact + 2px;
+$toggle-nub-height-compact: $toggle-nub-width-compact;
+
+
+.Toggle {
+  display: inline-flex;
+  flex-direction: row;
+  line-height: $toggle-height;
+
+  > * {
+    line-height: inherit;
+  }
+}
+
+.Toggle--compact {
+  line-height: $toggle-height-compact;
+
+  .Toggle__toggle {
+    width: $toggle-width-compact;
+    height: $toggle-height-compact;
+
+    span {
+      top: -($toggle-nub-height-compact - $toggle-height-compact) / 2;
+      left: -$toggle-padding-compact;
+
+      width: $toggle-nub-width-compact;
+      height: $toggle-nub-height-compact;
+      margin: 0px;
+
+      background: white;
+      box-shadow: 0 2px 2px 0 rgba(57, 63, 77, 0.3);
+    }
+
+    &.Toggle__toggle--toggled {
+      span {
+        left: $toggle-width-compact - $toggle-nub-width-compact + $toggle-padding-compact;
+      }
+    }
+  }
+}
+
+.Toggle--switch {
+  .Toggle__toggle {
+    background: $color-dark-grey;
+
+    &.Toggle__toggle--toggled {
+      background: $color-blue;
+    }
+  }
+}
+
+.Toggle__option {
+  font-size: 14px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  &:first-child {
+    margin-right: 23px;
+  }
+
+  &:last-child {
+    margin-left: 23px;
+  }
+
+  &.Toggle__option--selected {
+    color: $color-blue;
+  }
+
+  .Toggle.Toggle--disabled & {
+    color: $color-dark-grey;
+    cursor: default;
+  }
+}
+
+.Toggle__toggle {
+  position: relative;
+
+  display: inline-block;
+  flex-shrink: 0;
+
+  width: $toggle-width;
+  height: $toggle-height;
+  background: $color-blue;
+  border-radius: $toggle-height / 2;
+  cursor: pointer;
+
+  span {
+    position: absolute;
+    left: 0px;
+
+    display: inline-block;
+    margin: 3px;
+
+    width: $toggle-nub-width;
+    height: $toggle-nub-height;
+    background: white;
+    border-radius: $toggle-nub-height / 2;
+
+    box-shadow: 0 2px 8px 0 $color-blue;
+    transition: left 0.1s ease;
+  }
+
+  &.Toggle__toggle--toggled span {
+    left: $toggle-width - $toggle-nub-width - 2 * $toggle-padding;
+  }
+
+  .Toggle.Toggle--disabled & {
+    background: $color-dark-grey;
+    cursor: default;
+
+    span {
+      background: white;
+      box-shadow: none;
+    }
+  }
+}
