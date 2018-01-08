@@ -19,6 +19,12 @@
   border-radius: 2px;
 
   cursor: pointer;
+  overflow: hidden;
+
+  input {
+    position: absolute;
+    top: -100%;
+  }
 }
 
 .Checkbox:not(.Checkbox--checked):hover {
@@ -44,6 +50,5 @@
 
 .Checkbox__label {
   margin-left: 10px;
-  line-height: 20px;
   cursor: pointer;
 }

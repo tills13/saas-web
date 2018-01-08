@@ -8,7 +8,7 @@ import { compose, mapProps } from "recompose"
 import Icon from "components/icon"
 
 interface CheckboxInnerProps extends React.Props<any>, CheckboxOuterProps {
-
+  meta?: any
 }
 
 interface CheckboxOuterProps {
@@ -24,21 +24,20 @@ interface CheckboxOuterProps {
 }
 
 const Checkbox = (props: CheckboxInnerProps) => {
-  const { check, checked, className, containerClassName, label, name, onChange } = props
+  const { check, checked, className, containerClassName, label, meta, ...rest } = props
   const mContainerClassName = classnames("Checkbox__container", containerClassName)
   const mClassName = classnames("Checkbox", className, {
     "Checkbox--checked": checked
   })
 
-  //onClick={ () => onChange(!checked) }
-
   return (
-    <div className={ mContainerClassName } >
+    <label className={ mContainerClassName } htmlFor={ rest.name }>
       <div className={ mClassName }>
         <Icon className="Checkbox__icon" icon={ check || "check" } />
+        <input id={ rest.name } type="checkbox" checked={ checked } {...rest} />
       </div>
-      { label && <div className="Checkbox__label">{ label }</div> }
-    </div>
+      { label && <span className="Checkbox__label">{ label }</span> }
+    </label>
   )
 }
 

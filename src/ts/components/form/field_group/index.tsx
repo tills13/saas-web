@@ -13,7 +13,7 @@ interface FieldGroupProps extends React.Props<any> {
   vertical?: boolean
 }
 
-export const FieldGroup = ({ children, className, equalWidth, label, labelFor, vertical }: FieldGroupProps) => {
+const FieldGroup = ({ children, className, equalWidth, label, labelFor, vertical }: FieldGroupProps) => {
   const mClassName = classnames("FieldGroup", className, {
     "FieldGroup--equalWidth": equalWidth,
     "FieldGroup--vertical": vertical

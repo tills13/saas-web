@@ -23,7 +23,7 @@ interface UploadInnerProps extends UploadOuterProps {
 
 interface UploadOuterProps extends React.Props<any> {
   className?: string
-  clearUpload: () => void
+  onClickClear: React.MouseEventHandler<any>
   file: UploadFile
   onUploadStart?: (file: UploadFile) => void
   onUploadProgress?: (file: UploadFile, loaded: number, total: number) => void
@@ -32,7 +32,7 @@ interface UploadOuterProps extends React.Props<any> {
 }
 
 class Upload extends React.Component<UploadInnerProps, {}> {
-  componentDidMount() {
+  componentDidMount () {
     const { file, setError, setSuccess, uploadType } = this.props
 
     if (file instanceof File) {
@@ -72,17 +72,19 @@ class Upload extends React.Component<UploadInnerProps, {}> {
     })
   }
 
-  renderPreview() {
+  renderPreview () {
     const { file } = this.props
 
-    const filePreview = file instanceof File
-      ? URL.createObjectURL(file)
-      : file.url
+    console.log(file)
+
+    const filePreview = (file as Models.FileInterface).url
+      ? (file as Models.FileInterface).url
+      : URL.createObjectURL(file)
 
     return <img className="Upload__preview" src={ filePreview } />
   }
 
-  renderUploadProgress() {
+  renderUploadProgress () {
     const { error, success, uploadProgress } = this.props
 
     if (success) {
@@ -103,8 +105,8 @@ class Upload extends React.Component<UploadInnerProps, {}> {
     )
   }
 
-  render() {
-    const { className, clearUpload, file } = this.props
+  render () {
+    const { className, onClickClear, file } = this.props
     const mClassName = classnames("Upload", className)
 
     return (
@@ -115,7 +117,7 @@ class Upload extends React.Component<UploadInnerProps, {}> {
         <Icon
           containerClassName="Upload__cancelClear"
           icon="times"
-          onClick={ clearUpload }
+          onClick={ onClickClear }
         />
       </div>
     )
