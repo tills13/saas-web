@@ -40,6 +40,5 @@ render(Router)
 declare var module: any
 
 if (module.hot) {
-  // module.hot.accept();
   module.hot.accept("./router", () => render(Router))
 }

@@ -1,81 +1,49 @@
 import * as classnames from "classnames"
 import * as moment from "moment"
 import * as React from "react"
+import * as Relay from "react-relay"
+import { compose } from "recompose"
 
-import { List } from "immutable"
+import SnakeAvatar from "components/snake/avatar"
 
-interface SnakeListItemComponentOwnProps {
-  snake: Models.SnakeInterface
-  onClickEditSnake?: any
+import createRelayContainer from "components/create_relay_container"
+
+interface SnakeListInnerProps extends SnakeListOuterProps {
+
 }
 
-export const SnakeListItem = (props: SnakeListItemComponentOwnProps) => {
-  const { snake } = props
+interface SnakeListOuterProps {
+  className?: string
+  onClickSnake?: (snake: Models.SnakeInterface) => void
+  selectedSnake: Models.SnakeInterface
+  snakes: Models.SnakeInterface[]
+}
 
-  let reachable =
-    (snake.lastCheckedAt && snake.lastSuccessfullyCheckedAt) &&
-    snake.lastCheckedAt === snake.lastSuccessfullyCheckedAt
+export class SnakeList extends React.Component<SnakeListInnerProps> {
+  renderSnake(snake: Models.SnakeInterface, index?: number) {
+    const { onClickSnake, selectedSnake } = this.props
+    const mClassName = classnames("SnakeList__item", {
+      "SnakeList__item--selected": selectedSnake && snake.id === selectedSnake.id
+    })
 
-  const lastCheckedAt = moment(snake.lastCheckedAt)
-  const daysSinceSuccessfulCheck = moment().diff(lastCheckedAt, "days")
-  const status = reachable ? ((daysSinceSuccessfulCheck < 5) ? "ok" : "warn") : "danger"
-
-  return (
-    <div className="snake-container" key={ snake.id }>
-      <div className="clearfix header">
-        <img
-          className="head-image"
-          src={ snake.head.url }
-          width={ 40 }
-          height={ 40 }
-        />
-        <h3 className="name">{ snake.name }</h3>
-        <code className="pull-right">{ snake.id }</code>
-      </div>
-      <div className="footer">
-        <div className="row">
-          <div className="col-sm-6 col-md-6">
-            <pre className="endpoint">{ snake.url }</pre>
-          </div>
-          <div className="col-sm-6 col-md-6 text-right">
-            <div className="btn btn-default btn-small" onClick={ props.onClickEditSnake }>
-              Edit
-                        </div>
-            <span
-              className={ `status ${ status }` }
-              title={ `Last checked ${ daysSinceSuccessfulCheck } day(s) ago` }
-            />
-          </div>
+    return (
+      <div
+        key={ snake.id }
+        className={ mClassName }
+        onClick={ () => onClickSnake(snake) }
+      >
+        <SnakeAvatar snake={ snake } small />
+        <div className="SnakeList__itemInfo">
+          <div className="SnakeList__name">{ snake.name }</div>
+          <div className="SnakeList__owner">{ snake.owner.username }</div>
         </div>
       </div>
-    </div>
-  )
-}
-
-interface SnakeListComponentOwnProps {
-  className?: string
-  snakes: Models.SnakeInterface[]
-  onClickEditSnake?: (snake: Models.SnakeInterface) => void
-}
-
-export class SnakeList extends React.Component<SnakeListComponentOwnProps, {}> {
-  onClickEditSnake = (snake) => {
-    const { onClickEditSnake } = this.props
-
-    if (onClickEditSnake) onClickEditSnake(snake)
+    )
   }
 
   renderSnakes() {
     const { snakes } = this.props
-
-    return snakes.map((snake) => {
-      return (
-        <SnakeListItem
-          key={ snake.id }
-          snake={ snake }
-          onClickEditSnake={ () => { } }
-        />)
-    })
+    return snakes.map(this.renderSnake)
   }
 
   render() {
@@ -89,3 +57,20 @@ export class SnakeList extends React.Component<SnakeListComponentOwnProps, {}> {
     )
   }
 }
+
+export default compose<SnakeListInnerProps, SnakeListOuterProps>(
+  createRelayContainer({
+    fragments: {
+      snakes: () => Relay.QL`
+        fragment on Snake @relay(plural: true) {
+          id
+          name
+          head { url }
+          owner { username }
+
+          ${ SnakeAvatar.getFragment("snake") }
+        }
+      `
+    }
+  })
+)(SnakeList)

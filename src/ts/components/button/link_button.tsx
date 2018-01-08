@@ -7,7 +7,7 @@ import { ButtonProps, default as Button } from "components/form/button"
 
 import { Link } from "react-router"
 
-interface LinkButtonProps extends ButtonProps {
+export interface LinkButtonProps extends ButtonProps {
   to: string
 }
 

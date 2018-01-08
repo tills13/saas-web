@@ -88,7 +88,6 @@ class Navigation extends React.Component<NavigationInnerProps, {}> {
 
     const renderRightNavContent = () => {
       if (viewer) {
-        console.log(viewer)
         return [
           this.renderNavItem(null, null, viewer.username, (event) => {
             showModal(FormModal, { form: LoginForm })

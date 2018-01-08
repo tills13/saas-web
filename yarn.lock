@@ -4549,9 +4549,9 @@ type-is@~1.6.15:
     media-typer "0.3.0"
     mime-types "~2.1.15"
 
-typescript@2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.4.0.tgz#aef5a8d404beba36ad339abf079ddddfffba86dd"
+typescript@^2.6.0-dev.20171012:
+  version "2.6.0-dev.20171012"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.6.0-dev.20171012.tgz#42248ee530755effea01cfae7c3166c78ba02ddf"
 
 ua-parser-js@^0.7.9:
   version "0.7.13"

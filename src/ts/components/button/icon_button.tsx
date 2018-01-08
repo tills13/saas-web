@@ -6,16 +6,16 @@ import * as React from "react"
 import { ButtonProps, default as Button } from "components/form/button"
 import Icon from "components/icon"
 
-interface IconButtonProps extends ButtonProps {
+export interface IconButtonProps extends ButtonProps {
   icon: string
 }
 
 type IconOffsetType = { [icon: string]: React.CSSProperties }
-const OFFSET_FIXES: IconOffsetType = {
+export const OFFSET_FIXES: IconOffsetType = {
   // "chevron-left": { position: "relative", left: "-2px" }
 }
 
-const IconButton = ({ children, className, icon, ...rest }: IconButtonProps) => {
+export const IconButton = ({ children, className, icon, ...rest }: IconButtonProps) => {
   const mClassName = classnames("IconButton", className)
 
   return (

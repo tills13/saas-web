@@ -36,9 +36,8 @@ export function trimLeadingWhitespace(mString: string): string {
   }).join("\n")
 }
 
-
 export function possessive(word: string) {
-  return `${ word }`
+  return `${ word }${ word.endsWith("s") ? "'" : "'s" }`
 }
 
 export function pluralize(word: string, count: number) {

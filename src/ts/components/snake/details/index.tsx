@@ -6,6 +6,8 @@ import * as Relay from "react-relay/classic"
 import { Link } from "react-router"
 import { branch, compose, renderComponent } from "recompose"
 
+import IconLinkButton from "components/button/icon_link_button"
+import Avatar from "components/snake/avatar"
 import Well from "components/well"
 import SnakeGamesList from "./game_list"
 
@@ -22,9 +24,9 @@ const SnakeDetails = ({ className, snake }: SnakeDetailsProps) => {
   return (
     <div className={ mClassName }>
       <div className="SnakeDetails__header">
-        <img className="SnakeDetails__head" src={ snake.head.url } />
+        <Avatar snake={ snake } />
         <div className="SnakeDetails__name">{ snake.name }</div>
-        <Link to={ `snakes/${ snake.id }/edit` }>edit</Link>
+        <IconLinkButton icon="pencil" to={ `snakes/${ snake.id }/edit` } />
       </div>
       { snake.isBountySnake && (
         <div className="SnakeDetails__bounty">
@@ -45,11 +47,11 @@ export default compose<SnakeDetailsProps, SnakeDetailsProps>(
         fragment on Snake {
           id
           name
-          head { url }
           isBountySnake
           bountyDescription
 
-          ${SnakeGamesList.getFragment("snake") }
+          ${ Avatar.getFragment("snake") }
+          ${ SnakeGamesList.getFragment("snake") }
         }
       `
     }

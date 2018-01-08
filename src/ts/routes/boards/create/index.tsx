@@ -14,7 +14,6 @@ import Button from "components/form/button"
 import ColorPicker from "components/form/color_picker"
 import Select from "components/form/select"
 import Icon from "components/icon"
-import SubNav from "components/subnav"
 
 import BoardEditor from "components/boards/editor"
 import Header from "components/header"

@@ -17,7 +17,6 @@ export const gameService = (Component: React.ComponentType<any>) => {
 
       componentDidMount() {
         document.addEventListener("keypress", this.handleKeyPress)
-
       }
 
       componentDidUpdate(prevProps, prevState) {

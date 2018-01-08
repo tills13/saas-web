@@ -8,8 +8,8 @@ import { compose, SetStateCallback, withState } from "recompose"
 import LinkButton from "components/button/link_button"
 import Header from "components/header"
 import Pagination from "components/pagination"
-import SnakeAvatar from "components/snake/avatar"
 import SnakeDetails from "components/snake/details"
+import SnakeList from "components/snake/list"
 
 import createRelayContainer from "components/create_relay_container"
 import { paginate, PaginationProps } from "components/pagination/paginate"
@@ -24,48 +24,26 @@ interface SnakeListOuterProps {
   application: GraphQL.Schema.Application
 }
 
-class SnakeList extends React.Component<SnakeListInnerProps> {
+class SnakesList extends React.Component<SnakeListInnerProps> {
   componentDidMount() {
     const { relay } = this.props
     relay.forceFetch({})
   }
 
   renderList() {
-    const { pagination } = this.props
+    const { application, pagination, selectedSnake, setSelectedSnake } = this.props
+    const { snakes: { items: snakes } } = application
 
     return (
       <div className="SnakeList__list">
-        <div className="List">
-          { this.renderSnakes() }
-        </div>
+        <SnakeList
+          onClickSnake={ setSelectedSnake }
+          selectedSnake={ selectedSnake }
+          snakes={ snakes }
+        />
         <Pagination { ...pagination } />
       </div>
     )
-  }
-
-  renderSnakes() {
-    const { application, selectedSnake, setSelectedSnake } = this.props
-    const { snakes: { items: snakes } } = application
-
-    return snakes.map((snake) => {
-      const mClassName = classnames("SnakeList__item", {
-        "SnakeList__item--selected": selectedSnake && snake.id === selectedSnake.id
-      })
-
-      return (
-        <div
-          key={ snake.id }
-          className={ mClassName }
-          onClick={ () => setSelectedSnake(snake) }
-        >
-          <SnakeAvatar snake={ snake } small />
-          <div className="SnakeList__itemInfo">
-            <div className="SnakeList__name">{ snake.name }</div>
-            <div className="SnakeList__owner">{ snake.owner.username }</div>
-          </div>
-        </div>
-      )
-    })
   }
 
   render() {
@@ -101,12 +79,7 @@ export default compose(
           snakes(after: $after, limit: $limit) {
             pageInfo { count }
             items {
-              id
-              name
-              head { url }
-              owner { username }
-
-              ${ SnakeAvatar.getFragment("snake") }
+              ${ SnakeList.getFragment("snakes") }
               ${ SnakeDetails.getFragment("snake") }
             }
           }
@@ -128,4 +101,4 @@ export default compose(
       onClickPreviousPage: () => relay.setVariables({ after: after - limit })
     }
   })
-)(SnakeList)
+)(SnakesList)

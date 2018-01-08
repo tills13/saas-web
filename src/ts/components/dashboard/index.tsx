@@ -40,7 +40,8 @@ class Dashboard extends React.Component<DashboardComponentInnerProps, {}> {
   getChildContext() {
     const { relay } = this.props
 
-    const onLogin = relay.forceFetch
+    // const onLogin = relay.forceFetch
+    const onLogin = () => location.href = "/"
     return { onLogin, onLogout: onLogin }
   }
 

@@ -20,7 +20,7 @@ import Documentation from "routes/documentation"
 
 import Dashboard from "components/dashboard"
 import Index from "routes/landing"
-import Signup from "routes/landing/signup"
+import Signup from "routes/signup"
 import Test from "routes/test"
 
 import boardRouter from "./boards"

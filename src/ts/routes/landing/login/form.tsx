@@ -37,6 +37,8 @@ class LoginRegisterForm extends React.Component<LoginRegisterFormProps> {
       setSessionToken(token)
       onLoginRegisterSuccess && onLoginRegisterSuccess()
     })
+
+    return true
   }
 
   toggleView = () => {
@@ -105,10 +107,10 @@ class LoginRegisterForm extends React.Component<LoginRegisterFormProps> {
       <form className="LoginRegisterForm" onSubmit={ handleSubmit(this.onSubmit) }>
         { view === VIEW_LOGIN ? this.renderLogin() : this.renderRegister() }
         <ButtonGroup block>
-          <Button onClick={ this.toggleView }>
+          <Button onClick={ this.toggleView } type="button">
             Go to { view === VIEW_LOGIN ? "Register" : "Login" }
           </Button>
-          <Button color={ Button.COLOR_GREEN } fill>
+          <Button color={ Button.COLOR_GREEN } type="submit" fill>
             { view === VIEW_LOGIN ? "Login" : "Register" }
           </Button>
         </ButtonGroup>
