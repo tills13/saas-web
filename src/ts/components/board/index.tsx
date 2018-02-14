@@ -3,11 +3,12 @@ import "./index.scss"
 import * as classNames from "classnames"
 import * as React from "react"
 
-import { List } from "immutable"
-import { partial } from "lodash"
+import { partial, forEach } from "lodash"
 import { compose, mapProps } from "recompose"
 
 import Icon from "components/icon"
+
+import { BoardRenderer } from "./renderer"
 
 export const CELL_TYPE_FOOD = "CELL_TYPE_FOOD"
 export const CELL_TYPE_GOLD = "CELL_TYPE_GOLD"
@@ -25,6 +26,7 @@ interface BoardComponentOwnProps {
   gold?: GameAPI.Gold[]
   snakes?: GameAPI.Snake[]
   teleporters?: GameAPI.Teleporter[]
+  turnNumber?: number
   walls?: GameAPI.Wall[]
 
   overlayContents?: JSX.Element | React.ReactElement<any> | HTMLElement
@@ -33,30 +35,76 @@ interface BoardComponentOwnProps {
   onHoverCell?: (x: number, y: number) => void
 
   isPreview?: boolean
+  updateOnPropsChanged?: boolean
 }
 
 const RENDER_METHOD_CANVAS = "RENDER_METHOD_CANVAS"
 const RENDER_METHOD_DOM = "RENDER_METHOD_DOM"
 
 class Board extends React.Component<BoardComponentOwnProps, {}> {
+  static defaultProps = { updateOnPropsChanged: false }
+
   boardRef: HTMLDivElement
-  canvas: HTMLCanvasElement
-  context: CanvasRenderingContext2D
+  boardRenderer: BoardRenderer
+  container: HTMLDivElement
+  layers: { bg?: HTMLCanvasElement, fg?: HTMLCanvasElement } = {}
+  layerContexts: { bg?: CanvasRenderingContext2D, fg?: CanvasRenderingContext2D } = {}
+
   renderMethod: typeof RENDER_METHOD_CANVAS | typeof RENDER_METHOD_DOM
   timer: number
 
-  constructor(props: BoardComponentOwnProps) {
+  constructor (props: BoardComponentOwnProps) {
     super(props)
-    this.renderMethod = RENDER_METHOD_DOM
+
+    const { boardColumns, boardRows } = this.props
+
+    this.renderMethod = RENDER_METHOD_CANVAS
+    this.boardRenderer = new BoardRenderer({
+      height: boardRows,
+      width: boardColumns
+    })
   }
 
-  componentWillUnmount() {
+  componentDidMount () {
+    (window as any)._oldresize = window.onresize
+    window.onresize = this.onResize
+
+    if (this.renderMethod === RENDER_METHOD_CANVAS) {
+      this.onResize()
+
+      if (!this.props.updateOnPropsChanged) {
+        this.timer = setTimeout(this.drawBoard, 100)
+      }
+    }
+  }
+
+  componentWillUpdate (nextProps, nextState) {
+    const { fg, bg } = this.layerContexts
+
+    this.boardRenderer.render(
+      [fg, bg],
+      nextProps
+    )
+  }
+
+  componentWillUnmount () {
     if (this.timer) {
       window.clearTimeout(this.timer)
     }
   }
 
-  getColoredCells() {
+  drawBoard = () => {
+    const { fg, bg } = this.layerContexts
+
+    this.boardRenderer.render(
+      [fg, bg],
+      this.props
+    )
+
+    this.timer = setTimeout(this.drawBoard, 100)
+  }
+
+  getColoredCells () {
     const { food = [], gold = [], snakes = [], teleporters = [], walls = [] } = this.props
 
     const coloredCells: { [position: string]: string } = {}
@@ -92,7 +140,23 @@ class Board extends React.Component<BoardComponentOwnProps, {}> {
     if (onClickCell) onClickCell(x, y)
   }
 
-  renderBoard() {
+  onResize = () => {
+    const width = this.container.clientWidth
+    const height = this.container.clientHeight
+
+    const parent = this.container.parentElement
+    const parentHeight = parent ? parent.clientHeight : Infinity
+
+    forEach(this.layers, layer => {
+      layer.height = parentHeight
+      layer.width = width
+    })
+
+    const { bg, fg } = this.layerContexts
+    this.boardRenderer.render([fg, bg], this.props, true)
+  }
+
+  renderBoard () {
     if (this.renderMethod === RENDER_METHOD_DOM) {
       return this.renderBoardDom()
     }
@@ -100,19 +164,28 @@ class Board extends React.Component<BoardComponentOwnProps, {}> {
     return this.renderBoardCanvas()
   }
 
-  renderBoardCanvas() {
-    return (
+  renderBoardCanvas () {
+    return [
       <canvas
+        key="foreground"
         ref={ (canvas) => {
-          this.canvas = canvas
-          this.context = this.canvas.getContext("2d")
+          this.layers.fg = canvas
+          if (canvas) this.layerContexts.fg = canvas.getContext("2d")
+        } }
+      />,
+      <canvas
+        key="background"
+        ref={ (canvas) => {
+          this.layers.bg = canvas
+          if (canvas) this.layerContexts.bg = canvas.getContext("2d")
         } }
       />
-    )
+    ]
   }
 
-  renderBoardDom() {
+  renderBoardDom () {
     const { boardColumns, boardRows, onClickCell } = this.props
+    console.log(this.props)
 
     const rows = []
     const coloredCells = this.getColoredCells()
@@ -148,13 +221,16 @@ class Board extends React.Component<BoardComponentOwnProps, {}> {
     return rows
   }
 
-  render() {
+  render () {
     const boardClassName = classNames("Board", {
       "Board--isPreview": this.props.isPreview
     })
 
     return (
-      <div className={ boardClassName }>
+      <div
+        className={ boardClassName }
+        ref={ elem => this.container = elem }
+      >
         { this.renderBoard() }
       </div>
     )

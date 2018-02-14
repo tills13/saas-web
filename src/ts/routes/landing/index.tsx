@@ -31,9 +31,10 @@ class IndexComponent extends React.Component<IndexComponentProps, IndexComponent
     // const { snakes } = this.state
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const snakes = "saas".split("").map((letter, index) => {
       return {
+        id: index,
         coords: this.convertLetterToCoords(letter, {
           x: 2 + (index * 7),
           y: 2
@@ -73,7 +74,7 @@ class IndexComponent extends React.Component<IndexComponentProps, IndexComponent
     this.setState({ snakes: List(snakes) })
   }
 
-  convertLetterToCoords(letter, startingPosition: GameAPI.Position) {
+  convertLetterToCoords (letter, startingPosition: GameAPI.Position) {
     const letterVector = this.generateRawLetter(letter)
     const letterOffset = this.getLetterOffset(letter)
     const finalPositions = [{
@@ -95,14 +96,14 @@ class IndexComponent extends React.Component<IndexComponentProps, IndexComponent
     return finalPositions
   }
 
-  getLetterOffset(letter: string) {
+  getLetterOffset (letter: string) {
     return {
       a: [0, 1],
       s: [4, 0]
     }[letter]
   }
 
-  generateRawLetter(letter: string, scaleX: number = 1, scaleY: number = 1): number[][][] {
+  generateRawLetter (letter: string, scaleX: number = 1, scaleY: number = 1): number[][][] {
     const a = [
       [[1, 0], [1, 0], [1, 0], [1, 0]], // top
       [[0, -1], [0, -1]], // down to middle
@@ -126,7 +127,7 @@ class IndexComponent extends React.Component<IndexComponentProps, IndexComponent
     return mLetter
   }
 
-  render() {
+  render () {
     const { snakes } = this.state
 
     return (

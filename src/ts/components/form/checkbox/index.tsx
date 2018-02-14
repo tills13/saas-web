@@ -19,7 +19,7 @@ interface CheckboxOuterProps {
   input?: any
   label?: string
   name?: string
-  onChange: React.ChangeEventHandler<any>
+  onChange?: React.ChangeEventHandler<any>
   value?: any
 }
 
@@ -34,7 +34,7 @@ const Checkbox = (props: CheckboxInnerProps) => {
     <label className={ mContainerClassName } htmlFor={ rest.name }>
       <div className={ mClassName }>
         <Icon className="Checkbox__icon" icon={ check || "check" } />
-        <input id={ rest.name } type="checkbox" checked={ checked } {...rest} />
+        <input id={ rest.name } type="checkbox" checked={ checked } { ...rest } />
       </div>
       { label && <span className="Checkbox__label">{ label }</span> }
     </label>

@@ -9,7 +9,7 @@ import {
 } from "relay/mutations"
 
 declare var __API_ROOT__: string
-const BASE_URL = `${ location.origin }/api` || __API_ROOT__
+export const BASE_URL = `${ location.origin }/api` || __API_ROOT__
 
 export interface FetchOptions {
   includeCredentials?: boolean
@@ -21,7 +21,7 @@ export const defaultFetchOptions: FetchOptions = {
   overrideBaseUrl: false
 }
 
-export function fetchWithProgress(
+export function fetchWithProgress (
   url: string,
   opts: any = {},
   onProgress: (loaded: number, total: number) => void
@@ -34,7 +34,7 @@ export function fetchWithProgress(
       xhr.setRequestHeader(header, opts.headers[header])
     }
 
-    xhr.onload = (event) => resolve((<any>event.target).responseText)
+    xhr.onload = (event) => resolve((<any> event.target).responseText)
     xhr.onerror = reject
 
     if (xhr.upload && onProgress) {
@@ -45,7 +45,7 @@ export function fetchWithProgress(
   })
 }
 
-export function uploadFile(
+export function uploadFile (
   data: File,
   uploadType: string,
   trackProgress: (loaded: number, total: number) => void
@@ -137,7 +137,7 @@ export const http = {
     let mData = new FormData()
 
     Map<any, any>(data).map((value, key) => {
-      if (value instanceof FileList && (<FileList>value).length > 0) {
+      if (value instanceof FileList && (<FileList> value).length > 0) {
         mData.append(key, value[0])
       } else mData.append(key, value)
     })

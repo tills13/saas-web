@@ -64,6 +64,7 @@ const Example = ({
         setLoading(false)
         setResponse(response)
       }).catch((err) => {
+        setLoading(false)
         setError("Something went wrong...")
       })
     })

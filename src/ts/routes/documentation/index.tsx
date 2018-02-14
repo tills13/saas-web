@@ -33,7 +33,7 @@ interface DocumentationInnerProps {
 const defaultExampleUrl = "https://battlesnake.sbstn.ca/"
 
 export class Documentation extends React.Component<DocumentationInnerProps, {}> {
-  getExampleJson() {
+  getExampleJson () {
     const { isLegacy } = this.props
 
     let requestJson: any = {
@@ -65,7 +65,7 @@ export class Documentation extends React.Component<DocumentationInnerProps, {}> 
     return requestJson
   }
 
-  renderDaemons() {
+  renderDaemons () {
     const { viewer } = this.props
 
     return (
@@ -128,11 +128,11 @@ export class Documentation extends React.Component<DocumentationInnerProps, {}> 
     )
   }
 
-  renderBountyCheck() {
+  renderBountyCheck () {
     const { exampleUrl } = this.props
 
     return (
-      <div>
+      <Section>
         <h4 className="Documentation__title">Request Schema</h4>
         <Table className="Documentation__table" columns={ ["Field", "Type", "Example"] } striped>
           <tr>
@@ -162,11 +162,11 @@ export class Documentation extends React.Component<DocumentationInnerProps, {}> 
 
         <h4 className="Documentation__title">Example</h4>
         <Example endpoint="bounty/check" data={ this.getExampleJson() } url={ exampleUrl } />
-      </div >
+      </Section>
     )
   }
 
-  renderMove(bounty = false) {
+  renderMove (bounty = false) {
     const { exampleUrl, isLegacy } = this.props
 
     return (
@@ -278,7 +278,7 @@ export class Documentation extends React.Component<DocumentationInnerProps, {}> 
     )
   }
 
-  renderStart() {
+  renderStart () {
     const { exampleUrl, isLegacy } = this.props
 
     const requestJson = {
@@ -349,7 +349,7 @@ export class Documentation extends React.Component<DocumentationInnerProps, {}> 
     )
   }
 
-  renderTypes() {
+  renderTypes () {
     const { isLegacy } = this.props
 
     const snakeSchema = isLegacy
@@ -434,7 +434,7 @@ export class Documentation extends React.Component<DocumentationInnerProps, {}> 
     )
   }
 
-  render() {
+  render () {
     const { exampleUrl, isLegacy, selectedSnake, setExampleUrl, setIsLegacy, setSelectedSnake } = this.props
     const { viewer } = this.props
 
@@ -444,9 +444,13 @@ export class Documentation extends React.Component<DocumentationInnerProps, {}> 
         : null
 
       setSelectedSnake(snakeId)
-      setIsLegacy(snake ? snake.isLegacy : true)
+      setIsLegacy(snake && !!snake.apiVersion)
       setExampleUrl(snake ? snake.url : defaultExampleUrl)
     }
+
+    const snakes = viewer
+      ? viewer.snakes.edges
+      : []
 
     return (
       <div className="Documentation">
@@ -459,7 +463,7 @@ export class Documentation extends React.Component<DocumentationInnerProps, {}> 
                 disabled={ !viewer }
                 name="snake"
                 onChange={ (value) => onSnakeChanged(value) }
-                options={ viewer.snakes.edges.map(({ node: snake }) => {
+                options={ snakes.map(({ node: snake }) => {
                   return { label: snake.name, value: snake.id }
                 }) }
                 placeholder="Select a snake"

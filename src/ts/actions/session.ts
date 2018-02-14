@@ -1,6 +1,5 @@
 import * as _ from "lodash"
 
-import { Map } from "immutable"
 import { Dispatch } from "react-redux"
 import { ThunkAction } from "redux-thunk"
 import { ApplicationState } from "../store"

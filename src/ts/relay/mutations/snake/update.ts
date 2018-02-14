@@ -1,12 +1,12 @@
 import * as Relay from "react-relay/classic"
 
 interface CreateSnakeMutationProps {
+  apiVersion: Models.SnakeInterface["apiVersion"]
   bountyDescription: string
   defaultColor: string
   devUrl: string
   headId: string
   isBountySnake: string
-  isLegacy: string
   name: string
   snakeId: GraphQL.Schema.GraphQLID
   url: string
@@ -14,19 +14,19 @@ interface CreateSnakeMutationProps {
 }
 
 export class UpdateSnakeMutation extends Relay.Mutation<CreateSnakeMutationProps, any> {
-  getMutation() {
+  getMutation () {
     return Relay.QL`mutation { updateSnakeMutation }`
   }
 
-  getVariables() {
+  getVariables () {
     return {
       updateSnakeInput: {
+        apiVersion: this.props.apiVersion,
         bountyDescription: this.props.bountyDescription,
         defaultColor: this.props.defaultColor,
         devUrl: this.props.devUrl,
         headId: this.props.headId,
         isBountySnake: this.props.isBountySnake,
-        isLegacy: this.props.isLegacy,
         name: this.props.name,
         snakeId: this.props.snakeId,
         url: this.props.url,
@@ -35,7 +35,7 @@ export class UpdateSnakeMutation extends Relay.Mutation<CreateSnakeMutationProps
     }
   }
 
-  getFatQuery() {
+  getFatQuery () {
     return Relay.QL`
       fragment on UpdateSnakeMutationPayload {
         snake
@@ -43,7 +43,7 @@ export class UpdateSnakeMutation extends Relay.Mutation<CreateSnakeMutationProps
     `
   }
 
-  getConfigs() {
+  getConfigs () {
     return [{
       type: "FIELDS_CHANGE",
       fieldIDs: {

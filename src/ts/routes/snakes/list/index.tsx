@@ -16,6 +16,7 @@ import { paginate, PaginationProps } from "components/pagination/paginate"
 
 interface SnakeListInnerProps extends PaginationProps, SnakeListOuterProps {
   relay: Relay.RelayProp
+  router: any
   selectedSnake: Models.SnakeInterface
   setSelectedSnake: SetStateCallback<Models.SnakeInterface>
 }
@@ -25,19 +26,19 @@ interface SnakeListOuterProps {
 }
 
 class SnakesList extends React.Component<SnakeListInnerProps> {
-  componentDidMount() {
+  componentDidMount () {
     const { relay } = this.props
     relay.forceFetch({})
   }
 
-  renderList() {
-    const { application, pagination, selectedSnake, setSelectedSnake } = this.props
+  renderList () {
+    const { application, pagination, router, selectedSnake, setSelectedSnake } = this.props
     const { snakes: { items: snakes } } = application
 
     return (
       <div className="SnakeList__list">
         <SnakeList
-          onClickSnake={ setSelectedSnake }
+          onClickSnake={ (snake) => router.push(`snakes/${ snake.id }/edit`) }
           selectedSnake={ selectedSnake }
           snakes={ snakes }
         />
@@ -46,7 +47,7 @@ class SnakesList extends React.Component<SnakeListInnerProps> {
     )
   }
 
-  render() {
+  render () {
     const { application, pagination, selectedSnake, setSelectedSnake } = this.props
     const { snakes: { items: snakes } } = application
 
@@ -60,7 +61,7 @@ class SnakesList extends React.Component<SnakeListInnerProps> {
         </Header>
         <div className="SnakeList__container">
           { this.renderList() }
-          { selectedSnake && <SnakeDetails snake={ selectedSnake } /> }
+          <SnakeDetails snake={ selectedSnake } />
         </div>
       </div>
     )

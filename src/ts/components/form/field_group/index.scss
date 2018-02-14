@@ -4,7 +4,11 @@
   align-items: flex-start;
 
   > *:not(:last-child) {
-    margin-right: 10px;
+    margin-right: 5px;
+  }
+
+  > *:not(:first-child) {
+    margin-left: 5px;
   }
 }
 

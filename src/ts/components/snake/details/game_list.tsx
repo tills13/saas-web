@@ -15,6 +15,7 @@ interface SnakeGameListProps {
 }
 
 const SnakeGameList = ({ snake }: SnakeGameListProps) => {
+  console.log(snake)
   return (
     <table className="SnakeGameList">
       <thead>

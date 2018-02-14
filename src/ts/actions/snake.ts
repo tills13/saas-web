@@ -1,6 +1,5 @@
 import * as _ from "lodash"
 
-import { Map } from "immutable"
 import { Dispatch } from "react-redux"
 import { http } from "../utils/fetch"
 

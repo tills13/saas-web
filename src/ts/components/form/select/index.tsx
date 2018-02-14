@@ -23,6 +23,7 @@ export type SelectOption = {
 
 interface SelectInnerProps extends React.Props<any>, SelectOuterProps {
   isOpen: boolean,
+  options: SelectOption[],
   searchTerm: string
   setSearchTerm: SetStateCallback<string>
   setIsOpen: SetStateCallback<boolean>
@@ -37,17 +38,18 @@ interface SelectOuterProps {
   id?: string,
   inline?: boolean,
   inlineLabel?: string,
+  input?: any
   label?: string,
   multiple?: boolean
   name: string,
-  onChange: (newValue: any) => void
-  options: SelectOption[],
+  onChange?: (newValue: any) => void
+  options: (SelectOption | string)[],
   placeholder?: string
   searchable?: boolean
   showValue?: boolean
   up?: boolean
   small?: boolean
-  value: any
+  value?: any
 }
 
 class Select extends React.Component<SelectInnerProps, any> {
@@ -90,7 +92,7 @@ class Select extends React.Component<SelectInnerProps, any> {
     setIsOpen(multiple)
   }
 
-  shouldRenderUp() {
+  shouldRenderUp () {
     const { up } = this.props
     if (!this.container) return up
 
@@ -109,7 +111,7 @@ class Select extends React.Component<SelectInnerProps, any> {
     setIsOpen(!isOpen)
   }
 
-  renderOptions() {
+  renderOptions () {
     const { multiple, options, searchTerm, value } = this.props
 
     const finalOptions = options.filter(({ label, value: mValue }) => {
@@ -141,7 +143,7 @@ class Select extends React.Component<SelectInnerProps, any> {
     })
   }
 
-  renderSearch() {
+  renderSearch () {
     const { searchTerm, setSearchTerm, setIsOpen } = this.props
 
     const onChange = ({ target }) => setSearchTerm(target.value)
@@ -169,7 +171,7 @@ class Select extends React.Component<SelectInnerProps, any> {
     )
   }
 
-  renderValue() {
+  renderValue () {
     const { emptyLabel, multiple, onChange, options, searchable, showValue, value } = this.props
 
     if (multiple && isArray(value)) {
@@ -220,7 +222,7 @@ class Select extends React.Component<SelectInnerProps, any> {
     }
   }
 
-  render() {
+  render () {
     const {
       className, clearable, containerClassName, disabled, emptyLabel, id,
       inline, isOpen, label, multiple, placeholder, searchable, setIsOpen, small, value
@@ -283,8 +285,13 @@ export default compose<SelectInnerProps, SelectOuterProps>(
     emptyLabel: "Select a Value",
     clearable: true
   }),
-  mapProps(({ inline, inlineLabel, input, label, multiple, value, ...rest }) => {
+  mapProps(({ inline, inlineLabel, input, label, multiple, options, value, ...rest }: SelectOuterProps) => {
     const mValue = input ? input.value : value
+    const mOptions = options.map(option => {
+      return typeof option === "string"
+        ? { label: option, value: option }
+        : option
+    })
 
     return {
       ...input,
@@ -292,6 +299,7 @@ export default compose<SelectInnerProps, SelectOuterProps>(
       inline: inline || inlineLabel,
       label: (inline && inlineLabel) || label,
       multiple,
+      options: mOptions,
       value: (mValue == null || mValue === "") ? (multiple ? [] : null) : mValue
     }
   }),

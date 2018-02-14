@@ -20,7 +20,7 @@ import {
   PlacementType
 } from ".."
 
-import { ExtraOptions, OPTION_SNAKE_ID, OPTION_TELEPORTER_CHANNEL, OPTION_COLOR } from "./index"
+import { ExtraOptions, OPTION_COLOR, OPTION_SNAKE_ID, OPTION_TELEPORTER_CHANNEL } from "./index"
 
 const placementOptions = [
   { label: "Food", value: CELL_TYPE_FOOD },
@@ -85,9 +85,9 @@ class BoardEditorSidebar extends React.Component<BoardEditorSidebarProps> {
 
   renderSnakeOptions() {
     const { application, extraOptions, onChangeExtraOptions } = this.props
-    const onChange = (eventOrValue: React.ChangeEvent<HTMLInputElement>) => {
+    const onChange = (eventOrValue: React.ChangeEvent<HTMLInputElement> | string) => {
       return onChangeExtraOptions({
-        [OPTION_SNAKE_ID]: typeof eventOrValue === "string" || eventOrValue == null
+        [OPTION_SNAKE_ID]: typeof eventOrValue === "string"
           ? eventOrValue
           : eventOrValue.target.value
       })

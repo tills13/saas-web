@@ -1,7 +1,7 @@
 import * as classnames from "classnames"
 import * as moment from "moment"
 import * as React from "react"
-import * as Relay from "react-relay"
+import * as Relay from "react-relay/classic"
 import { compose } from "recompose"
 
 import SnakeAvatar from "components/snake/avatar"
@@ -20,7 +20,7 @@ interface SnakeListOuterProps {
 }
 
 export class SnakeList extends React.Component<SnakeListInnerProps> {
-  renderSnake(snake: Models.SnakeInterface, index?: number) {
+  renderSnake = (snake: Models.SnakeInterface, index?: number) => {
     const { onClickSnake, selectedSnake } = this.props
     const mClassName = classnames("SnakeList__item", {
       "SnakeList__item--selected": selectedSnake && snake.id === selectedSnake.id

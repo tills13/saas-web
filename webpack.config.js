@@ -23,12 +23,16 @@ module.exports = {
         target: "http://localhost:3000",
         secure: false
       },
+      "/static": {
+        target: "http://localhost:3000",
+        secure: false
+      },
       "/graphql": {
         target: "http://localhost:3000",
         secure: false
       },
       "/socket.io": {
-        target: "http://localhost:3001",
+        target: "http://127.0.0.1:3001",
         secure: false
       }
     },
@@ -37,6 +41,7 @@ module.exports = {
   },
   // devtool: "source-map",
   entry: [
+    "babel-polyfill",
     // "react-hot-loader/patch",
     "webpack-dev-server/client?http://localhost:8000",
     // "webpack/hot/only-dev-server",

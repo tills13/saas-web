@@ -12,6 +12,7 @@ import Well from "components/well"
 import SnakeGamesList from "./game_list"
 
 import createRelayContainer from "components/create_relay_container"
+import { renderNothing } from "recompose";
 
 interface SnakeDetailsProps {
   className?: string
@@ -20,6 +21,11 @@ interface SnakeDetailsProps {
 
 const SnakeDetails = ({ className, snake }: SnakeDetailsProps) => {
   const mClassName = classnames("SnakeDetails", className)
+
+  if (!snake) {
+    console.log(snake)
+    return null
+  }
 
   return (
     <div className={ mClassName }>
@@ -35,7 +41,7 @@ const SnakeDetails = ({ className, snake }: SnakeDetailsProps) => {
         </div>
       ) }
       <h4 className="SnakeDetails__title">Recent Games</h4>
-      <SnakeGamesList snake={ snake } />
+
     </div>
   )
 }
@@ -55,9 +61,5 @@ export default compose<SnakeDetailsProps, SnakeDetailsProps>(
         }
       `
     }
-  }),
-  branch(
-    (props: SnakeDetailsProps) => !props.snake,
-    renderComponent(() => <div className="SnakeDetailsEmpty">Select a Snake</div>)
-  )
+  })
 )(SnakeDetails)

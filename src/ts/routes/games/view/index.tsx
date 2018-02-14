@@ -172,7 +172,7 @@ class ViewGame extends React.Component<ViewGameComponentInnerProps, any> {
 
   renderBoard () {
     const { game, snakes } = this.props
-    const { board } = this.state
+    const { board, turnNumber } = this.state
 
     const toggleBoardOverlay = () => this.setState((prevState) => {
       return { showBoardOverlay: !prevState.showBoardOverlay }
@@ -180,15 +180,16 @@ class ViewGame extends React.Component<ViewGameComponentInnerProps, any> {
 
     return (
       <Board
-        boardColumns={board.width || game.boardColumns}
-        boardRows={board.height || game.boardRows}
-        snakes={snakes}
-        food={board.food}
-        gold={board.gold}
-        teleporters={board.teleporters}
-        walls={board.walls}
-        onClickCloseOverlay={toggleBoardOverlay}
-        overlayContents={this.renderBoardOverlay()}
+        boardColumns={ board.width || game.boardColumns }
+        boardRows={ board.height || game.boardRows }
+        food={ board.food }
+        gold={ board.gold }
+        onClickCloseOverlay={ toggleBoardOverlay }
+        overlayContents={ this.renderBoardOverlay() }
+        teleporters={ board.teleporters }
+        turnNumber={ turnNumber }
+        snakes={ snakes }
+        walls={ board.walls }
       />
     )
   }
@@ -203,12 +204,12 @@ class ViewGame extends React.Component<ViewGameComponentInnerProps, any> {
 
     return (
       <div className="overlay-contents text-center">
-        <h1>{game.id}</h1>
+        <h1>{ game.id }</h1>
         <div>
-          <Button onClick={toggleDebug}>{debug ? "Hide" : "Show"} Debug</Button>
-          {viewer.id === game.creator.id && (
-            <LinkButton to={`/games/${ game.id }/edit`}>Edit Game</LinkButton>
-          )}
+          <Button onClick={ toggleDebug }>{ debug ? "Hide" : "Show" } Debug</Button>
+          { viewer.id === game.creator.id && (
+            <LinkButton to={ `/games/${ game.id }/edit` }>Edit Game</LinkButton>
+          ) }
           <LinkButton to="/games/">Edit Game</LinkButton>
         </div>
       </div>
@@ -271,30 +272,30 @@ class ViewGame extends React.Component<ViewGameComponentInnerProps, any> {
 
     return (
       <div className="snakes">
-        {snakes.sortBy((snake) => snake.score).map((snake, index) => {
+        { snakes.sortBy((snake) => snake.score).map((snake, index) => {
           const style = {
             width: `${ snake.health || 100 }%`,
             background: snake.color || snake.defaultColor
           }
 
           return (
-            <div className="snake" key={snake.id}>
+            <div className="snake" key={ snake.id }>
               <div className="info">
-                <img src={snake.head.url} />
+                <img src={ snake.head.url } />
                 <div className="health-container">
-                  <div className="health-bar" style={style} />
-                  {snake.name} ({snake.health || 100})
+                  <div className="health-bar" style={ style } />
+                  { snake.name } ({ snake.health || 100 })
                 </div>
               </div>
               <div className="taunt">
-                {snake.taunt || "test"}
+                { snake.taunt || "test" }
               </div>
-              {snake.goldCount !== 0 && (
-                <div>{Range(0, snake.goldCount || 0).map(() => <span className="gold" />)}</div>
-              )}
+              { snake.goldCount !== 0 && (
+                <div>{ Range(0, snake.goldCount || 0).map(() => <span className="gold" />) }</div>
+              ) }
             </div>
           )
-        })}
+        }) }
       </div>
     )
   }
@@ -304,18 +305,18 @@ class ViewGame extends React.Component<ViewGameComponentInnerProps, any> {
     const { game, snakes, turnNumber, viewerCount } = this.props
 
     return (
-      <div className={mClassName}>
+      <div className={ mClassName }>
         <div className="ViewGame__boardContainer">
-          {this.renderBoard()}
+          { this.renderBoard() }
         </div>
         <div className="ViewGame__sidebarContainer">
           <Sidebar
-            daemon={null}
-            game={game}
-            snakes={snakes}
-            turnLimit={game.turnLimit}
-            turnNumber={turnNumber}
-            viewerCount={viewerCount}
+            daemon={ null }
+            game={ game }
+            snakes={ snakes }
+            turnLimit={ game.turnLimit }
+            turnNumber={ turnNumber }
+            viewerCount={ viewerCount }
           />
         </div>
       </div>

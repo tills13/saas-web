@@ -15,7 +15,12 @@ interface SignupFormProps extends InjectedFormProps {
 
 class SignupForm extends React.Component<SignupFormProps> {
   onSubmit = (data) => {
-    return (this.props.onSubmit || Promise.resolve)(data).then(() => {
+    const { onSubmit } = this.props
+
+    return Promise.resolve().then(() => {
+      if (onSubmit) return onSubmit(data)
+      return data
+    }).then(() => {
       const mutation = new CreateUserMutation(data)
       Relay.Store.commitUpdate(mutation, {
         onFailure: () => {
@@ -24,6 +29,9 @@ class SignupForm extends React.Component<SignupFormProps> {
           })
         }
       })
+    }).catch(err => {
+      console.log(err)
+      return err
     })
   }
 

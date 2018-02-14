@@ -103,7 +103,7 @@ declare namespace Models {
     isBountySnake: boolean
     lastCheckedAt: number
     lastSuccessfullyCheckedAt: number
-    isLegacy: boolean
+    apiVersion: "VERSION_2017" | "VERSION_2018"
     name: string
     owner: UserInterface
     updatedAt: number

@@ -24,6 +24,7 @@ import { CreateSnakeMutation, DeleteSnakeMutation, UpdateSnakeMutation } from "r
 
 import creatRelayContainer from "components/create_relay_container"
 import { showNotification } from "components/notification"
+import { getFormValues } from "redux-form";
 
 interface CreateEditSnakeFormInnerProps extends CreateEditSnakeFormOuterProps, InjectedFormProps {
   formValues: { [field: string]: any }
@@ -49,11 +50,10 @@ export class CreateEditSnakeForm extends React.Component<CreateEditSnakeFormInne
     })
   }
 
-  handleSubmit = ({ head, isLegacy, ...rest }: any) => {
+  handleSubmit = ({ head, ...rest }: any) => {
     const { router, snake } = this.props
     const data = {
       headId: head.id,
-      isLegacy: !!isLegacy,
       ...rest
     }
 
@@ -96,9 +96,13 @@ export class CreateEditSnakeForm extends React.Component<CreateEditSnakeFormInne
     })
   }
 
-  render() {
+  render () {
     const { error, handleSubmit, pristine, snake } = this.props
-    const { formValues: { isBountySnake, isLegacy } } = this.props
+    const { formValues: { isBountySnake, apiVersion } } = this.props
+    const apiVersionOptions = [
+      { label: "2017", value: "VERSION_2017" },
+      { label: "2018", value: "VERSION_2018" }
+    ]
 
     return (
       <form className="CreateEditSnakeForm" onSubmit={ handleSubmit(this.handleSubmit) }>
@@ -161,9 +165,10 @@ export class CreateEditSnakeForm extends React.Component<CreateEditSnakeFormInne
         <FieldGroup>
           <Field
             containerClassName="InlineFields__labelOffset"
-            label="Legacy"
-            name="isLegacy"
-            component={ Checkbox }
+            component={ Select }
+            label="API Version"
+            name="apiVersion"
+            options={ apiVersionOptions }
           />
           <Field
             label="Visibility"
@@ -174,7 +179,7 @@ export class CreateEditSnakeForm extends React.Component<CreateEditSnakeFormInne
           />
         </FieldGroup>
 
-        { isLegacy && (
+        { apiVersion && (
           <Alert type="warning">
             { !snake && "Looks like you intend to create a legacy snake. " }
             It is recommend that you update your snake to support SaaS specific features
@@ -200,7 +205,7 @@ export class CreateEditSnakeForm extends React.Component<CreateEditSnakeFormInne
   }
 }
 
-const mFormValueSelector = formValueSelector("CreateEditSnakeForm")
+const mFormValueSelector = getFormValues("CreateEditSnakeForm")
 
 export default compose<CreateEditSnakeFormInnerProps, CreateEditSnakeFormOuterProps>(
   creatRelayContainer({
@@ -208,38 +213,36 @@ export default compose<CreateEditSnakeFormInnerProps, CreateEditSnakeFormOuterPr
       snake: () => Relay.QL`
         fragment on Snake {
           id
+          apiVersion
           name
           defaultColor
           devUrl
           url
           isBountySnake
           bountyDescription
+          visibility
+
           head {
             id
             name
             url
           }
-          isLegacy
-          visibility
         }
       `
     }
   }),
   connect((state) => ({
-    formValues: {
-      isBountySnake: mFormValueSelector(state, "isBountySnake"),
-      isLegacy: mFormValueSelector(state, "isLegacy")
-    }
+    formValues: mFormValueSelector(state) || {}
   }), { showModal }),
   mapProps(({ snake, ...rest }) => {
     return {
       initialValues: {
+        apiVersion: snake ? snake.apiVersion : null,
         bountyDescription: snake ? snake.bountyDescription : "",
         defaultColor: snake ? snake.defaultColor : "#114B5F",
         devUrl: snake ? snake.devUrl : "",
         head: snake ? snake.head : null,
         isBountySnake: snake ? snake.isBountySnake : false,
-        isLegacy: snake ? snake.isLegacy : false,
         name: snake ? snake.name : "",
         url: snake ? snake.url : "",
         visibility: snake ? snake.visibility : "PUBLIC"

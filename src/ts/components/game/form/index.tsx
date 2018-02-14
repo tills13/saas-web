@@ -89,7 +89,7 @@ class CreateOrEditGameForm extends React.Component<CreateOrEditGameFormInnerProp
     })
   }
 
-  renderDimensionsFields() {
+  renderDimensionsFields () {
     const { formValues: { boardConfig } } = this.props
 
     return (
@@ -120,7 +120,7 @@ class CreateOrEditGameForm extends React.Component<CreateOrEditGameFormInnerProp
     )
   }
 
-  renderFoodFields() {
+  renderFoodFields () {
     return (
       <FieldGroup>
         <Field
@@ -140,7 +140,7 @@ class CreateOrEditGameForm extends React.Component<CreateOrEditGameFormInnerProp
     )
   }
 
-  renderGoldFields() {
+  renderGoldFields () {
     const { formValues: { boardHasGold } } = this.props
 
     return (
@@ -188,7 +188,7 @@ class CreateOrEditGameForm extends React.Component<CreateOrEditGameFormInnerProp
     )
   }
 
-  renderTeleporterFields() {
+  renderTeleporterFields () {
     const { formValues: { boardHasTeleporters } } = this.props
 
     return (
@@ -208,7 +208,7 @@ class CreateOrEditGameForm extends React.Component<CreateOrEditGameFormInnerProp
     )
   }
 
-  renderTimingFields() {
+  renderTimingFields () {
     return (
       <FieldGroup>
         <Field
@@ -227,7 +227,7 @@ class CreateOrEditGameForm extends React.Component<CreateOrEditGameFormInnerProp
     )
   }
 
-  render() {
+  render () {
     const { application, error, formValues, game, handleSubmit, pristine, reset } = this.props
     const { boardHasGold, boardHasTeleporters, boardHasWalls, devMode, selectedBoardConfig, selectedSnakes } = formValues
     const { boards, daemons, snakes: { items: snakes } } = application
@@ -237,7 +237,7 @@ class CreateOrEditGameForm extends React.Component<CreateOrEditGameFormInnerProp
 
     const hasLegacySnake = mSelectedSnakes
       .map((snakeId) => snakes.find(({ id }) => id === snakeId))
-      .reduce((carry, { isLegacy }) => carry || isLegacy, false)
+      .reduce((carry, { apiVersion }) => carry || !!apiVersion, false)
 
     const hasLegacyFeatures = boardHasGold || boardHasTeleporters || boardHasWalls
     const mSelectedBoardConfig = selectedBoardConfig
@@ -381,8 +381,8 @@ export default compose<CreateOrEditGameFormInnerProps, CreateOrEditGameFormOuter
           snakes(limit: 30) {
             items {
               id
+              apiVersion
               name
-              isLegacy
               owner { username }
             }
           }

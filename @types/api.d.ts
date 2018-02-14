@@ -11,10 +11,12 @@ declare namespace GameAPI {
 
   interface Snake extends Colorable {
     coords: (Position & Colorable)[]
+    death: { turn: number, reason: string, killer: Snake["id"] }
     goldCount: number
     head: { url: string }
     health: number
     id: string
+    kills: number
     name: string
     taunt: string
     score: number

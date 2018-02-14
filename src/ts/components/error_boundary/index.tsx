@@ -18,7 +18,12 @@ class ErrorBoundary extends React.Component {
     const { children } = this.props
 
     if (hasError) {
-      return <div>{ error.message }</div>
+      return (
+        <pre>
+          { error.stack }
+          { error.message }
+        </pre>
+      )
     }
 
     return React.Children.only(children)

@@ -76,7 +76,7 @@ class Navigation extends React.Component<NavigationInnerProps, {}> {
         { this.renderNavItem("NavItem__brand", "/", "SaaS") }
         { this.renderNavItem(null, "/games", "Games") }
         { this.renderNavItem(null, "/snakes", "Snakes") }
-        { this.renderNavItem(null, "/leaderboards", "Leaderboards") }
+        { false && this.renderNavItem(null, "/leaderboards", "Leaderboards") }
         { this.renderNavItem(null, "/documentation", "Documentation") }
       </div>
     )

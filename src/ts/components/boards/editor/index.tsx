@@ -21,7 +21,7 @@ import {
 
 export const OPTION_SNAKE_ID = "OPTION_SNAKE_ID"
 export const OPTION_TELEPORTER_CHANNEL = "OPTION_TELEPORTER_CHANNEL"
-export const OPTION_COLOR = "OPTION_WALL_COLOR"
+export const OPTION_COLOR = "OPTION_COLOR"
 
 export type ExtraOptions = {
   OPTION_COLOR: string
