@@ -16,6 +16,7 @@ import Board from "components/board"
 import LinkButton from "components/button/link_button"
 import Container from "components/container"
 import Button from "components/form/button"
+import FieldGroup from "components/form/field_group"
 import Icon from "components/icon"
 import Avatar from "components/snake/avatar"
 import Sidebar from "./sidebar"
@@ -33,13 +34,13 @@ interface ViewGameComponentInnerProps extends ViewGameComponentOuterProps {
   showModal: typeof showModal
   snakes: GameAPI.Snake[]
   turnNumber: number
-  viewer: GraphQL.Schema.Viewer
   viewerCount: number
 }
 
 interface ViewGameComponentOuterProps extends React.Props<any>, RouteComponentProps<any, any> {
   node: Models.Game
   params: any
+  viewer: GraphQL.Schema.Viewer
 }
 
 class ViewGame extends React.Component<ViewGameComponentInnerProps, any> {
@@ -64,7 +65,7 @@ class ViewGame extends React.Component<ViewGameComponentInnerProps, any> {
     document.addEventListener("keypress", this.handleKeyPress)
     this.setState({ loading: true }, () => {
       this.connect().then(() => {
-        // this.setState({ loading: false })
+        this.setState({ loading: false })
       })
     })
   }
@@ -76,7 +77,7 @@ class ViewGame extends React.Component<ViewGameComponentInnerProps, any> {
     if (currGameId !== prevGameId) {
       this.setState({ loading: true }, () => {
         this.connect().then(() => {
-          // this.setState({ loading: false })
+          this.setState({ loading: false })
         })
       })
     }
@@ -157,8 +158,7 @@ class ViewGame extends React.Component<ViewGameComponentInnerProps, any> {
         width: board.width,
         height: board.height
       },
-      daemon,
-      errors
+      daemon
     })
   }
 
@@ -217,54 +217,18 @@ class ViewGame extends React.Component<ViewGameComponentInnerProps, any> {
   }
 
   renderControls () {
-    /*const { currentUser, game } = this.props
+    const { game, viewer } = this.props
 
-    if (currentUser && currentUser.id !== game.creator.id) return null
-
-    const toggleBoardOverlay = () => this.setState((prevState) => {
-      return { showBoardOverlay: !prevState.showBoardOverlay }
-    })
+    if (game.creator.id !== viewer.id) return null
 
     return (
-      <div className="btn-row">
-        <button
-          className="btn btn-danger btn-block"
-          onClick={ this.simulateKeyPress.bind(null, "q") }
-          data-action="restart"
-        >
-          Restart Game (q)
-                </button>
-
-        <button
-          className="btn btn-default btn-block"
-          onClick={ this.simulateKeyPress.bind(null, "q") }
-          data-action="start"
-        >
-          Start Game (w)
-                </button>
-        <button
-          className="btn btn-default btn-block"
-          onClick={ this.simulateKeyPress.bind(null, "d") }
-          data-action="step"
-        >
-          Step Game (d)
-                </button>
-        <button
-          className="btn btn-default btn-block"
-          onClick={ this.simulateKeyPress.bind(null, "q") }
-          data-action="pause"
-        >
-          Pause Game (s)
-                </button>
-        <button
-          className="btn btn-default btn-block"
-          onClick={ toggleBoardOverlay }
-          data-action="settings"
-        >
-          Settings <Icon icon="gear" />
-        </button>
-      </div>
-    )*/
+      <FieldGroup>
+        <Button onClick={ this.simulateKeyPress.bind(null, "q") }>Restart Game (q)</Button>
+        <Button onClick={ this.simulateKeyPress.bind(null, "w") }>Start Game (w)</Button>
+        <Button onClick={ this.simulateKeyPress.bind(null, "d") }>Step Game (d)</Button>
+        <Button onClick={ this.simulateKeyPress.bind(null, "s") }>Pause Game (s)</Button>
+      </FieldGroup>
+    )
   }
 
   render () {
@@ -276,11 +240,11 @@ class ViewGame extends React.Component<ViewGameComponentInnerProps, any> {
       <div className={ mClassName }>
         <div className="ViewGame__boardContainer">
           { this.renderBoard() }
+          { this.renderControls() }
         </div>
         <div className="ViewGame__sidebarContainer">
           <Sidebar
             daemon={ null }
-            errors={ errors }
             game={ game }
             snakes={ snakes }
             turnLimit={ game.turnLimit }
@@ -303,6 +267,8 @@ export default compose(
           boardColumns
           boardRows
 
+          creator { id }
+
           snakes(first: 12) {
             edges {
               node {
@@ -314,6 +280,11 @@ export default compose(
           }
 
           ${ Sidebar.getFragment("game") }
+        }
+      `,
+      viewer: () => Relay.QL`
+        fragment on User {
+          id
         }
       `
     }

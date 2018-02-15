@@ -145,6 +145,11 @@ class Board extends React.Component<BoardComponentOwnProps, {}> {
     const height = this.container.clientHeight
 
     const parent = this.container.parentElement
+
+    // if (parent && parent.clientHeight > this.container.clientHeight) {
+    //   this.container.style.height = `${ parent.clientHeight }`
+    // }
+
     const parentHeight = parent ? parent.clientHeight : Infinity
 
     forEach(this.layers, layer => {
@@ -185,7 +190,6 @@ class Board extends React.Component<BoardComponentOwnProps, {}> {
 
   renderBoardDom () {
     const { boardColumns, boardRows, onClickCell } = this.props
-    console.log(this.props)
 
     const rows = []
     const coloredCells = this.getColoredCells()

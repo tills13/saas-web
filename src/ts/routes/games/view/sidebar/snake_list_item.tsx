@@ -6,11 +6,10 @@ import * as React from "react"
 import { Range } from "immutable"
 
 interface SnakeListItemProps {
-  error?: string
   snake: GameAPI.Snake
 }
 
-const SnakeListItem = ({ error, snake }: SnakeListItemProps) => {
+const SnakeListItem = ({ snake }: SnakeListItemProps) => {
   const mClassName = classnames("SnakeListItem", {
     "--dead": snake.health === 0
   })
@@ -31,19 +30,17 @@ const SnakeListItem = ({ error, snake }: SnakeListItemProps) => {
       </div>
       { snake.goldCount > 0 && (
         <div className="SnakeListItem__goldContainer">
-          {
-            Range(0, snake.goldCount).map((index) => {
-              return <span className="SnakeListItem__gold" key={ index } />
-            })
-          }
+          { Range(0, snake.goldCount).map((index) => {
+            return <span className="SnakeListItem__gold" key={ index } />
+          }) }
         </div>
       ) }
       <div className="SnakeListItem__taunt">
         { snake.taunt }
       </div>
-      { error && (
+      { snake.error && (
         <div className="SnakeListItem__error">
-          { error }
+          { snake.error }
         </div>
       ) }
     </div>

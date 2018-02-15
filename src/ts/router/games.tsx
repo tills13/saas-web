@@ -28,7 +28,7 @@ export default () => {
     >
       <IndexRoute component={ GameList } queries={ { application } } render={ renderLoading(GameList) } />
       <Route path="create" component={ CreateGame } queries={ { application } } render={ renderLoading(CreateGame) } />
-      <Route path=":nodeId" component={ ViewGame } queries={ { node } } render={ renderLoading(ViewGame) } />
+      <Route path=":nodeId" component={ ViewGame } queries={ { node, viewer } } render={ renderLoading(ViewGame) } />
       <Route path=":nodeId/edit" component={ EditGame } queries={ { application, node } } render={ renderLoading(EditGame) } />
     </Route>
   )

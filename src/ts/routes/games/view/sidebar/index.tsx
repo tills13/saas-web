@@ -18,7 +18,6 @@ interface ViewGameSidebarInnerProps extends ViewGameSidebarOuterProps {
 interface ViewGameSidebarOuterProps {
   className?: string
   daemon: GameAPI.Daemon
-  errors?: { [snakeId: string]: string }
   game: Models.Game
   snakes: GameAPI.Snake[]
   turnLimit: number
@@ -28,13 +27,12 @@ interface ViewGameSidebarOuterProps {
 
 class ViewGameSidebar extends React.Component<ViewGameSidebarInnerProps, any> {
   renderSnakes () {
-    const { errors, snakes } = this.props
+    const { snakes } = this.props
 
     return (
       <div className="ViewGameSidebar__snakes">
         { snakes.sort((a, b) => a.score - b.score).map((snake) => {
-          const error = errors ? errors[snake.id] : null
-          return <SnakeListItem key={ snake.id } error={ error } snake={ snake } />
+          return <SnakeListItem key={ snake.id } snake={ snake } />
         }) }
       </div>
     )

@@ -8,6 +8,10 @@
   padding-right: 20px;
 
   height: 100%;
+
+  .FieldGroup {
+    margin-bottom: 20px;
+  }
 }
 
 .ViewGame__sidebarContainer {
@@ -18,5 +22,15 @@
 @media only screen and (max-width: $screen-size-md) {
   .ViewGame {
     flex-direction: column;
+
+    .ViewGame__boardContainer {
+      flex: 1;
+      padding-right: 0px;
+    }
+
+    .ViewGame__sidebarContainer {
+      flex: 1;
+      width: unset;
+    }
   }
 }
