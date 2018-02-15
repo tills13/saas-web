@@ -9,7 +9,7 @@ import Header from "components/header"
 import createRelayContainer from "components/create_relay_container"
 
 interface EditDaemonProps extends React.Props<any> {
-  node: Models.DaemonInterface
+  node: Models.Daemon
 }
 
 const EditDaemon = ({ node: daemon }: EditDaemonProps) => {

@@ -17,8 +17,8 @@ import { paginate, PaginationProps } from "components/pagination/paginate"
 interface SnakeListInnerProps extends PaginationProps, SnakeListOuterProps {
   relay: Relay.RelayProp
   router: any
-  selectedSnake: Models.SnakeInterface
-  setSelectedSnake: SetStateCallback<Models.SnakeInterface>
+  selectedSnake: Models.Snake
+  setSelectedSnake: SetStateCallback<Models.Snake>
 }
 
 interface SnakeListOuterProps {

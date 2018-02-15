@@ -11,7 +11,7 @@ import createRelayContainer from "components/create_relay_container"
 
 interface EditSnakeInnerProps extends EditSnakeOuterProps { }
 interface EditSnakeOuterProps extends React.Props<any> {
-  node: GraphQL.Schema.Node<Models.SnakeInterface>
+  node: GraphQL.Schema.Node<Models.Snake>
 }
 
 const EditSnake = ({ node: snake }: EditSnakeInnerProps) => {

@@ -38,7 +38,7 @@ import { withMutation } from "utils/enhancers"
 
 interface CreateOrEditGameFormInnerProps extends CreateOrEditGameFormOuterProps, InjectedFormProps {
   formValues: {
-    boardConfig: Models.BoardInterface
+    boardConfig: Models.Board
     boardHasGold: boolean
     boardHasTeleporters: boolean
     boardHasWalls: boolean
@@ -53,7 +53,7 @@ interface CreateOrEditGameFormInnerProps extends CreateOrEditGameFormOuterProps,
 
 interface CreateOrEditGameFormOuterProps {
   application: GraphQL.Schema.Application
-  game?: GraphQL.Schema.Node<Models.GameInterface>
+  game?: GraphQL.Schema.Node<Models.Game>
 }
 
 class CreateOrEditGameForm extends React.Component<CreateOrEditGameFormInnerProps, any> {
@@ -292,7 +292,7 @@ class CreateOrEditGameForm extends React.Component<CreateOrEditGameFormInnerProp
 
         { this.renderDimensionsFields() }
 
-        <FieldGroup label="Board Configuration" labelFor="boardConfiguration">
+        { false && <FieldGroup label="Board Configuration" labelFor="boardConfiguration">
           <Field
             name="boardConfiguration"
             component={ Select }
@@ -307,7 +307,7 @@ class CreateOrEditGameForm extends React.Component<CreateOrEditGameFormInnerProp
           >
             Show Board Configuration
           </Button>
-        </FieldGroup>
+        </FieldGroup> }
 
 
         <h5 className="CreateOrEditGameForm__sectionTitle">Food</h5>
@@ -321,7 +321,7 @@ class CreateOrEditGameForm extends React.Component<CreateOrEditGameFormInnerProp
 
         <Field name="boardHasWalls" label="Place Walls" component={ Checkbox } />
 
-        <FieldGroup>
+        { false && <FieldGroup>
           <Field
             name="daemon"
             label="Daemon"
@@ -337,7 +337,7 @@ class CreateOrEditGameForm extends React.Component<CreateOrEditGameFormInnerProp
             options={ enumToSelect(VisibilityEnum) }
             clearable={ false }
           />
-        </FieldGroup>
+        </FieldGroup> }
 
         <h5 className="CreateOrEditGameForm__sectionTitle">Teleporters</h5>
         { this.renderTeleporterFields() }

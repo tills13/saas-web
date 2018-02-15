@@ -27,10 +27,6 @@ class IndexComponent extends React.Component<IndexComponentProps, IndexComponent
     snakes: List()
   }
 
-  tickSnakes = () => {
-    // const { snakes } = this.state
-  }
-
   componentDidMount () {
     const snakes = "saas".split("").map((letter, index) => {
       return {

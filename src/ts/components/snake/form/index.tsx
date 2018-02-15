@@ -33,7 +33,7 @@ interface CreateEditSnakeFormInnerProps extends CreateEditSnakeFormOuterProps, I
 }
 
 interface CreateEditSnakeFormOuterProps {
-  snake: Models.SnakeInterface
+  snake: Models.Snake
 }
 
 export class CreateEditSnakeForm extends React.Component<CreateEditSnakeFormInnerProps, any> {

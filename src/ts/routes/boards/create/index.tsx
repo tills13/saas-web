@@ -33,11 +33,11 @@ interface BoardConfigurationEditorComponentState {
 }
 
 interface BoardConfigurationEditorComponentOwnProps {
-  boardConfiguration?: Models.BoardInterface
+  boardConfiguration?: Models.Board
 }
 
 interface BoardConfigurationEditorComponentDispatchProps {
-  getUserSnakes: (currentUser: Models.UserInterface) => Promise<void>
+  getUserSnakes: (currentUser: Models.User) => Promise<void>
   createBoard: (data: Object) => Promise<void>
   updateBoard: (board: any, data: Object) => Promise<void>
 }
@@ -151,7 +151,7 @@ export class BoardConfigurationEditorComponent extends React.Component<any, any>
     })
   }
 
-  checkBoard() {
+  checkBoard () {
     const { boardColumns, boardRows, name } = this.props
 
     const errors = {}
@@ -180,7 +180,7 @@ export class BoardConfigurationEditorComponent extends React.Component<any, any>
     this.setState({ errors })
   }
 
-  getBoardJSON() {
+  getBoardJSON () {
     const { boardColumns, boardRows, name } = this.props
 
     return {
@@ -225,7 +225,7 @@ export class BoardConfigurationEditorComponent extends React.Component<any, any>
     })
   }
 
-  renderErrors() {
+  renderErrors () {
     const { errors } = this.state
 
     if (!errors || Object.keys(errors).length === 0) {
@@ -254,7 +254,7 @@ export class BoardConfigurationEditorComponent extends React.Component<any, any>
     )
   }
 
-  renderGeneralOptions() {
+  renderGeneralOptions () {
     const { selectedColor, setSelectedColor } = this.props
 
     return (
@@ -268,7 +268,7 @@ export class BoardConfigurationEditorComponent extends React.Component<any, any>
     )
   }
 
-  renderSnakeOptions() {
+  renderSnakeOptions () {
     const { selectedOption } = this.state
 
     if (selectedOption !== "snakes") return null
@@ -326,7 +326,7 @@ export class BoardConfigurationEditorComponent extends React.Component<any, any>
     )
   }
 
-  renderTeleporterOptions() {
+  renderTeleporterOptions () {
     const { selectedOption } = this.state
 
     if (selectedOption !== "teleporters") return null
@@ -346,7 +346,7 @@ export class BoardConfigurationEditorComponent extends React.Component<any, any>
     )
   }
 
-  render() {
+  render () {
     const { application } = this.props
 
     return (

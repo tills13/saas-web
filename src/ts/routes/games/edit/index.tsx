@@ -11,7 +11,7 @@ import createRelayContainer from "components/create_relay_container"
 interface EditGameInnerProps extends EditGameOuterProps { }
 interface EditGameOuterProps extends React.Props<any> {
   application: GraphQL.Schema.Application
-  node: GraphQL.Schema.Node<Models.GameInterface>
+  node: GraphQL.Schema.Node<Models.Game>
 }
 
 const EditGame = ({ application, node: game }: EditGameInnerProps) => {

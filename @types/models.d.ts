@@ -11,23 +11,23 @@ declare namespace Models {
 
   export type VisibilityType = "PUBLIC" | "PRIVATE"
 
-  export interface BoardInterface {
+  export interface Board {
     id: string
     configuration: Configuration
     createdAt: number
-    creator: UserInterface
+    creator: User
     deletedAt: number
     name: string
     updatedAt: number
     visibility: VisibilityType
   }
 
-  export interface DaemonInterface {
+  export interface Daemon {
     id: string
     averageResponseTime: number
     description: string
     createdAt: number
-    owner: UserInterface
+    owner: User
     deletedAt: number
     name: string
     updatedAt: number
@@ -35,7 +35,7 @@ declare namespace Models {
     visibility: VisibilityType
   }
 
-  export interface FileInterface {
+  export interface File {
     id: string
     bucket: string
     key: string
@@ -44,11 +44,11 @@ declare namespace Models {
     published: boolean
   }
 
-  export interface GameInterface {
+  export interface Game {
     id: GraphQL.Schema.GraphQLID
     realId: string
     boardColumns: number
-    boardConfiguration: BoardInterface
+    boardConfiguration: Board
     boardConfigurationId: string
     boardFoodCount: number
     boardFoodStrategy: number
@@ -62,19 +62,19 @@ declare namespace Models {
     boardRows: number
     boardTeleporterCount: number
     createdAt: number
-    creator: UserInterface
+    creator: User
     completedAt: number
-    daemon: DaemonInterface
+    daemon: Daemon
     devMode: boolean
     deletedAt: number
     responseTime: number
-    snakes: GraphQL.Schema.GraphConnection<SnakeInterface>
+    snakes: GraphQL.Schema.GraphConnection<Snake>
     status: string
     startedAt: number
     tickRate: number
     turnLimit: number
     updatedAt: number
-    winner: SnakeInterface
+    winner: Snake
     viewerCount: number
     visibility: VisibilityType
 
@@ -84,7 +84,7 @@ declare namespace Models {
 
   export type MedalTierType = "BRONZE" | "SILVER" | "GOLD" | "PLATINUM" | "ONYX"
 
-  export interface MedalInterface {
+  export interface Medal {
     id: string
     name: string
     description: string
@@ -92,32 +92,32 @@ declare namespace Models {
     value: number
   }
 
-  export interface SnakeInterface {
+  export interface Snake {
     id: string
     bountyDescription: string
     createdAt: number
     defaultColor: string
     deletedAt: number
-    games: GraphQL.Schema.GraphConnection<GameInterface>
-    head: FileInterface
+    games: GraphQL.Schema.GraphConnection<Game>
+    head: File
     isBountySnake: boolean
     lastCheckedAt: number
     lastSuccessfullyCheckedAt: number
     apiVersion: "VERSION_2017" | "VERSION_2018"
     name: string
-    owner: UserInterface
+    owner: User
     updatedAt: number
     url: string
   }
 
-  export interface UserInterface {
+  export interface User {
     id: string
     username: string
     password: string
     createdAt: string
     deletedAt: string
-    games: GameInterface[]
-    snakes: SnakeInterface[]
-    medals: MedalInterface[]
+    games: Game[]
+    snakes: Snake[]
+    medals: Medal[]
   }
 }

@@ -11,20 +11,20 @@ declare namespace GraphQL.Schema {
 
   export interface Application {
     id: GraphQLID
-    boards?: GraphQLPaginatedList<Models.BoardInterface>
-    daemons?: GraphQLPaginatedList<Models.DaemonInterface>
-    games?: GraphQLPaginatedList<Models.GameInterface>
-    snakes?: GraphQLPaginatedList<Models.SnakeInterface>
+    boards?: GraphQLPaginatedList<Models.Board>
+    daemons?: GraphQLPaginatedList<Models.Daemon>
+    games?: GraphQLPaginatedList<Models.Game>
+    snakes?: GraphQLPaginatedList<Models.Snake>
   }
 
   export interface Viewer {
     id: GraphQLID
     username: string
 
-    daemons?: GraphConnection<Models.DaemonInterface>
-    games?: GraphConnection<Models.GameInterface>
-    medals?: GraphConnection<Models.MedalInterface>
-    snakes?: GraphConnection<Models.SnakeInterface>
+    daemons?: GraphConnection<Models.Daemon>
+    games?: GraphConnection<Models.Game>
+    medals?: GraphConnection<Models.Medal>
+    snakes?: GraphConnection<Models.Snake>
   }
 
   export type Node<T> = T

@@ -1,32 +1,31 @@
 import "./index.scss"
 
 import * as classnames from "classnames"
+import { List } from "immutable"
+import { chunk } from "lodash"
 import * as React from "react"
+import { connect } from "react-redux"
 import * as Relay from "react-relay/classic"
+import { Link, RouteComponentProps } from "react-router"
+import { compose, mapProps, SetStateCallback, withState } from "recompose"
 import * as io from "socket.io-client"
 
-import { PropTypes } from "prop-types"
-import { showModal } from "actions"
-import { List, Range } from "immutable"
-import { connect } from "react-redux"
-import { Link, RouteComponentProps } from "react-router"
-import { compose, getContext, mapProps, SetStateCallback, withState } from "recompose"
-
 import { RedirectModal, RedirectModalComponentOwnProps } from "components/modal/redirect_modal"
-// import { ApplicationState } from "../../store"
 
 import Board from "components/board"
 import LinkButton from "components/button/link_button"
 import Container from "components/container"
 import Button from "components/form/button"
 import Icon from "components/icon"
+import Avatar from "components/snake/avatar"
 import Sidebar from "./sidebar"
 
+import { showModal } from "actions"
 import createRelayContainer from "components/create_relay_container"
 
 interface ViewGameComponentInnerProps extends ViewGameComponentOuterProps {
   debug: boolean
-  game: Models.GameInterface
+  game: Models.Game
   setDebug: SetStateCallback<boolean>
   setSnakes: SetStateCallback<GameAPI.Snake>
   setTurnNumber: SetStateCallback<number>
@@ -39,12 +38,13 @@ interface ViewGameComponentInnerProps extends ViewGameComponentOuterProps {
 }
 
 interface ViewGameComponentOuterProps extends React.Props<any>, RouteComponentProps<any, any> {
+  node: Models.Game
   params: any
 }
 
 class ViewGame extends React.Component<ViewGameComponentInnerProps, any> {
   socket: SocketIOClient.Socket
-  $boardContainer: JQuery
+
   state: any = {
     board: {
       food: List(),
@@ -62,7 +62,11 @@ class ViewGame extends React.Component<ViewGameComponentInnerProps, any> {
 
   componentDidMount () {
     document.addEventListener("keypress", this.handleKeyPress)
-    this.connect()
+    this.setState({ loading: true }, () => {
+      this.connect().then(() => {
+        // this.setState({ loading: false })
+      })
+    })
   }
 
   componentDidUpdate (prevProps, prevState) {
@@ -70,14 +74,11 @@ class ViewGame extends React.Component<ViewGameComponentInnerProps, any> {
     const { params: { gameId: currGameId } } = this.props
 
     if (currGameId !== prevGameId) {
-      this.connect()
-      /*this.setState({ loading: true }, () => {
-        this.connect()
-        this.props.getGame(currGameId).then(() => {
-          this.setState({ loading: false })
-
+      this.setState({ loading: true }, () => {
+        this.connect().then(() => {
+          // this.setState({ loading: false })
         })
-      })*/
+      })
     }
   }
 
@@ -97,14 +98,18 @@ class ViewGame extends React.Component<ViewGameComponentInnerProps, any> {
     const { game } = this.props
 
     this.socket = io.connect(`${ location.origin }`)
-    this.socket.on("connect", () => {
-      this.socket.emit("watch", game.realId)
-    })
 
     this.socket.on("redirect", this.handleRedirect)
     this.socket.on("message", this.handleSocketIO)
     this.socket.on("update", this.handleUpdate)
     this.socket.on("viewer_count", this.handleViewerCountUpdate)
+
+    return new Promise((resolve) => {
+      this.socket.on("connect", () => {
+        this.socket.emit("watch", game.realId)
+        resolve()
+      })
+    })
   }
 
   disconnect () {
@@ -124,7 +129,7 @@ class ViewGame extends React.Component<ViewGameComponentInnerProps, any> {
   handleRedirect = (redirect) => {
     const { game, showModal } = this.props
 
-    showModal<RedirectModalComponentOwnProps>(RedirectModal, {
+    showModal(RedirectModal, {
       childGame: redirect,
       game
     })
@@ -174,9 +179,28 @@ class ViewGame extends React.Component<ViewGameComponentInnerProps, any> {
     const { game, snakes } = this.props
     const { board, turnNumber } = this.state
 
-    const toggleBoardOverlay = () => this.setState((prevState) => {
-      return { showBoardOverlay: !prevState.showBoardOverlay }
-    })
+
+    if (this.state.loading) {
+      const mSnakes = game.snakes.edges.map(({ node }) => node)
+      const chunks = chunk(mSnakes, 3)
+
+      return (
+        <div className="ViewGame__loading">
+          <h2>Loading Game</h2>
+          <div className="">
+            { chunks.map(chunkSnakes => {
+              return chunkSnakes.map((snake) => {
+                return (
+                  <div>
+                    <Avatar snake={ snake } /> { snake.name } -- { snake.owner.username }
+                  </div>
+                )
+              })
+            }) }
+          </div>
+        </div>
+      )
+    }
 
     return (
       <Board
@@ -184,35 +208,11 @@ class ViewGame extends React.Component<ViewGameComponentInnerProps, any> {
         boardRows={ board.height || game.boardRows }
         food={ board.food }
         gold={ board.gold }
-        onClickCloseOverlay={ toggleBoardOverlay }
-        overlayContents={ this.renderBoardOverlay() }
         teleporters={ board.teleporters }
         turnNumber={ turnNumber }
         snakes={ snakes }
         walls={ board.walls }
       />
-    )
-  }
-
-  renderBoardOverlay () {
-    const { debug, game, setDebug, viewer } = this.props
-    const { gameState, showBoardOverlay } = this.state
-
-    if (!showBoardOverlay) return null
-
-    const toggleDebug = () => setDebug(!debug)
-
-    return (
-      <div className="overlay-contents text-center">
-        <h1>{ game.id }</h1>
-        <div>
-          <Button onClick={ toggleDebug }>{ debug ? "Hide" : "Show" } Debug</Button>
-          { viewer.id === game.creator.id && (
-            <LinkButton to={ `/games/${ game.id }/edit` }>Edit Game</LinkButton>
-          ) }
-          <LinkButton to="/games/">Edit Game</LinkButton>
-        </div>
-      </div>
     )
   }
 
@@ -267,42 +267,10 @@ class ViewGame extends React.Component<ViewGameComponentInnerProps, any> {
     )*/
   }
 
-  renderSnakeList () {
-    const { board: { snakes } } = this.state
-
-    return (
-      <div className="snakes">
-        { snakes.sortBy((snake) => snake.score).map((snake, index) => {
-          const style = {
-            width: `${ snake.health || 100 }%`,
-            background: snake.color || snake.defaultColor
-          }
-
-          return (
-            <div className="snake" key={ snake.id }>
-              <div className="info">
-                <img src={ snake.head.url } />
-                <div className="health-container">
-                  <div className="health-bar" style={ style } />
-                  { snake.name } ({ snake.health || 100 })
-                </div>
-              </div>
-              <div className="taunt">
-                { snake.taunt || "test" }
-              </div>
-              { snake.goldCount !== 0 && (
-                <div>{ Range(0, snake.goldCount || 0).map(() => <span className="gold" />) }</div>
-              ) }
-            </div>
-          )
-        }) }
-      </div>
-    )
-  }
-
   render () {
     const mClassName = classnames("ViewGame")
     const { game, snakes, turnNumber, viewerCount } = this.props
+    const { errors } = this.state
 
     return (
       <div className={ mClassName }>
@@ -312,6 +280,7 @@ class ViewGame extends React.Component<ViewGameComponentInnerProps, any> {
         <div className="ViewGame__sidebarContainer">
           <Sidebar
             daemon={ null }
+            errors={ errors }
             game={ game }
             snakes={ snakes }
             turnLimit={ game.turnLimit }
@@ -334,6 +303,16 @@ export default compose(
           boardColumns
           boardRows
 
+          snakes(first: 12) {
+            edges {
+              node {
+                name
+                owner { username }
+                ${ Avatar.getFragment("snake") }
+              }
+            }
+          }
+
           ${ Sidebar.getFragment("game") }
         }
       `
@@ -341,7 +320,6 @@ export default compose(
   }),
   mapProps(({ node, ...rest }) => ({ game: node, ...rest })),
   connect(null, { showModal }),
-  getContext({ router: PropTypes.object }),
   withState("debug", "setDebug", false),
   withState("snakes", "setSnakes", []),
   withState("turnNumber", "setTurnNumber", 0),

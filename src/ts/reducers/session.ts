@@ -7,11 +7,11 @@ import {
 } from "../actions/session"
 
 export interface SessionState {
-  currentUser?: Models.UserInterface
+  currentUser?: Models.User
 }
 
 interface SessionAction {
-  user: Models.UserInterface
+  user: Models.User
 }
 
 const initialState: any = Map({

@@ -9,7 +9,7 @@ import { compose } from "recompose"
 import createRelayContainer from "components/create_relay_container"
 
 interface GameStatusBadgeProps {
-  game: Models.GameInterface
+  game: Models.Game
 }
 
 const GameStatusBadge = ({ game }: GameStatusBadgeProps) => {

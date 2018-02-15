@@ -2,6 +2,7 @@ import "./index.scss"
 
 import * as classnames from "classnames"
 import * as React from "react"
+import * as withClickOutside from "react-click-outside"
 import { SketchPicker } from "react-color"
 import { compose, defaultProps, mapProps, SetStateCallback, withState } from "recompose"
 
@@ -28,54 +29,59 @@ interface ColorPickerOuterProps {
   value?: any
 }
 
-const ColorPicker = ({
-  className,
-  id,
-  inputClassName,
-  label,
-  name,
-  onChange,
-  setShowColorPicker,
-  showColorPicker,
-  value,
-  ...rest
-}: ColorPickerInnerProps) => {
-  const mClassName = classnames("ColorPicker", className)
-  const mInputClassName = classnames("ColorPicker__input", inputClassName)
-  const swatchStyle = { background: value, backgroundColor: value }
+class ColorPicker extends React.Component<ColorPickerInnerProps> {
+  handleClickOutside = () => {
+    this.props.setShowColorPicker(false)
+  }
 
-  return (
-    <div className="ColorPicker__container">
-      { label && (
-        <label className="ColorPicker__label" htmlFor={ id || name }>
-          { label }
-        </label>
-      ) }
-      <div className={ mClassName }>
-        <TextInput
-          className={ mInputClassName }
-          id={ id }
-          name={ name }
-          value={ value }
-          onChange={ onChange }
-          { ...rest }
-        />
-        <div
-          className="ColorPicker__swatch"
-          style={ swatchStyle }
-          onClick={ () => setShowColorPicker(!showColorPicker) }
-        />
+  onChange = ({ hex: newValue }) => {
+    this.props.onChange(newValue)
+    this.props.setShowColorPicker(false)
+  }
+
+  render () {
+    const {
+      className, id, inputClassName, label, onChange,
+      showColorPicker, setShowColorPicker, value, ...rest
+    } = this.props
+
+    const mClassName = classnames("ColorPicker", className)
+    const mInputClassName = classnames("ColorPicker__input", inputClassName)
+    const swatchStyle = { background: value, backgroundColor: value }
+
+    return (
+      <div className="ColorPicker__container">
+        { label && (
+          <label className="ColorPicker__label" htmlFor={ id || name }>
+            { label }
+          </label>
+        ) }
+        <div className={ mClassName }>
+          <TextInput
+            className={ mInputClassName }
+            id={ id }
+            name={ name }
+            value={ value }
+            onChange={ onChange }
+            { ...rest }
+          />
+          <div
+            className="ColorPicker__swatch"
+            style={ swatchStyle }
+            onClick={ () => setShowColorPicker(!showColorPicker) }
+          />
+        </div>
+        { showColorPicker && (
+          <SketchPicker
+            className="ColorPicker__picker"
+            color={ value }
+            disableAlpha={ true }
+            onChangeComplete={ this.onChange }
+          />
+        ) }
       </div>
-      { showColorPicker && (
-        <SketchPicker
-          className="ColorPicker__picker"
-          color={ value }
-          disableAlpha={ true }
-          onChangeComplete={ ({ hex }) => onChange(hex) }
-        />
-      ) }
-    </div>
-  )
+    )
+  }
 }
 
 export default compose<ColorPickerInnerProps, ColorPickerOuterProps>(
@@ -88,5 +94,6 @@ export default compose<ColorPickerInnerProps, ColorPickerOuterProps>(
       ...rest
     }
   }),
-  withState("showColorPicker", "setShowColorPicker", false)
+  withState("showColorPicker", "setShowColorPicker", false),
+  withClickOutside
 )(ColorPicker)

@@ -20,7 +20,7 @@ interface BoardComponentOwnProps {
   boardColumns?: number
   boardRows?: number
   className?: string
-  configuration?: Models.BoardInterface
+  configuration?: Models.Board
 
   food?: GameAPI.Food[]
   gold?: GameAPI.Gold[]

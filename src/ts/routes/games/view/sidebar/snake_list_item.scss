@@ -2,10 +2,10 @@
   &:not(:last-child) {
     margin-bottom: 10px;
   }
-}
 
-.SnakeListItem__info {
-
+  &.--dead {
+    img { filter: "transparency(50%)" }
+  }
 }
 
 .SnakeListItem__healthContainer {
@@ -55,4 +55,9 @@ $gold-size: 20px;
   &:not(:last-child) {
     padding-right: 5px;
   }
+}
+
+.SnakeListItem__error {
+  color: $font-color-red;
+  font-family: monospace;
 }

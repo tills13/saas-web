@@ -16,7 +16,7 @@ import { renderNothing } from "recompose";
 
 interface SnakeDetailsProps {
   className?: string
-  snake: Models.SnakeInterface
+  snake: Models.Snake
 }
 
 const SnakeDetails = ({ className, snake }: SnakeDetailsProps) => {

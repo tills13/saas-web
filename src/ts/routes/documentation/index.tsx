@@ -23,7 +23,7 @@ import Section from "./section"
 interface DocumentationInnerProps {
   exampleUrl: string
   isLegacy: boolean
-  selectedSnake?: Models.SnakeInterface
+  selectedSnake?: Models.Snake
   setExampleUrl: SetStateCallback
   setIsLegacy: SetStateCallback
   setSelectedSnake: SetStateCallback

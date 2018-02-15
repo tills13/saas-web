@@ -8,7 +8,7 @@ import createRelayContainer from "components/create_relay_container"
 
 interface SnakeAvatarProps {
   small?: boolean
-  snake: Models.SnakeInterface
+  snake: Models.Snake
 }
 
 const SnakeAvatar = ({ small = false, snake }: SnakeAvatarProps) => {

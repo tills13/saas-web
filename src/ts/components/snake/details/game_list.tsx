@@ -11,7 +11,7 @@ import GameStatusBadge from "components/game/status_badge"
 import createRelayContainer from "components/create_relay_container"
 
 interface SnakeGameListProps {
-  snake: Models.SnakeInterface
+  snake: Models.Snake
 }
 
 const SnakeGameList = ({ snake }: SnakeGameListProps) => {

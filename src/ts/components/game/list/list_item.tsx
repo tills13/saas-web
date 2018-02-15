@@ -14,11 +14,11 @@ import createRelayContainer from "components/create_relay_container"
 
 interface GameListItemProps {
   className?: string
-  game: Models.GameInterface
+  game: Models.Game
 }
 
 class GameListItem extends React.Component<GameListItemProps> {
-  renderSnakes() {
+  renderSnakes () {
     const { game: { snakes: mSnakes } } = this.props
     const { count, edges: snakes } = mSnakes
 
@@ -32,7 +32,7 @@ class GameListItem extends React.Component<GameListItemProps> {
     )
   }
 
-  render() {
+  render () {
     const { className, game } = this.props
     const mClassName = classnames("GameListItem", className)
 

@@ -11,8 +11,8 @@ import Button from "components/form/button"
 import Icon from "components/icon"
 
 export interface RedirectModalComponentOwnProps {
-  game: Models.GameInterface
-  childGame: Models.GameInterface
+  game: Models.Game
+  childGame: Models.Game
 }
 
 type RedirectModalComponentProps =
@@ -61,7 +61,7 @@ export class RedirectModal extends React.Component<RedirectModalComponentProps, 
     )
   }
 
-  render() {
+  render () {
     const { game, childGame, ...rest } = this.props
 
     return (

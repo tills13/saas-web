@@ -27,7 +27,7 @@ interface CreateOrEditDaemonFormInnerProps extends CreateOrEditDaemonFormOuterPr
 }
 
 interface CreateOrEditDaemonFormOuterProps {
-  daemon?: Models.DaemonInterface
+  daemon?: Models.Daemon
 }
 
 
@@ -46,7 +46,7 @@ export class CreateOrEditDaemonForm extends React.Component<CreateOrEditDaemonFo
     })
   }
 
-  render() {
+  render () {
     const mClassName = classnames("CreateOrEditDaemonForm")
     const { error, handleSubmit, pristine, reset } = this.props
     const { daemon } = this.props

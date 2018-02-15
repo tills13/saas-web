@@ -34,14 +34,14 @@ interface FileUploadOuterProps extends React.Props<any> {
 }
 
 type TempFile = File & { tempId: string }
-type UploadFile = TempFile | Models.FileInterface
+type UploadFile = TempFile | Models.File
 
 class FileUpload extends React.Component<FileUploadInnerProps, {}> {
   container: HTMLElement
   input: HTMLInputElement
   dragTargets: any[] = []
 
-  onUploadComplete = (uploadedFile: Models.FileInterface) => {
+  onUploadComplete = (uploadedFile: Models.File) => {
     const { multiple, onChange, onUploadFile, value } = this.props
 
     const mValue = multiple
@@ -154,7 +154,7 @@ class FileUpload extends React.Component<FileUploadInnerProps, {}> {
         setFiles(files)
 
         const mValue = isArray(value)
-          ? value.filter(v => v.id === (mFile as TempFile).tempId || v.id === (mFile as Models.FileInterface).id)
+          ? value.filter(v => v.id === (mFile as TempFile).tempId || v.id === (mFile as Models.File).id)
           : null
 
         onChange(mValue)

@@ -1,7 +1,7 @@
 import * as Relay from "react-relay/classic"
 
 interface CreateSnakeMutationProps {
-  apiVersion: Models.SnakeInterface["apiVersion"]
+  apiVersion: Models.Snake["apiVersion"]
   bountyDescription: string
   defaultColor: string
   devUrl: string

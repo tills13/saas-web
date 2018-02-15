@@ -10,7 +10,7 @@ import ProgressBar from "components/progress_bar"
 
 import { uploadFile } from "utils/fetch"
 
-type UploadFile = File | Models.FileInterface
+type UploadFile = File | Models.File
 
 interface UploadInnerProps extends UploadOuterProps {
   error: boolean
@@ -77,8 +77,8 @@ class Upload extends React.Component<UploadInnerProps, {}> {
 
     console.log(file)
 
-    const filePreview = (file as Models.FileInterface).url
-      ? (file as Models.FileInterface).url
+    const filePreview = (file as Models.File).url
+      ? (file as Models.File).url
       : URL.createObjectURL(file)
 
     return <img className="Upload__preview" src={ filePreview } />

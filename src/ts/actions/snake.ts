@@ -10,7 +10,7 @@ export const SNAKE_CREATED = "SNAKE_CREATED"
 export const SNAKE_UPDATED = "SNAKE_UPDATED"
 export const TEST_SNAKE_ENDPOINT = "TEST_SNAKE_ENDPOINT"
 
-export function testSnakeEndpoint(snake: Models.SnakeInterface) {
+export function testSnakeEndpoint (snake: Models.Snake) {
   return (dispatch: Dispatch<any>): Promise<void> => {
     return http.get(`/snakes/${ snake.id }/test`)
   }

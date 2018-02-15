@@ -18,7 +18,8 @@ interface ViewGameSidebarInnerProps extends ViewGameSidebarOuterProps {
 interface ViewGameSidebarOuterProps {
   className?: string
   daemon: GameAPI.Daemon
-  game: Models.GameInterface
+  errors?: { [snakeId: string]: string }
+  game: Models.Game
   snakes: GameAPI.Snake[]
   turnLimit: number
   turnNumber: number
@@ -26,19 +27,20 @@ interface ViewGameSidebarOuterProps {
 }
 
 class ViewGameSidebar extends React.Component<ViewGameSidebarInnerProps, any> {
-  renderSnakes() {
-    const { snakes } = this.props
+  renderSnakes () {
+    const { errors, snakes } = this.props
 
     return (
       <div className="ViewGameSidebar__snakes">
         { snakes.sort((a, b) => a.score - b.score).map((snake) => {
-          return <SnakeListItem key={ snake.id } snake={ snake } />
+          const error = errors ? errors[snake.id] : null
+          return <SnakeListItem key={ snake.id } error={ error } snake={ snake } />
         }) }
       </div>
     )
   }
 
-  render() {
+  render () {
     const { className, daemon, game, turnLimit, turnNumber, viewerCount } = this.props
     const mClassName = classnames("ViewGameSidebar", className)
 

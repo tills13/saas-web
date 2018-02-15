@@ -65,13 +65,13 @@ interface BoardEditorInnerProps extends BoardEditorOuterProps {
 
 interface BoardEditorOuterProps {
   application: GraphQL.Schema.Application
-  board?: Models.BoardInterface
+  board?: Models.Board
 }
 
 class BoardEditor extends React.Component<BoardEditorInnerProps> {
   containerRef: HTMLDivElement
 
-  componentDidMount() {
+  componentDidMount () {
     const container = this.containerRef.parentElement
     console.log(this.containerRef)
     console.log(this.containerRef.parentElement)
@@ -135,7 +135,7 @@ class BoardEditor extends React.Component<BoardEditorInnerProps> {
     setConfiguration(configuration)
   }
 
-  renderSidebar() {
+  renderSidebar () {
     const {
       application,
       extraOptions,
@@ -162,7 +162,7 @@ class BoardEditor extends React.Component<BoardEditorInnerProps> {
     )
   }
 
-  render() {
+  render () {
     const { configuration } = this.props
 
     return (

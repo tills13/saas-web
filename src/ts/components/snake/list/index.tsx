@@ -14,13 +14,13 @@ interface SnakeListInnerProps extends SnakeListOuterProps {
 
 interface SnakeListOuterProps {
   className?: string
-  onClickSnake?: (snake: Models.SnakeInterface) => void
-  selectedSnake: Models.SnakeInterface
-  snakes: Models.SnakeInterface[]
+  onClickSnake?: (snake: Models.Snake) => void
+  selectedSnake: Models.Snake
+  snakes: Models.Snake[]
 }
 
 export class SnakeList extends React.Component<SnakeListInnerProps> {
-  renderSnake = (snake: Models.SnakeInterface, index?: number) => {
+  renderSnake = (snake: Models.Snake, index?: number) => {
     const { onClickSnake, selectedSnake } = this.props
     const mClassName = classnames("SnakeList__item", {
       "SnakeList__item--selected": selectedSnake && snake.id === selectedSnake.id
@@ -41,12 +41,12 @@ export class SnakeList extends React.Component<SnakeListInnerProps> {
     )
   }
 
-  renderSnakes() {
+  renderSnakes () {
     const { snakes } = this.props
     return snakes.map(this.renderSnake)
   }
 
-  render() {
+  render () {
     const { className } = this.props
     const mClassName = classnames("SnakeList", className)
 
