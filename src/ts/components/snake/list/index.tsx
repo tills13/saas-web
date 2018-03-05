@@ -1,5 +1,4 @@
 import * as classnames from "classnames"
-import * as moment from "moment"
 import * as React from "react"
 import * as Relay from "react-relay/classic"
 import { compose } from "recompose"

@@ -21,6 +21,8 @@ interface PaginationProps {
 }
 
 class Pagination extends React.Component<PaginationProps, any> {
+  static defaultProps = { after: 0, itemsPerPage: 10 }
+
   onClickNextPage = (event: React.MouseEvent<HTMLElement>) => {
     const { onClickNextPage } = this.props
     onClickNextPage()
@@ -31,7 +33,7 @@ class Pagination extends React.Component<PaginationProps, any> {
     onClickPreviousPage()
   }
 
-  renderPageLimitSelect() {
+  renderPageLimitSelect () {
     const { adjustableItemsPerPage, itemsPerPage, itemsPerPageOptions, onChangeItemsPerPage } = this.props
 
     if (!adjustableItemsPerPage) {
@@ -50,7 +52,7 @@ class Pagination extends React.Component<PaginationProps, any> {
     }
   }
 
-  render() {
+  render () {
     const { after, className, itemsPerPage, totalItems } = this.props
     const mClassName = classnames("Pagination", className)
     const mAfter = (after || 0) + 1
@@ -81,9 +83,4 @@ class Pagination extends React.Component<PaginationProps, any> {
   }
 }
 
-export default compose<PaginationProps, PaginationProps>(
-  defaultProps({
-    after: 0,
-    itemsPerPage: 10
-  })
-)(Pagination)
+export default Pagination

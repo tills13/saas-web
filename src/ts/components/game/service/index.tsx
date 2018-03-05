@@ -1,17 +1,31 @@
 import * as React from "react"
+import { connect } from "react-redux"
 import * as io from "socket.io-client"
+
+import { RedirectModal } from "components/modal/redirect_modal"
+
+import { showModal } from "actions"
 
 interface WrapperProps {
   game: Models.Game
   params: { gameId: GraphQL.Schema.GraphQLID }
+  showModal: typeof showModal
 }
 
-export const gameService = (Component: React.ComponentType<any>) => {
-  return () => {
-    return class extends React.Component<WrapperProps> {
+export interface GameServiceInjectedProps {
+  connecting: boolean
+  viewers: number
+}
+
+export const gameService = () => {
+  return (Component: React.ComponentType<any>) => {
+    class GameServiceWrapper extends React.Component<WrapperProps> {
       socket: SocketIOClient.Socket
       state = {
+        gameState: {},
         connecting: true,
+        turnNumber: 0,
+        turnLimit: 0,
         viewers: 0
       }
 
@@ -24,7 +38,8 @@ export const gameService = (Component: React.ComponentType<any>) => {
         const { params: { gameId: currGameId } } = this.props
 
         if (currGameId !== prevGameId) {
-
+          this.setState({ connection: true })
+          this.connect()
         }
       }
 
@@ -44,15 +59,24 @@ export const gameService = (Component: React.ComponentType<any>) => {
         const { game } = this.props
 
         this.socket = io.connect(`${ location.origin }`)
-        this.socket.on("connect", () => {
-          this.setState({ connecting: false })
-          this.socket.emit("watch", game.realId)
+
+        // this.socket.on("message", this.handleMessage)
+        this.socket.on("redirect", this.handleRedirect)
+        this.socket.on("update", this.handleUpdate)
+        this.socket.on("viewer_count", (viewers) => this.setState({ viewers }))
+
+        return new Promise((resolve, reject) => {
+          this.socket.on("connect", () => {
+            this.setState({ connecting: false })
+            this.socket.emit("watch", game.realId)
+
+            resolve()
+          })
         })
 
         // this.socket.on("redirect", this.handleRedirect)
         // this.socket.on("message", this.handleSocketIO)
         // this.socket.on("update", this.handleUpdate)
-        this.socket.on("viewer_count", (viewers) => this.setState({ viewers }))
       }
 
       disconnect () {
@@ -69,6 +93,21 @@ export const gameService = (Component: React.ComponentType<any>) => {
         })
       }
 
+      handleRedirect = (redirect) => {
+        const { game, showModal } = this.props
+
+        showModal(RedirectModal, {
+          childGame: redirect,
+          game
+        })
+      }
+
+      handleUpdate = (update) => {
+        const { turn } = update
+
+        this.setState({ gameState: update })
+      }
+
       render () {
         const { game } = this.props
 
@@ -80,6 +119,8 @@ export const gameService = (Component: React.ComponentType<any>) => {
         )
       }
     }
+
+    return connect(null, { showModal })(GameServiceWrapper)
   }
 }
 

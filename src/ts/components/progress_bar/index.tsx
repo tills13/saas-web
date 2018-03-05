@@ -17,9 +17,7 @@ const ProgressBar = ({ className, containerClassName, progress, small, total }: 
   })
 
   const mClassName = classnames("ProgressBar", className)
-  const mProgress = total != null
-    ? (progress / total) * 100
-    : progress
+  const mProgress = total != null ? (progress / total) * 100 : progress
 
   return (
     <div className={ mContainerClassName }>

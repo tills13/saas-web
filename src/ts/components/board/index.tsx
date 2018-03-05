@@ -3,7 +3,7 @@ import "./index.scss"
 import * as classNames from "classnames"
 import * as React from "react"
 
-import { partial, forEach } from "lodash"
+import { forEach, partial } from "lodash"
 import { compose, mapProps } from "recompose"
 
 import Icon from "components/icon"
@@ -143,17 +143,16 @@ class Board extends React.Component<BoardComponentOwnProps, {}> {
   onResize = () => {
     const width = this.container.clientWidth
     const height = this.container.clientHeight
-
     const parent = this.container.parentElement
-
-    // if (parent && parent.clientHeight > this.container.clientHeight) {
-    //   this.container.style.height = `${ parent.clientHeight }`
-    // }
 
     const parentHeight = parent ? parent.clientHeight : Infinity
 
+    if (this.container.clientHeight === 0) {
+      this.container.style.height = `${ Math.max(parentHeight, document.body.clientHeight) }`
+    }
+
     forEach(this.layers, layer => {
-      layer.height = parentHeight
+      layer.height = Math.max(parentHeight, document.body.clientHeight)
       layer.width = width
     })
 
@@ -233,7 +232,7 @@ class Board extends React.Component<BoardComponentOwnProps, {}> {
     return (
       <div
         className={ boardClassName }
-        ref={ elem => this.container = elem }
+        ref={ container => this.container = container }
       >
         { this.renderBoard() }
       </div>

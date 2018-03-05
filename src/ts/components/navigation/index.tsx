@@ -45,7 +45,7 @@ interface NavigationOuterProps extends React.Props<any> {
 }
 
 class Navigation extends React.Component<NavigationInnerProps, {}> {
-  renderNavItem(className: string, to: string, content, onClick?: React.MouseEventHandler<HTMLElement>, icon?, key?) {
+  renderNavItem (className: string, to: string, content, onClick?: React.MouseEventHandler<HTMLElement>, icon?, key?) {
     const { onItemClick, setMobileMenuExpanded } = this.props
 
     const mOnItemClick = (event) => {
@@ -70,7 +70,7 @@ class Navigation extends React.Component<NavigationInnerProps, {}> {
     )
   }
 
-  renderLeftNav() {
+  renderLeftNav () {
     return (
       <div className="Navigation__left">
         { this.renderNavItem("NavItem__brand", "/", "SaaS") }
@@ -82,7 +82,7 @@ class Navigation extends React.Component<NavigationInnerProps, {}> {
     )
   }
 
-  renderRightNav() {
+  renderRightNav () {
     const { mobileMenuExpanded, relay, setMobileMenuExpanded, showModal, simple, viewer } = this.props
     const { onLogin: onLoginRegisterSuccess, onLogout } = this.props
 
@@ -92,7 +92,10 @@ class Navigation extends React.Component<NavigationInnerProps, {}> {
           this.renderNavItem(null, null, viewer.username, (event) => {
             showModal(FormModal, { form: LoginForm })
           }),
-          this.renderNavItem(null, null, "Logout", () => utils.logout().then(onLogout))
+          this.renderNavItem(null, null, "Logout", () => {
+            utils.logout()
+            onLogout()
+          })
         ]
       }
 
@@ -119,7 +122,7 @@ class Navigation extends React.Component<NavigationInnerProps, {}> {
     )
   }
 
-  render() {
+  render () {
     const { className, compact, mobileMenuExpanded } = this.props
     const mClassName = classnames("Navigation", className, {
       "Navigation--compact": compact,

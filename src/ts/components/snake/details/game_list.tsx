@@ -1,6 +1,6 @@
 import "./game_list.scss"
 
-import * as moment from "moment"
+import { DateTime } from "luxon"
 import * as React from "react"
 import * as Relay from "react-relay/classic"
 import { Link } from "react-router"
@@ -15,7 +15,6 @@ interface SnakeGameListProps {
 }
 
 const SnakeGameList = ({ snake }: SnakeGameListProps) => {
-  console.log(snake)
   return (
     <table className="SnakeGameList">
       <thead>
@@ -33,7 +32,7 @@ const SnakeGameList = ({ snake }: SnakeGameListProps) => {
               <td className="SnakeGameList__id"><Link to={ `/games/${ game.id }` }>{ game.id }</Link></td>
               <td><GameStatusBadge game={ game } /></td>
               <td>{ game.creator.username }</td>
-              <td>{ moment.unix(game.createdAt).format("DD/MM/YYYY") }</td>
+              <td>{ DateTime.fromMillis(game.createdAt).toFormat("DD/MM/YYYY") }</td>
             </tr>
           )
         }) }
