@@ -37,10 +37,9 @@ class Dashboard extends React.Component<DashboardComponentInnerProps, {}> {
     onLogout: PropTypes.func
   }
 
-  getChildContext() {
+  getChildContext () {
     const { relay } = this.props
 
-    // const onLogin = relay.forceFetch
     const onLogin = () => location.href = "/"
     return { onLogin, onLogout: onLogin }
   }
@@ -56,7 +55,7 @@ class Dashboard extends React.Component<DashboardComponentInnerProps, {}> {
     }
   }
 
-  render() {
+  render () {
     const { children, className, compactNav, simpleNavigation, viewer } = this.props
     const mClassName = classnames("Dashboard", className)
 

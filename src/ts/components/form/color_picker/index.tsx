@@ -14,8 +14,7 @@ interface ColorPickerInnerProps extends React.Props<any>, ColorPickerOuterProps 
 }
 
 export type ColorChangeHandler =
-  (newValue: string) => void |
-    React.ChangeEventHandler<any>
+  (newValue: string) => void | React.ChangeEventHandler<any>
 
 interface ColorPickerOuterProps {
   className?: string
@@ -36,7 +35,7 @@ class ColorPicker extends React.Component<ColorPickerInnerProps> {
 
   onChange = ({ hex: newValue }) => {
     this.props.onChange(newValue)
-    this.props.setShowColorPicker(false)
+    // this.props.setShowColorPicker(false)
   }
 
   render () {

@@ -1,9 +1,8 @@
 const SESSION_TOKEN_KEY = "SaaS:token"
 
 export const setSessionToken = (token: string) => {
-  return Promise.resolve().then(() => localStorage.setItem(SESSION_TOKEN_KEY, token)).then(() => {
-    return getSessionToken()
-  })
+  localStorage.setItem(SESSION_TOKEN_KEY, token)
+  return getSessionToken()
 }
 
 export const getSessionToken = () => {
@@ -15,7 +14,5 @@ export const isLoggedIn = () => {
 }
 
 export const logout = () => {
-  return Promise.resolve().then(() => localStorage.removeItem(SESSION_TOKEN_KEY)).then(() => {
-    return getSessionToken()
-  })
+  localStorage.removeItem(SESSION_TOKEN_KEY)
 }

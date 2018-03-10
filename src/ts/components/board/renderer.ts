@@ -73,6 +73,11 @@ export class BoardRenderer {
     context.translate(this.padding / 2, this.padding / 2)
   }
 
+  resizeCanvas (context: Context) {
+    const canvas = context.canvas
+
+  }
+
   drawGrid = (context: Context, force: boolean) => {
     if (!force && this.backgroundRendered) return
     if (force) this.clearLayer(context)
@@ -104,8 +109,6 @@ export class BoardRenderer {
   ) => {
     context.fillStyle = this.colorPalette[type] || DEFAULT_PALETTE[type] || "black"
 
-    console.log(thing, type, this.colorPalette[type] || DEFAULT_PALETTE[type] || "black")
-
     context.beginPath()
     context.arc(thing.x, thing.y, this.halfUnit, 0, 2 * Math.PI)
     context.fill()
@@ -122,6 +125,10 @@ export class BoardRenderer {
 
       context.globalAlpha = 100 - (turnsSinceDeath * 2) / 10
       if ((context as any).filter) (context as any).filter = `grayscale(${ 100 - turnsSinceDeath * 2 }%)`
+    }
+
+    if (coords.length === 0) {
+      return
     }
 
     context.translate(0.5, 0.5)
@@ -161,6 +168,7 @@ export class BoardRenderer {
     boardState: Partial<BoardState>,
     forceBackgroundRedraw: boolean = false
   ) {
+    console.log('rendering')
     const [fg, bg] = layers
 
     bg.canvas.style.zIndex = "0"

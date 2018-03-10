@@ -8,7 +8,9 @@ interface HeaderProps extends React.Props<any> {
 }
 
 export class Header extends React.Component<HeaderProps> {
-  render() {
+
+
+  render () {
     const { children, className } = this.props
     const mClassName = classnames("Header", className)
 

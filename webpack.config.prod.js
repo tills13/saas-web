@@ -17,7 +17,6 @@ module.exports = {
   externals: {
     "jquery": "$",
     "lodash": "_",
-    "moment": "moment",
     "react": "React",
     "react-dom": "ReactDOM"
   },
