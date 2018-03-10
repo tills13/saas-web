@@ -28,5 +28,6 @@
     "emmet.excludeLanguages": [
         "markdown",
         "typescript"
-    ]
+    ],
+    "python.linting.enabled": false
 }

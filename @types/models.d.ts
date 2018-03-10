@@ -67,6 +67,8 @@ declare namespace Models {
     daemon: Daemon
     devMode: boolean
     deletedAt: number
+    gameType: GameTypeEnum
+    pinTail: boolean
     responseTime: number
     snakes: GraphQL.Schema.GraphConnection<Snake>
     status: string
@@ -81,6 +83,8 @@ declare namespace Models {
     getFoodStrategy: () => string
     getGoldStrategy: () => string
   }
+
+  export type GameTypeEnum = "TYPE_CUSTOM" | "TYPE_PLACEMENT" | "TYPE_SCORE"
 
   export type MedalTierType = "BRONZE" | "SILVER" | "GOLD" | "PLATINUM" | "ONYX"
 
@@ -98,7 +102,7 @@ declare namespace Models {
     createdAt: number
     defaultColor: string
     deletedAt: number
-    games: GraphQL.Schema.GraphConnection<Game>
+    games: GraphQL.Schema.GraphConnection<Game, { place: number }>
     head: File
     isBountySnake: boolean
     lastCheckedAt: number
