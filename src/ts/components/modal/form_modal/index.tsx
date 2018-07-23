@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 
 import { compose, withState } from "recompose"
 import { BaseModal, BaseModalProps } from "../base"

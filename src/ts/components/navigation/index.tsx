@@ -1,11 +1,11 @@
 import "./index.scss"
 
 import { showModal } from "actions"
-import * as classnames from "classnames"
-import * as PropTypes from "prop-types"
-import * as React from "react"
+import classnames from "classnames"
+import PropTypes from "prop-types"
+import React from "react"
 import { connect } from "react-redux"
-import * as Relay from "react-relay/classic"
+import { createFragmentContainer } from "react-relay"
 import { CSSTransition, TransitionGroup } from "react-transition-group"
 import { compose, defaultProps, getContext, SetStateCallback, withState } from "recompose"
 
@@ -15,7 +15,6 @@ import LoginForm from "routes/landing/login/form"
 import NavItem from "./nav_item"
 
 import createContainer from "components/create_relay_container"
-import { setupRelay } from "utils"
 import * as utils from "utils/auth"
 
 const transitionClassNames = {
@@ -150,21 +149,16 @@ class Navigation extends React.Component<NavigationInnerProps, {}> {
   }
 }
 
-export default compose<NavigationInnerProps, NavigationOuterProps>(
-  createContainer({
-    fragments: {
-      viewer: () => Relay.QL`
-        fragment on User {
-          id
-          username
-        }
-      `
+export default createFragmentContainer(
+  compose(
+    defaultProps({ simple: false }),
+    withState("mobileMenuExpanded", "setMobileMenuExpanded", false),
+    connect(null, { showModal }),
+    getContext({ onLogin: PropTypes.func, onLogout: PropTypes.func })
+  )(Navigation),
+  graphql`
+    fragment navigation_viewer on User {
+      id, username
     }
-  }),
-  defaultProps({ simple: false }),
-  withState("mobileMenuExpanded", "setMobileMenuExpanded", false),
-  connect(null, { showModal }),
-  getContext({ onLogin: PropTypes.func, onLogout: PropTypes.func })
-)(Navigation)
-
-
+  `
+)

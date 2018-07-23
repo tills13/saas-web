@@ -1,6 +1,6 @@
 import "./index.scss"
 
-import * as React from "react"
+import React from "react"
 
 import { Link } from "react-router"
 import { BaseModal, BaseModalProps } from "../base"

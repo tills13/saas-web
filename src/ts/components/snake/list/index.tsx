@@ -1,6 +1,6 @@
-import * as classnames from "classnames"
-import * as React from "react"
-import * as Relay from "react-relay/classic"
+import classnames from "classnames"
+import React from "react"
+import Relay from "react-relay/classic"
 import { compose } from "recompose"
 
 import SnakeAvatar from "components/snake/avatar"

@@ -1,7 +1,7 @@
 import "./index.scss"
 
-import * as classnames from "classnames"
-import * as React from "react"
+import classnames from "classnames"
+import React from "react"
 
 interface AlertProps extends React.Props<any> {
   className?: string
@@ -15,7 +15,7 @@ class Alert extends React.Component<AlertProps, any> {
   static TYPE_DANGER = "danger"
   static TYPE_INFO = "info"
 
-  render() {
+  render () {
     const { children, className, inline, type } = this.props
     const mClassName = classnames("Alert", `Alert--${ type }`, className, {
       "Alert--inline": inline

@@ -1,6 +1,6 @@
 import "./manager.scss"
 
-import * as React from "react"
+import React from "react"
 
 import { Stack } from "immutable"
 import { extend } from "lodash"

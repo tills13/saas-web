@@ -1,11 +1,10 @@
 import "./link_button.scss"
 
-import * as classnames from "classnames"
-import * as React from "react"
+import classnames from "classnames"
+import { Link } from "found"
+import React from "react"
 
 import { ButtonProps, default as Button } from "components/form/button"
-
-import { Link } from "react-router"
 
 export interface LinkButtonProps extends ButtonProps {
   to: string

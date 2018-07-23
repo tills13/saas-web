@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from "react"
 
 export type ImageProps = {
   height: number
@@ -11,15 +11,12 @@ class Image extends React.Component<ImageProps> {
 
   state = { loading: true, errored: false }
 
-  componentDidMount() {
-    this.image.onload = () => { this.setState({ loading: false }) }
-
-    this.image.onerror = (err) => {
-      this.setState({ errored: true })
-    }
+  componentDidMount () {
+    this.image.onload = _ => this.setState({ loading: false })
+    this.image.onerror = _ => this.setState({ errored: true })
   }
 
-  render() {
+  render () {
     const { height, width } = this.props
     const { errored, loading } = this.state
 
@@ -27,8 +24,10 @@ class Image extends React.Component<ImageProps> {
       <div>
         { loading && <div className="Image --loading" style={ { height, width } } /> }
         { errored && <div className="Image --errored" style={ { height, width } } /> }
-        <img ref={ image => this.image = image } {...this.props} />
+        <img ref={ image => this.image = image } { ...this.props } />
       </div>
     )
   }
 }
+
+export default Image

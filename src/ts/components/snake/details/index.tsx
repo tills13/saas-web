@@ -1,8 +1,8 @@
 import "./index.scss"
 
-import * as classnames from "classnames"
-import * as React from "react"
-import * as Relay from "react-relay/classic"
+import classnames from "classnames"
+import React from "react"
+import Relay from "react-relay/classic"
 import { Link } from "react-router"
 import { branch, compose, renderComponent } from "recompose"
 
@@ -12,7 +12,6 @@ import Well from "components/well"
 import SnakeGamesList from "./game_list"
 
 import createRelayContainer from "components/create_relay_container"
-import { renderNothing } from "recompose";
 
 interface SnakeDetailsProps {
   className?: string

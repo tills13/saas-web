@@ -1,8 +1,8 @@
 import "./game_list.scss"
 
 import { DateTime } from "luxon"
-import * as React from "react"
-import * as Relay from "react-relay/classic"
+import React from "react"
+import Relay from "react-relay/classic"
 import { Link } from "react-router"
 import { compose } from "recompose"
 

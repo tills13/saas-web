@@ -1,7 +1,7 @@
 import "./index.scss"
 
-import * as classNames from "classnames"
-import * as React from "react"
+import classnames from "classnames"
+import React from "react"
 
 import { forEach, partial } from "lodash"
 import { compose, mapProps } from "recompose"
@@ -51,7 +51,7 @@ class Board extends React.Component<BoardComponentOwnProps, {}> {
   layerContexts: { bg?: CanvasRenderingContext2D, fg?: CanvasRenderingContext2D } = {}
 
   renderMethod: typeof RENDER_METHOD_CANVAS | typeof RENDER_METHOD_DOM
-  timer: number
+  timer: any
 
   constructor (props: BoardComponentOwnProps) {
     super(props)
@@ -82,7 +82,7 @@ class Board extends React.Component<BoardComponentOwnProps, {}> {
     const { fg, bg } = this.layerContexts
 
     this.boardRenderer.render(
-      [fg, bg],
+      [ fg, bg ],
       nextProps
     )
   }
@@ -97,7 +97,7 @@ class Board extends React.Component<BoardComponentOwnProps, {}> {
     const { fg, bg } = this.layerContexts
 
     this.boardRenderer.render(
-      [fg, bg],
+      [ fg, bg ],
       this.props
     )
 
@@ -107,28 +107,28 @@ class Board extends React.Component<BoardComponentOwnProps, {}> {
   getColoredCells () {
     const { food = [], gold = [], snakes = [], teleporters = [], walls = [] } = this.props
 
-    const coloredCells: { [position: string]: string } = {}
+    const coloredCells: { [ position: string ]: string } = {}
 
     snakes.forEach((snake) => {
       snake.coords.forEach((coord) => {
-        coloredCells[`${ coord.x }-${ coord.y }`] = coord.color || snake.color || "blue"
+        coloredCells[ `${ coord.x }-${ coord.y }` ] = coord.color || snake.color || "blue"
       })
     })
 
     food.forEach((foodCoord) => {
-      coloredCells[`${ foodCoord.x }-${ foodCoord.y }`] = foodCoord.color || "green"
+      coloredCells[ `${ foodCoord.x }-${ foodCoord.y }` ] = foodCoord.color || "green"
     })
 
     gold.forEach((coord) => {
-      coloredCells[`${ coord.x }-${ coord.y }`] = coord.color || "yellow"
+      coloredCells[ `${ coord.x }-${ coord.y }` ] = coord.color || "yellow"
     })
 
     teleporters.forEach((coord) => {
-      coloredCells[`${ coord.x }-${ coord.y }`] = coord.color || "orange"
+      coloredCells[ `${ coord.x }-${ coord.y }` ] = coord.color || "orange"
     })
 
     walls.forEach((coord) => {
-      coloredCells[`${ coord.x }-${ coord.y }`] = coord.color || "black"
+      coloredCells[ `${ coord.x }-${ coord.y }` ] = coord.color || "black"
     })
 
     return coloredCells
@@ -157,7 +157,7 @@ class Board extends React.Component<BoardComponentOwnProps, {}> {
     })
 
     const { bg, fg } = this.layerContexts
-    this.boardRenderer.render([fg, bg], this.props, true)
+    this.boardRenderer.render([ fg, bg ], this.props, true)
   }
 
   renderBoard () {
@@ -193,17 +193,15 @@ class Board extends React.Component<BoardComponentOwnProps, {}> {
     const rows = []
     const coloredCells = this.getColoredCells()
 
-    const cellClass = classNames("Board__cell", {
-      "Board__cell--clickable": !!onClickCell
-    })
+    const cellClass = classnames("Board__cell", { "--clickable": !!onClickCell })
 
     for (let y = 0; y < boardRows; y++) {
       const row = []
 
       for (let x = 0; x < boardColumns; x++) {
         const style = {
-          background: coloredCells[`${ x }-${ y }`],
-          backgroundColor: coloredCells[`${ x }-${ y }`]
+          background: coloredCells[ `${ x }-${ y }` ],
+          backgroundColor: coloredCells[ `${ x }-${ y }` ]
         }
 
         row.push(
@@ -225,15 +223,10 @@ class Board extends React.Component<BoardComponentOwnProps, {}> {
   }
 
   render () {
-    const boardClassName = classNames("Board", {
-      "Board--isPreview": this.props.isPreview
-    })
+    const boardClassName = classnames("Board", { "--preview": this.props.isPreview })
 
     return (
-      <div
-        className={ boardClassName }
-        ref={ container => this.container = container }
-      >
+      <div className={ boardClassName } ref={ e => this.container = e }>
         { this.renderBoard() }
       </div>
     )

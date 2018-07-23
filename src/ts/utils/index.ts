@@ -1,5 +1,5 @@
 import { authMiddleware, loggerMiddleware, RelayNetworkLayer } from "react-relay-network-layer"
-import * as Relay from "react-relay/classic"
+import Relay from "react-relay/classic"
 import * as authUtils from "./auth"
 
 export function trimLeadingWhitespace(mString: string): string {

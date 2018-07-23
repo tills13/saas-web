@@ -1,6 +1,6 @@
 import "./index.scss"
 
-import * as React from "react"
+import React from "react"
 
 import { List } from "immutable"
 import { connect } from "react-redux"

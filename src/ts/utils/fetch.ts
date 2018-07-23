@@ -1,7 +1,7 @@
 import "whatwg-fetch"
 
 import { Map } from "immutable"
-import * as Relay from "react-relay/classic"
+import Relay from "react-relay/classic"
 
 import {
   InitializeFileMutation,

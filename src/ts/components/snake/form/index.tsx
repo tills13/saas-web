@@ -2,9 +2,9 @@ import "./index.scss"
 
 import { showModal } from "actions"
 import { PropTypes } from "prop-types"
-import * as React from "react"
+import React from "react"
 import { connect } from "react-redux"
-import * as Relay from "react-relay/classic"
+import Relay from "react-relay/classic"
 import { compose, getContext, mapProps } from "recompose"
 import { Field, formValueSelector, InjectedFormProps, reduxForm, SubmissionError } from "redux-form"
 
@@ -24,7 +24,7 @@ import { CreateSnakeMutation, DeleteSnakeMutation, UpdateSnakeMutation } from "r
 
 import creatRelayContainer from "components/create_relay_container"
 import { showNotification } from "components/notification"
-import { getFormValues } from "redux-form";
+import { getFormValues } from "redux-form"
 
 interface CreateEditSnakeFormInnerProps extends CreateEditSnakeFormOuterProps, InjectedFormProps {
   formValues: { [field: string]: any }

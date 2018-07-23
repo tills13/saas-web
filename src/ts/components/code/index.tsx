@@ -1,7 +1,7 @@
 import "./index.scss"
 
-import * as classnames from "classnames"
-import * as React from "react"
+import classnames from "classnames"
+import React from "react"
 import * as utils from "utils"
 
 import { compose, defaultProps, SetStateCallback, withState } from "recompose"

@@ -1,8 +1,8 @@
 import "./index.scss"
 
-import * as classnames from "classnames"
-import * as React from "react"
-import * as clickOutside from "react-click-outside"
+import classnames from "classnames"
+import React from "react"
+import clickOutside from "react-click-outside"
 
 import { find, isArray, isFunction, map } from "lodash"
 

@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { Field, InjectedFormProps, reduxForm } from "redux-form"
 import { setupRelay } from "utils"
 import { setSessionToken } from "utils/auth"

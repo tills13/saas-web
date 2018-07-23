@@ -1,8 +1,7 @@
 import "./index.scss"
 
-import * as classnames from "classnames"
-import * as React from "react"
-import { compose, defaultProps, hoistStatics } from "recompose"
+import classnames from "classnames"
+import React from "react"
 
 export interface ButtonProps extends React.Props<any> {
   block?: boolean

@@ -1,4 +1,4 @@
-import * as Relay from "react-relay/classic"
+import Relay from "react-relay/classic"
 
 interface CreateGameMutationProps {
   applicationId: GraphQL.Schema.GraphQLID

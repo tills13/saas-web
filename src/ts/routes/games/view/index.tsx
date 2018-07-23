@@ -1,14 +1,13 @@
 import "./index.scss"
 
-import * as classnames from "classnames"
+import classnames from "classnames"
 import { List } from "immutable"
 import { chunk } from "lodash"
-import * as React from "react"
+import React from "react"
 import { connect } from "react-redux"
-import * as Relay from "react-relay/classic"
+import Relay from "react-relay/classic"
 import { Link, RouteComponentProps } from "react-router"
 import { compose, mapProps, SetStateCallback, withState } from "recompose"
-import * as io from "socket.io-client"
 
 import Board from "components/board"
 import LinkButton from "components/button/link_button"
@@ -66,18 +65,20 @@ class ViewGame extends React.Component<ViewGameComponentInnerProps, {}> {
 
     if (connecting) return this.renderLoading()
 
-    return (
-      <Board
-        boardColumns={ board.width || game.boardColumns }
-        boardRows={ board.height || game.boardRows }
-        food={ board.food }
-        gold={ board.gold }
-        teleporters={ board.teleporters }
-        turnNumber={ turnNumber }
-        snakes={ snakes }
-        walls={ board.walls }
-      />
-    )
+    return null
+
+    // return (
+    //   <Board
+    //     boardColumns={ board.width || game.boardColumns }
+    //     boardRows={ board.height || game.boardRows }
+    //     food={ board.food }
+    //     gold={ board.gold }
+    //     teleporters={ board.teleporters }
+    //     turnNumber={ turnNumber }
+    //     snakes={ snakes }
+    //     walls={ board.walls }
+    //   />
+    // )
   }
 
   renderControls () {
@@ -122,7 +123,11 @@ class ViewGame extends React.Component<ViewGameComponentInnerProps, {}> {
 
   render () {
     const mClassName = classnames("ViewGame")
-    const { game: node } = this.props
+    const { node: game } = this.props
+
+    const snakes = []
+    const turnNumber = 0
+    const viewerCount = 0
 
     return (
       <div className={ mClassName }>

@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es6",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "module": "es2015",
+    "target": "es2015",
     "noImplicitAny": false,
     "sourceMap": true,
     "jsx": "react",
@@ -12,8 +14,8 @@
     "pretty": true,
     "baseUrl": "./src/ts/",
     "paths": {
-      "components": [
-        "components"
+      "components/*": [
+        "components/*"
       ],
       "modals/*": [
         "components/modal/*"
@@ -31,16 +33,8 @@
     "allowUnusedLabels": false,
     "noUnusedLocals": false
   },
-  "awesomeTypescriptLoaderOptions": {
-    "transpileOnly": false,
-    "useBabel": true,
-    "useCache": false
-  },
-  "include": [
-    "./@types/**/*.d.ts",
-    "./src/**/*"
-  ],
   "typeRoots": [
+    "./@types",
     "./node_modules/@types"
   ]
 }

@@ -62,6 +62,10 @@ module.exports = {
     includePaths: [
       path.resolve(__dirname, "styles")
     ]
-  }
+  },
+  sassResources: [
+    "./src/styles/variables.scss",
+    "./src/styles/mixins.scss"
+  ]
 };
 

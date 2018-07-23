@@ -1,7 +1,6 @@
-import * as _ from "lodash"
-
 import { Dispatch } from "react-redux"
 import { ThunkAction } from "redux-thunk"
+
 import { ApplicationState } from "../store"
 import { http } from "../utils/fetch"
 
@@ -14,7 +13,7 @@ export const REGISTER_COMPLETED_ACTION = "REGISTER_COMPLETED_ACTION"
 export const LOGOUT_ACTION = "LOGOUT_ACTION"
 export const LOGOUT_COMPLETED_ACTION = "LOGOUT_COMPLETED_ACTION"
 
-export function login(data): ThunkAction<Promise<void>, ApplicationState, void> {
+export function login (data): ThunkAction<Promise<void>, ApplicationState, void, any> {
   return (dispatch: Dispatch<ApplicationState>): Promise<void> => {
     dispatch({ type: LOGIN_ACTION })
 
@@ -28,7 +27,7 @@ export function login(data): ThunkAction<Promise<void>, ApplicationState, void> 
   }
 }
 
-export function register(data): ThunkAction<Promise<void>, ApplicationState, void> {
+export function register (data): ThunkAction<Promise<void>, ApplicationState, void, any> {
   return (dispatch: Dispatch<ApplicationState>): Promise<void> => {
     dispatch({ type: REGISTER_ACTION })
 
@@ -39,7 +38,7 @@ export function register(data): ThunkAction<Promise<void>, ApplicationState, voi
   }
 }
 
-export function logout(): ThunkAction<Promise<void>, ApplicationState, void> {
+export function logout (): ThunkAction<Promise<void>, ApplicationState, void, any> {
   return (dispatch: Dispatch<ApplicationState>): Promise<void> => {
     dispatch({ type: LOGOUT_ACTION })
 

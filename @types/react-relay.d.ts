@@ -1,9 +1,10 @@
-declare module "react-relay/classic" {
-  import * as React from "react";
+declare module "react-relay/classic"
+
+/* declare module "react-relay/classic" {
+  import React from "react";
 
   type ClientMutationID = string;
 
-  /** Fragments are a hash of functions */
   interface Fragments {
     [query: string]: ((variables?: RelayVariables) => string)
   }
@@ -18,7 +19,6 @@ declare module "react-relay/classic" {
     [name: string]: any
   }
 
-  /** add static getFragment method to the component constructor */
   interface RelayContainerClass<T> extends React.ComponentClass<T> {
     getFragment: ((q: string, v?: RelayVariables) => string)
   }
@@ -80,11 +80,6 @@ declare module "react-relay/classic" {
     constructor(params?: RelayVariables)
   }
 
-  /**
-   * Relay Mutation class, where T are the props it takes and S is the returned payload from Relay.Store.update.
-   * S is typically dynamic as it depends on the data the app is currently using, but it's possible to always
-   * return some data in the payload using REQUIRED_CHILDREN which is where specifying S is the most useful.
-   */
   class Mutation<T, S> {
     props: T
 
@@ -163,3 +158,4 @@ declare module "react-relay/classic" {
     commitUpdate: (mutation: Mutation<any, any>, callbacks?: StoreUpdateCallbacks<any>) => any;
   }
 }
+ */

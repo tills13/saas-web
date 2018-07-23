@@ -1,7 +1,7 @@
 import "./notification.scss"
 
-import * as classnames from "classnames"
-import * as React from "react"
+import classnames from "classnames"
+import React from "react"
 
 import { NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_NORMAL } from "."
 

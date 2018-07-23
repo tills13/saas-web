@@ -1,8 +1,8 @@
 import "./index.scss"
 
-import * as classnames from "classnames"
-import * as React from "react"
-import * as withClickOutside from "react-click-outside"
+import classnames from "classnames"
+import React from "react"
+import withClickOutside from "react-click-outside"
 import { SketchPicker } from "react-color"
 import { compose, defaultProps, mapProps, SetStateCallback, withState } from "recompose"
 

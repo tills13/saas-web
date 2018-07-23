@@ -1,0 +1,601 @@
+schema {
+  query: QueryRootType
+  mutation: MutationRootType
+}
+
+enum APIVersionEnum {
+  NO_VERSION
+  VERSION_2017
+  VERSION_2018
+}
+
+type Application implements Node {
+  # The ID of an object
+  id: ID!
+  debug(timeout: Int): Int
+  boards(limit: Int, after: Int): PaginatedListType_BoardConfiguration
+  daemons(limit: Int, after: Int): PaginatedListType_Daemon
+  files(after: String, first: Int, before: String, last: Int): FileConnection
+  games(limit: Int, after: Int): PaginatedListType_Game
+  medals(after: String, first: Int, before: String, last: Int): MedalConnection
+  snakes(limit: Int, after: Int): PaginatedListType_Snake
+  users(after: String, first: Int, before: String, last: Int): UserConnection
+  visibilityOptions: [String]
+}
+
+type BoardConfiguration implements Node {
+  # The ID of an object
+  id: ID!
+  name: String
+  configuration: JSON
+  visibility: VisibilityEnum
+  creator: User
+}
+
+input BoardConfigurationInput {
+  name: String!
+  configuration: JSON!
+  visibility: VisibilityEnum!
+}
+
+input CreateBoardConfigurationMutationInput {
+  createBoardConfigurationInput: BoardConfigurationInput
+  clientMutationId: String
+}
+
+type CreateBoardConfigurationMutationPayload {
+  boardConfiguration: BoardConfiguration
+  clientMutationId: String
+}
+
+input CreateDaemonMutationInput {
+  createDaemonInput: DaemonInput
+  clientMutationId: String
+}
+
+type CreateDaemonMutationPayload {
+  daemon: Daemon
+  clientMutationId: String
+}
+
+input CreateGameMutationInput {
+  createGameInput: GameInput!
+  clientMutationId: String
+}
+
+type CreateGameMutationPayload {
+  application: Application
+  game: Game
+  clientMutationId: String
+}
+
+input CreateSnakeMutationInput {
+  createSnakeInput: SnakeInput
+  clientMutationId: String
+}
+
+type CreateSnakeMutationPayload {
+  snake: Snake
+  clientMutationId: String
+}
+
+input CreateUserMutationInput {
+  createUserInput: UserInput
+  clientMutationId: String
+}
+
+type CreateUserMutationPayload {
+  token: String
+  user: User
+  clientMutationId: String
+}
+
+type Daemon implements Node {
+  # The ID of an object
+  id: ID!
+  description: String
+  name: String
+  url: String
+  visibility: VisibilityEnum
+  owner: User
+  averageResponseTime: Int
+}
+
+input DaemonInput {
+  description: String!
+  name: String!
+  url: String!
+  visibility: VisibilityEnum!
+}
+
+input DeleteSnakeInput {
+  snakeId: ID
+}
+
+input DeleteSnakeMutationInput {
+  deleteSnakeInput: DeleteSnakeInput
+  clientMutationId: String
+}
+
+type DeleteSnakeMutationPayload {
+  application: Application
+  snake: Snake
+  clientMutationId: String
+}
+
+type File implements Node {
+  # The ID of an object
+  id: ID!
+  bucket: String
+  name: String
+  key: String
+  url: String
+  published: Boolean
+}
+
+# A connection to a list of items.
+type FileConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [FileEdge]
+  count: Int
+}
+
+# An edge in a connection.
+type FileEdge {
+  # The item at the end of the edge
+  node: File
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+input FileInitializeInput {
+  contentType: String!
+  fileName: String!
+  uploadType: String
+}
+
+input FilePublishInput {
+  fileId: ID!
+}
+
+type Game implements Node {
+  # The ID of an object
+  id: ID!
+  realId: String
+  boardConfiguration: BoardConfiguration
+  boardFoodCount: Int
+  boardFoodStrategy: SpawnStrategyEnum
+  boardGoldCount: Int
+  boardGoldStrategy: SpawnStrategyEnum
+  boardGoldRespawnTimeout: Int
+  boardGoldWinningThreshold: Int
+  boardHasWalls: Boolean
+  boardRows: Int
+  boardHasGold: Boolean
+  boardHasTeleporters: Boolean
+  boardTeleporterCount: Int
+  boardColumns: Int
+  createdAt: Int
+  creator: User
+  completedAt: Int
+  daemon: Daemon
+  devMode: Boolean
+  parentGame: Game
+  responseTime: Int
+  snakes(after: String, first: Int, before: String, last: Int): SnakeConnection
+  status: GameStatusEnum
+  startedAt: Int
+  tickRate: Int
+  turnLimit: Int
+  viewerCount: Int
+  visibility: VisibilityEnum
+  winner: Snake
+}
+
+# A connection to a list of items.
+type GameConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [GameEdge]
+  count: Int
+}
+
+# An edge in a connection.
+type GameEdge {
+  # The item at the end of the edge
+  node: Game
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+input GameInput {
+  id: ID
+  boardConfiguration: ID
+  boardFoodCount: Int
+  boardFoodStrategy: SpawnStrategyEnum
+  boardGoldCount: Int
+  boardGoldStrategy: SpawnStrategyEnum
+  boardGoldRespawnTimeout: Int
+  boardGoldWinningThreshold: Int
+  boardHasWalls: Boolean
+  boardRows: Int!
+  boardHasGold: Boolean
+  boardHasTeleporters: Boolean
+  boardTeleporterCount: Int
+  boardColumns: Int!
+  daemon: ID
+  devMode: Boolean
+  responseTime: Int!
+  tickRate: Int!
+  turnLimit: Int
+  snakes: [ID]!
+  visibility: VisibilityEnum!
+}
+
+enum GameStatusEnum {
+  COMPLETED
+  CREATED
+  IN_PROGRESS
+  RESTARTED
+  STARTED
+  STOPPED
+}
+
+input GameUpdateInput {
+  gameId: ID!
+  boardFoodCount: Int
+  boardFoodStrategy: SpawnStrategyEnum
+  boardGoldCount: Int
+  boardGoldStrategy: SpawnStrategyEnum
+  boardGoldRespawnTimeout: Int
+  boardGoldWinningThreshold: Int
+  boardHasWalls: Boolean
+  boardRows: Int
+  boardHasGold: Boolean
+  boardHasTeleporters: Boolean
+  boardTeleporterCount: Int
+  boardColumns: Int
+  daemon: ID
+  devMode: Boolean
+  responseTime: Int
+  tickRate: Int
+  turnLimit: Int
+  boardConfiguration: String
+  snakes: [String]
+  visibility: VisibilityEnum!
+}
+
+input InitializeFileMutationInput {
+  initializeFileMutationInput: FileInitializeInput
+  clientMutationId: String
+}
+
+type InitializeFileMutationPayload {
+  file: File
+  uploadUrl: String
+  clientMutationId: String
+}
+
+# The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+scalar JSON
+
+type Medal implements Node {
+  # The ID of an object
+  id: ID!
+  name: String
+  description: String
+  tier: MedalTierEnum
+  value: Int
+}
+
+# A connection to a list of items.
+type MedalConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [MedalEdge]
+  count: Int
+}
+
+# An edge in a connection.
+type MedalEdge {
+  # The item at the end of the edge
+  node: Medal
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+enum MedalTierEnum {
+  MEDAL_TIER_BRONZE
+  MEDAL_TIER_SILVER
+  MEDAL_TIER_GOLD
+  MEDAL_TIER_PLATINUM
+  MEDAL_TIER_ONYX
+}
+
+type MutationRootType {
+  createBoardConfigurationMutation(input: CreateBoardConfigurationMutationInput!): CreateBoardConfigurationMutationPayload
+  updateBoardConfigurationMutation(input: UpdateBoardConfigurationMutationInput!): UpdateBoardConfigurationMutationPayload
+  createDaemonMutation(input: CreateDaemonMutationInput!): CreateDaemonMutationPayload
+  updateDaemonMutation(input: UpdateDaemonMutationInput!): UpdateDaemonMutationPayload
+
+  # Initialize a file - returning a signed URL for uploading to
+  initializeFileMutation(input: InitializeFileMutationInput!): InitializeFileMutationPayload
+
+  # Publish a file
+  publishFileMutation(input: PublishFileMutationInput!): PublishFileMutationPayload
+
+  # Creates a game
+  createGameMutation(input: CreateGameMutationInput!): CreateGameMutationPayload
+
+  # Updates a game
+  updateGameMutation(input: UpdateGameMutationInput!): UpdateGameMutationPayload
+  createSnakeMutation(input: CreateSnakeMutationInput!): CreateSnakeMutationPayload
+  deleteSnakeMutation(input: DeleteSnakeMutationInput!): DeleteSnakeMutationPayload
+  updateSnakeMutation(input: UpdateSnakeMutationInput!): UpdateSnakeMutationPayload
+  testMutation(input: TestMutationInput!): TestMutationPayload
+  createUserMutation(input: CreateUserMutationInput!): CreateUserMutationPayload
+}
+
+# An object with an ID
+interface Node {
+  # The id of the object.
+  id: ID!
+}
+
+# Information about pagination in a connection.
+type PageInfo {
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: String
+
+  # When paginating forwards, the cursor to continue.
+  endCursor: String
+}
+
+type PaginatedListPageInfo_BoardConfiguration {
+  count: Int
+}
+
+type PaginatedListPageInfo_Daemon {
+  count: Int
+}
+
+type PaginatedListPageInfo_Game {
+  count: Int
+}
+
+type PaginatedListPageInfo_Snake {
+  count: Int
+}
+
+# Paginated list
+type PaginatedListType_BoardConfiguration {
+  pageInfo: PaginatedListPageInfo_BoardConfiguration
+  items: [BoardConfiguration]
+}
+
+# Paginated list
+type PaginatedListType_Daemon {
+  pageInfo: PaginatedListPageInfo_Daemon
+  items: [Daemon]
+}
+
+# Paginated list
+type PaginatedListType_Game {
+  pageInfo: PaginatedListPageInfo_Game
+  items: [Game]
+}
+
+# Paginated list
+type PaginatedListType_Snake {
+  pageInfo: PaginatedListPageInfo_Snake
+  items: [Snake]
+}
+
+input PublishFileMutationInput {
+  publishFileMutationInput: FilePublishInput
+  clientMutationId: String
+}
+
+type PublishFileMutationPayload {
+  publishedFile: File
+  clientMutationId: String
+}
+
+type QueryRootType {
+  # Fetches an object given its ID
+  node(
+    # The ID of an object
+    id: ID!
+  ): Node
+  application: Application
+  viewer: User
+}
+
+type Snake implements Node {
+  # The ID of an object
+  id: ID!
+  bountyDescription: String
+  defaultColor: String
+  devUrl: String
+  games(after: String, first: Int, before: String, last: Int): GameConnection
+  head: File
+  isBountySnake: Boolean
+  apiVersion: APIVersionEnum
+  lastCheckedAt: String
+  lastSuccessfullyCheckedAt: String
+  name: String
+  owner: User
+  url: String
+  visibility: VisibilityEnum
+}
+
+# A connection to a list of items.
+type SnakeConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [SnakeEdge]
+  count: Int
+}
+
+# An edge in a connection.
+type SnakeEdge {
+  # The item at the end of the edge
+  node: Snake
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+input SnakeInput {
+  apiVersion: APIVersionEnum
+  bountyDescription: String
+  defaultColor: String!
+  devUrl: String
+  headId: ID
+  isBountySnake: Boolean
+  name: String!
+  url: String!
+  visibility: VisibilityEnum
+}
+
+enum SpawnStrategyEnum {
+  DONT_RESPAWN
+  RANDOM
+  STATIC
+}
+
+input TestMutationInput {
+  clientMutationId: String
+}
+
+type TestMutationPayload {
+  id: String
+  clientMutationId: String
+}
+
+input UpdateBoardConfigurationInput {
+  boardConfigurationId: ID!
+  name: String!
+  configuration: String
+  visibility: VisibilityEnum
+}
+
+input UpdateBoardConfigurationMutationInput {
+  updateBoardConfigurationInput: UpdateBoardConfigurationInput
+  clientMutationId: String
+}
+
+type UpdateBoardConfigurationMutationPayload {
+  boardConfiguration: BoardConfiguration
+  clientMutationId: String
+}
+
+input UpdateDaemonInput {
+  daemonId: ID!
+  description: String!
+  name: String!
+  url: String!
+  visibility: VisibilityEnum!
+}
+
+input UpdateDaemonMutationInput {
+  updateDaemonInput: UpdateDaemonInput
+  clientMutationId: String
+}
+
+type UpdateDaemonMutationPayload {
+  daemon: Daemon
+  clientMutationId: String
+}
+
+input UpdateGameMutationInput {
+  updateGameInput: GameUpdateInput!
+  clientMutationId: String
+}
+
+type UpdateGameMutationPayload {
+  game: Game
+  clientMutationId: String
+}
+
+input UpdateSnakeInput {
+  snakeId: ID!
+  apiVersion: APIVersionEnum!
+  defaultColor: String!
+  devUrl: String!
+  headId: ID!
+  isBountySnake: Boolean!
+  bountyDescription: String!
+  name: String!
+  url: String!
+  visibility: VisibilityEnum!
+}
+
+input UpdateSnakeMutationInput {
+  updateSnakeInput: UpdateSnakeInput
+  clientMutationId: String
+}
+
+type UpdateSnakeMutationPayload {
+  snake: Snake
+  clientMutationId: String
+}
+
+type User implements Node {
+  # The ID of an object
+  id: ID!
+  username: String
+  snakes(after: String, first: Int, before: String, last: Int): SnakeConnection
+  games(after: String, first: Int, before: String, last: Int): GameConnection
+  medals(after: String, first: Int, before: String, last: Int): MedalConnection
+}
+
+# A connection to a list of items.
+type UserConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [UserEdge]
+  count: Int
+}
+
+# An edge in a connection.
+type UserEdge {
+  # The item at the end of the edge
+  node: User
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+input UserInput {
+  username: String
+  password: String
+  confirmPassword: String
+  email: String
+}
+
+enum VisibilityEnum {
+  PUBLIC
+  PRIVATE
+}
+

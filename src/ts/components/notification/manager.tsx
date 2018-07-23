@@ -1,7 +1,7 @@
 import "./manager.scss"
 
 import { CLEAR_NOTIFICATION } from "actions"
-import * as React from "react"
+import React from "react"
 import { connect } from "react-redux"
 import { CSSTransition, TransitionGroup } from "react-transition-group"
 import { compose } from "recompose"

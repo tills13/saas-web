@@ -1,6 +1,6 @@
 import "./index.scss"
 
-import * as React from "react"
+import React from "react"
 
 import Container from "components/container/route_container"
 import Header from "components/header"

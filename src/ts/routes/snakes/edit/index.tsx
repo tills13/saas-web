@@ -1,7 +1,7 @@
 import "./index.scss"
 
-import * as React from "react"
-import * as Relay from "react-relay/classic"
+import React from "react"
+import Relay from "react-relay/classic"
 
 import LinkButton from "components/button/link_button"
 import Header from "components/header"

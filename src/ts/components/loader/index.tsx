@@ -1,8 +1,8 @@
 import "./index.scss"
 
-import * as classnames from "classnames"
+import classnames from "classnames"
 import { chunk, range } from "lodash"
-import * as React from "react"
+import React from "react"
 import { compose, defaultProps } from "recompose"
 
 export const LOADER_SPEED_SLOW = 100

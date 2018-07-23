@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { BaseFieldProps, InjectedFormProps, GenericField, WrappedFieldProps } from "redux-form"
 
 declare module "redux-form" {

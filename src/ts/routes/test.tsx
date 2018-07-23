@@ -1,6 +1,6 @@
 import { range } from "lodash"
-import * as React from "react"
-import * as Relay from "react-relay/classic"
+import React from "react"
+import Relay from "react-relay/classic"
 import { compose, defaultProps, withState } from "recompose"
 import { Field, reduxForm } from "redux-form"
 

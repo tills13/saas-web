@@ -1,8 +1,8 @@
 import "./index.scss"
 
-import * as React from "react"
-import * as Relay from "react-relay/classic"
-import { compose, mapProps, SetStateCallback, withState } from "recompose"
+import React from "react"
+import Relay from "react-relay/classic"
+import { compose, SetStateCallback, withState } from "recompose"
 
 import Board from "components/board"
 import Container from "components/container"

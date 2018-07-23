@@ -1,6 +1,6 @@
 import "./index.scss"
 
-import * as React from "react"
+import React from "react"
 
 import CreateEditDaemonForm from "components/daemon/form"
 import Header from "components/header"

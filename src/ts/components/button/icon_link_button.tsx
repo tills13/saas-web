@@ -1,6 +1,6 @@
-import * as classnames from "classnames"
-import * as React from "react"
-import { Link } from "react-router"
+import classnames from "classnames"
+import { Link } from "found"
+import React from "react"
 
 import Button from "components/form/button"
 import Icon from "components/icon"

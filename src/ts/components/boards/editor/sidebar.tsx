@@ -1,5 +1,5 @@
-import * as React from "react"
-import * as Relay from "react-relay/classic"
+import React from "react"
+import Relay from "react-relay/classic"
 
 import ButtonGroup from "components/button/button_group"
 import Code from "components/code"

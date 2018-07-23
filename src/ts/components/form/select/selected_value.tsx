@@ -1,6 +1,6 @@
 import "./selected_value.scss"
 
-import * as React from "react"
+import React from "react"
 
 import Icon from "components/icon"
 

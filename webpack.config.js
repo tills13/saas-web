@@ -1,65 +1,56 @@
-const path = require("path");
-const webpack = require("webpack");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const HTMLWebpackPlugin = require("html-webpack-plugin");
-const nodeExternals = require("webpack-node-externals");
-// const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
+const history = require("connect-history-api-fallback")
+const proxy = require("http-proxy-middleware")
+const convert = require("koa-connect")
+const path = require("path")
+const webpack = require("webpack")
 
-const environment = process.env.NODE_ENV || "production";
-console.log(`building for ${ environment }, ${ __dirname }`);
+const HTMLWebpackPlugin = require("html-webpack-plugin")
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+
+const environment = process.env.NODE_ENV || "production"
+const devMode = environment === "development"
+
+console.log(`building for ${ environment }, ${ __dirname }`)
+
+const api = `${ environment === "production" ? "https://saas.sbstn.ca" : "http://localhost:3000" }/api`
+const htmlTemplate = `src/assets/index${ environment === "production" ? ".prod" : ".dev" }.html`
 
 module.exports = {
   context: __dirname,
-  target: 'web',
-  devServer: {
-    contentBase: "./build",
-    historyApiFallback: true,
-    host: "0.0.0.0",
-    inline: true,
-    disableHostCheck: true,
-    port: 8000,
-    proxy: {
-      "/api": {
-        target: "http://localhost:3000",
-        secure: false
-      },
-      "/static": {
-        target: "http://localhost:3000",
-        secure: false
-      },
-      "/graphql": {
-        target: "http://localhost:3000",
-        secure: false
-      },
-      "/socket.io": {
-        target: "http://127.0.0.1:3001",
-        secure: false
-      }
-    },
-    watchOptions: { poll: true },
-    stats: { colors: true }
-  },
-  // devtool: "source-map",
-  entry: [
-    "babel-polyfill",
-    // "react-hot-loader/patch",
-    "webpack-dev-server/client?http://localhost:8000",
-    // "webpack/hot/only-dev-server",
-    "./src/ts/index.tsx",
-  ],
+  target: "web",
+  entry: [ "react-hot-loader/patch", "babel-polyfill", "./src/ts/index.tsx" ],
+  mode: devMode ? "development" : "production",
   module: {
-    loaders: [
+    rules: [
       {
-        test: /\.[tj]sx?$/,
-        loaders: ["awesome-typescript-loader"],
-        include: [path.resolve(__dirname, "src")],
-        exclude: /node_modules/
-      }, {
-        test: /\.s?css$/,
-        loader: ExtractTextPlugin.extract('css!sass!sass-resources')
-      }, {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        use: [
+          "babel-loader",
+          { loader: "ts-loader", options: { transpileOnly: true } }
+        ]
+      },
+      {
+        test: /\.(sa|sc|c)ss$/,
+        exclude: /node_modules/,
+        use: [
+          devMode ? "style-loader" : MiniCssExtractPlugin.loader,
+          "css-loader",
+          "sass-loader",
+          {
+            loader: "sass-resources-loader",
+            options: {
+              resources: [
+                "./src/styles/variables.scss",
+                "./src/styles/mixins.scss"
+              ]
+            }
+          }
+        ]
+      },
+      {
         test: /\.(ttf|eot|woff|woff2|svg)(\?(v=)?(\d|\.)+)?$/,
-        loader: 'file-loader'
+        use: [ "file-loader" ]
       }
     ]
   },
@@ -69,27 +60,30 @@ module.exports = {
     filename: "[id].bundle.js"
   },
   plugins: [
-    // new TsConfigPathsPlugin(),
-    // new BabelRelayPlugin(),
-    // new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(),
-    // new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.DefinePlugin({
-      __API_ROOT__: JSON.stringify(`${ environment === "production" ? "https://saas.sbstn.ca" : "http://localhost:3000" }/api`)
+    new webpack.DefinePlugin({ __API_ROOT__: JSON.stringify(api) }),
+    new MiniCssExtractPlugin({
+      filename: "style.css",
+      chunkFilename: "[id].css"
     }),
-    new ExtractTextPlugin('style.css'),
     new HTMLWebpackPlugin({
-      title: 'SaaS',
-      template: `src/assets/index${ environment === "production" ? ".prod" : ".dev" }.html`
+      title: "SaaS",
+      template: htmlTemplate
     })
   ],
   resolve: {
-    extensions: ["", ".js", ".jsx", ".ts", ".tsx", ".scss", ".html"],
-    modulesDirectories: ["node_modules", "./src", "./src/ts", "./src/styles", "./src/assets/"]
-  },
-  sassResources: [
-    './src/styles/variables.scss',
-    './src/styles/mixins.scss'
-  ]
-};
+    extensions: [ ".js", ".jsx", ".ts", ".tsx", ".scss", ".html" ],
+    modules: [ "node_modules", "./src", "./src/ts", "./src/styles", "./src/assets/" ]
+  }
+}
 
+module.exports.serve = {
+  content: [ __dirname ],
+  add (app) {
+    app.use(convert(proxy("/api", { target: "http://localhost:3000" })))
+    app.use(convert(proxy("/static", { target: "http://localhost:3000" })))
+    app.use(convert(proxy("/graphql", { target: "http://localhost:3000" })))
+    app.use(convert(proxy("/socket.io", { target: "http://localhost:3001" })))
+
+    app.use(convert(history()))
+  }
+}

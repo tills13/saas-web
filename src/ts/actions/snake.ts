@@ -1,5 +1,3 @@
-import * as _ from "lodash"
-
 import { Dispatch } from "react-redux"
 import { http } from "../utils/fetch"
 

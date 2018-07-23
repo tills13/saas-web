@@ -1,7 +1,7 @@
 import "./anchor.scss"
 
-import * as classnames from "classnames"
-import * as React from "react"
+import classnames from "classnames"
+import React from "react"
 
 import Container from "components/container"
 

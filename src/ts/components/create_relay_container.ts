@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { createContainer, CreateContainerOpts, RelayContainerClass } from "react-relay/classic"
 
 export default (params?: CreateContainerOpts) => {

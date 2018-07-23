@@ -1,9 +1,9 @@
 import "./index.scss"
 
-import * as classnames from "classnames"
+import classnames from "classnames"
 import { camelCase, startCase } from "lodash"
-import * as React from "react"
-import * as Relay from "react-relay/classic"
+import React from "react"
+import Relay from "react-relay/classic"
 import { compose } from "recompose"
 
 import createRelayContainer from "components/create_relay_container"

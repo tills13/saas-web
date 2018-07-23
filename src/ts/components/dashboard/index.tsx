@@ -1,9 +1,8 @@
 import "./index.scss"
 
-import * as classnames from "classnames"
-import * as PropTypes from "prop-types"
-import * as React from "react"
-import * as Relay from "react-relay/classic"
+import classnames from "classnames"
+import PropTypes from "prop-types"
+import React from "react"
 import { compose, defaultProps } from "recompose"
 
 import ErrorBoundary from "components/error_boundary"
@@ -11,7 +10,8 @@ import { ModalManager } from "components/modal/manager"
 import Navigation from "components/navigation"
 import NotificationManager from "components/notification/manager"
 
-import createRelayContainer from "components/create_relay_container"
+// import createRelayContainer from "components/create_relay_container"
+import { createFragmentContainer } from "react-relay"
 import { SetStateCallback, withState } from "recompose"
 
 interface DashboardComponentInnerProps extends DashboardComponentOuterProps {
@@ -30,12 +30,14 @@ interface DashboardComponentOuterProps extends React.Props<any> {
 const SCROLL_TOP_THRESHOLD = 62
 
 class Dashboard extends React.Component<DashboardComponentInnerProps, {}> {
-  node: HTMLElement
-
   static childContextTypes = {
     onLogin: PropTypes.func,
     onLogout: PropTypes.func
   }
+
+  static defaultProps = { simpleNavigation: true }
+
+  node: HTMLElement
 
   getChildContext () {
     const { relay } = this.props
@@ -79,16 +81,11 @@ class Dashboard extends React.Component<DashboardComponentInnerProps, {}> {
   }
 }
 
-export default compose(
-  createRelayContainer({
-    fragments: {
-      viewer: () => Relay.QL`
-        fragment on User {
-          ${ Navigation.getFragment("viewer") }
-        }
-      `
+export default createFragmentContainer(
+  withState("compactNav", "setCompactNav", false)(Dashboard),
+  graphql`
+    fragment dashboard_viewer on User {
+      ...navigation_viewer
     }
-  }),
-  defaultProps({ simpleNavigation: false }),
-  withState("compactNav", "setCompactNav", false)
-)(Dashboard)
+  `
+)

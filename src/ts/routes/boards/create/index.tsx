@@ -1,9 +1,7 @@
-import * as _ from "lodash"
-import * as React from "react"
-import * as Relay from "react-relay/classic"
-
 import { List, Map } from "immutable"
-import { connect } from "react-redux"
+import { findIndex, map } from "lodash"
+import React from "react"
+import Relay from "react-relay/classic"
 import { compose, withState } from "recompose"
 
 import Board from "components/board"
@@ -21,7 +19,7 @@ import Header from "components/header"
 import createContainer from "components/create_relay_container"
 
 interface BoardConfigurationEditorComponentState {
-  errors?: { [type: string]: { [label: string]: string } }
+  errors?: { [ type: string ]: { [ label: string ]: string } }
   loading: boolean
   selectedOption: "food" | "gold" | "snake" | "teleporters" | "wall" | string
 
@@ -47,7 +45,9 @@ type BoardConfigurationEditorComponentProps =
   BoardConfigurationEditorComponentDispatchProps
 
 export class BoardConfigurationEditorComponent extends React.Component<any, any> {
-  $boardContainer: JQuery
+  boardContainer: HTMLDivElement
+  teleporterChannel: HTMLInputElement
+
   cellOptions = [
     { label: "food", value: "food" },
     { label: "gold", value: "gold" },
@@ -84,7 +84,7 @@ export class BoardConfigurationEditorComponent extends React.Component<any, any>
       return {
         inputs: {
           ...prevState.inputs,
-          [state]: value
+          [ state ]: value
         }
       }
     }, () => {
@@ -100,27 +100,28 @@ export class BoardConfigurationEditorComponent extends React.Component<any, any>
       const { selectedOption } = state
       const newState = {};
 
-      ["food", "gold", "snakes", "teleporters", "walls"].forEach((type) => {
+      [ "food", "gold", "snakes", "teleporters", "walls" ].forEach((type) => {
         if (type !== selectedOption) {
-          const items = state[type] as List<any>
-          newState[type] = items.filter((item) => item.x !== x || item.y !== y)
+          const items = state[ type ] as List<any>
+          newState[ type ] = items.filter((item) => item.x !== x || item.y !== y)
         }
       })
 
-      let items = state[selectedOption] as List<any>
+      let items: List<any> = state[ selectedOption ]
       let itemOfTypeAtPosition = items.find((item) => item.x === x && item.y === y)
 
       if (itemOfTypeAtPosition) {
-        newState[selectedOption] = items.remove(items.indexOf(itemOfTypeAtPosition))
+        newState[ selectedOption ] = items.remove(items.indexOf(itemOfTypeAtPosition))
       } else {
         if (selectedOption === "teleporters") {
-          newState[selectedOption] = items.push({ x, y, color: state.inputs.color, channel: $(this.refs.teleporterChannel).val() })
+          /** @todo */
+          newState[ selectedOption ] = items.push({ x, y, color: state.inputs.color, channel: 0 })
         } else if (selectedOption === "snakes") {
           const id = state.inputs.snakeId || state.inputs.snakeNumber
           const snake = items.find((snake) => snake.id === id || snake.number === id)
 
           if (snake) {
-            const indexOfPosition = _.findIndex((snake.coords as (GameAPI.Position & GameAPI.Colorable)[]), (coord, index) => {
+            const indexOfPosition = findIndex((snake.coords as (GameAPI.Position & GameAPI.Colorable)[]), (coord, index) => {
               return coord.x === x && coord.y === coord.y
             })
 
@@ -129,19 +130,19 @@ export class BoardConfigurationEditorComponent extends React.Component<any, any>
             } else {
               let segment = { x, y }
 
-              if (selectedColor !== snake.color) segment["color"] = selectedColor;
+              if (selectedColor !== snake.color) segment[ "color" ] = selectedColor;
               (snake.coords as any[]).push(segment)
             }
           } else {
-            newState[selectedOption] = items.push({
-              coords: [{ x, y }],
+            newState[ selectedOption ] = items.push({
+              coords: [ { x, y } ],
               color: selectedColor,
               id: state.inputs.snakeId,
               number: state.inputs.snakeNumber
             })
           }
         } else {
-          newState[selectedOption] = items.push({ x, y, color: selectedColor })
+          newState[ selectedOption ] = items.push({ x, y, color: selectedColor })
         }
       }
 
@@ -170,11 +171,11 @@ export class BoardConfigurationEditorComponent extends React.Component<any, any>
     }*/
 
     if (boardRows * boardColumns < 20) {
-      errors["Board Size"] = { 0: "board must have at least 20 cells" }
+      errors[ "Board Size" ] = { 0: "board must have at least 20 cells" }
     }
 
     if (!name) {
-      errors["Name"] = { 0: "a name is required" }
+      errors[ "Name" ] = { 0: "a name is required" }
     }
 
     this.setState({ errors })
@@ -242,11 +243,11 @@ export class BoardConfigurationEditorComponent extends React.Component<any, any>
         <hr />
         <div><Icon icon="times" className="icon-red" /> Issues</div>
 
-        { _.map(errors, (typeErrors: any, type) => {
+        { map(errors, (typeErrors: any, type) => {
           return (
             <div key={ type }>
               <h5>{ type }</h5>
-              <ul>{ _.map(typeErrors, (error, key) => <li key={ key }>{ error }</li>) }</ul>
+              <ul>{ map(typeErrors, (error, key) => <li key={ key }>{ error }</li>) }</ul>
             </div>
           )
         }) }
@@ -337,7 +338,7 @@ export class BoardConfigurationEditorComponent extends React.Component<any, any>
 
         <input
           name="channel"
-          ref="teleporterChannel"
+          ref={ e => this.teleporterChannel = e }
           className="form-control"
           placeholder="channel"
           defaultValue="1"
