@@ -1,7 +1,7 @@
 declare namespace GraphQL.Schema {
   type GraphNode<T> = T
-  type GraphEdge<T> = { node: GraphNode<T> }
-  type GraphConnection<T> = { count: number, edges: GraphEdge<T>[] }
+  type GraphEdge<T, E = {}> = { node: GraphNode<T> } & E
+  type GraphConnection<T, E = {}> = { count: number, edges: GraphEdge<T, E>[] }
   type GraphQLList<T> = T[]
   type GraphQLPaginatedListPageInfo = { count: number }
   type GraphQLPaginatedList<T> = { items: T[], pageInfo: GraphQLPaginatedListPageInfo }
