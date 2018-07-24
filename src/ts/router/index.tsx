@@ -1,14 +1,11 @@
 import { createBrowserRouter, makeRouteConfig, Route } from "found"
-
 import React from "react"
 import { graphql } from "react-relay"
 
+import Dashboard from "../components/dashboard"
+import Index from "../routes/landing"
+
 import { store } from "../store"
-
-import Dashboard from "components/dashboard"
-import Index from "routes/landing"
-
-console.log(Index, Dashboard)
 
 const DashboardQuery = graphql`
   query router_Dashboard_Query {
@@ -17,7 +14,7 @@ const DashboardQuery = graphql`
 `
 
 export default createBrowserRouter({
-  routerConfig: makeRouteConfig(
+  routeConfig: makeRouteConfig(
     <Route
       Component={ Dashboard }
       path="/"

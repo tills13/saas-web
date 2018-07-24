@@ -13,26 +13,13 @@
     "forceConsistentCasingInFileNames": true,
     "pretty": true,
     "baseUrl": "./src/ts/",
-    "paths": {
-      "components/*": [
-        "components/*"
-      ],
-      "modals/*": [
-        "components/modal/*"
-      ],
-      "mutations": [
-        "relay/mutations"
-      ],
-      "relay": [
-        "relay"
-      ],
-      "utils": [
-        "utils"
-      ]
-    },
     "allowUnusedLabels": false,
     "noUnusedLocals": false
   },
+  "include": [
+    "./node_modules/**/*",
+    "./src/**/*"
+  ],
   "typeRoots": [
     "./@types",
     "./node_modules/@types"
