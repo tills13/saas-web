@@ -43,7 +43,7 @@ class IndexComponent extends React.Component<IndexComponentProps, IndexComponent
       const { snakes } = this.state
 
       const controlledSnake = snakes.get(1)
-      const head = controlledSnake.coords[0]
+      const head = controlledSnake.coords[ 0 ]
       const key = event.key
 
       if (event.repeat) return
@@ -73,14 +73,14 @@ class IndexComponent extends React.Component<IndexComponentProps, IndexComponent
   convertLetterToCoords (letter, startingPosition: GameAPI.Position) {
     const letterVector = this.generateRawLetter(letter)
     const letterOffset = this.getLetterOffset(letter)
-    const finalPositions = [{
-      x: startingPosition.x + letterOffset[0],
-      y: startingPosition.y + letterOffset[1]
-    }]
+    const finalPositions = [ {
+      x: startingPosition.x + letterOffset[ 0 ],
+      y: startingPosition.y + letterOffset[ 1 ]
+    } ]
 
     letterVector.forEach((section, index) => {
-      section.forEach(([deltaX, deltaY]) => {
-        const previousPosition = finalPositions[finalPositions.length - 1]
+      section.forEach(([ deltaX, deltaY ]) => {
+        const previousPosition = finalPositions[ finalPositions.length - 1 ]
 
         finalPositions.push({
           x: previousPosition.x + deltaX,
@@ -94,31 +94,31 @@ class IndexComponent extends React.Component<IndexComponentProps, IndexComponent
 
   getLetterOffset (letter: string) {
     return {
-      a: [0, 1],
-      s: [4, 0]
-    }[letter]
+      a: [ 0, 1 ],
+      s: [ 4, 0 ]
+    }[ letter ]
   }
 
   generateRawLetter (letter: string, scaleX: number = 1, scaleY: number = 1): number[][][] {
     const a = [
-      [[1, 0], [1, 0], [1, 0], [1, 0]], // top
-      [[0, -1], [0, -1]], // down to middle
-      [[-1, 0], [-1, 0], [-1, 0], [-1, 0]], // middle
-      [[0, -1], [0, -1], [0, -1]], // down to bottom
-      [[1, 0], [1, 0], [1, 0], [1, 0]], // bottom
-      [[0, 1], [0, 1]] // up to middle
+      [ [ 1, 0 ], [ 1, 0 ], [ 1, 0 ], [ 1, 0 ] ], // top
+      [ [ 0, -1 ], [ 0, -1 ] ], // down to middle
+      [ [ -1, 0 ], [ -1, 0 ], [ -1, 0 ], [ -1, 0 ] ], // middle
+      [ [ 0, -1 ], [ 0, -1 ], [ 0, -1 ] ], // down to bottom
+      [ [ 1, 0 ], [ 1, 0 ], [ 1, 0 ], [ 1, 0 ] ], // bottom
+      [ [ 0, 1 ], [ 0, 1 ] ] // up to middle
     ]
 
     const s = [
-      [[-1, 0], [-1, 0], [-1, 0], [-1, 0]], // top
-      [[0, -1], [0, -1], [0, -1]], // down to middle
-      [[1, 0], [1, 0], [1, 0], [1, 0]], // middle
-      [[0, -1], [0, -1], [0, -1]], // down to bottom
-      [[-1, 0], [-1, 0], [-1, 0], [-1, 0]] // bottom
+      [ [ -1, 0 ], [ -1, 0 ], [ -1, 0 ], [ -1, 0 ] ], // top
+      [ [ 0, -1 ], [ 0, -1 ], [ 0, -1 ] ], // down to middle
+      [ [ 1, 0 ], [ 1, 0 ], [ 1, 0 ], [ 1, 0 ] ], // middle
+      [ [ 0, -1 ], [ 0, -1 ], [ 0, -1 ] ], // down to bottom
+      [ [ -1, 0 ], [ -1, 0 ], [ -1, 0 ], [ -1, 0 ] ] // bottom
     ]
 
     const map = { a, s }
-    const mLetter = map[letter]
+    const mLetter = map[ letter ]
 
     return mLetter
   }

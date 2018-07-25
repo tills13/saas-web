@@ -1,11 +1,9 @@
 import "./index.scss"
 
-import { showModal } from "actions"
 import classnames from "classnames"
 import PropTypes from "prop-types"
 import React from "react"
-import { connect } from "react-redux"
-import { createFragmentContainer } from "react-relay"
+import Relay, { createFragmentContainer, graphql } from "react-relay"
 import { CSSTransition, TransitionGroup } from "react-transition-group"
 import { compose, defaultProps, getContext, SetStateCallback, withState } from "recompose"
 
@@ -14,7 +12,6 @@ import FormModal from "components/modal/form_modal"
 import LoginForm from "routes/landing/login/form"
 import NavItem from "./nav_item"
 
-import createContainer from "components/create_relay_container"
 import * as utils from "utils/auth"
 
 const transitionClassNames = {
@@ -32,7 +29,6 @@ interface NavigationInnerProps extends NavigationOuterProps {
   onLogout: () => void
   relay: Relay.RelayProp
   setMobileMenuExpanded: SetStateCallback<boolean>
-  showModal: typeof showModal
 }
 
 interface NavigationOuterProps extends React.Props<any> {
@@ -82,15 +78,13 @@ class Navigation extends React.Component<NavigationInnerProps, {}> {
   }
 
   renderRightNav () {
-    const { mobileMenuExpanded, relay, setMobileMenuExpanded, showModal, simple, viewer } = this.props
+    const { mobileMenuExpanded, relay, setMobileMenuExpanded, simple, viewer } = this.props
     const { onLogin: onLoginRegisterSuccess, onLogout } = this.props
 
     const renderRightNavContent = () => {
       if (viewer) {
         return [
-          this.renderNavItem(null, null, viewer.username, (event) => {
-            showModal(FormModal, { form: LoginForm })
-          }),
+          this.renderNavItem(null, null, viewer.username, (event) => { }),
           this.renderNavItem(null, null, "Logout", () => {
             utils.logout()
             onLogout()
@@ -98,14 +92,9 @@ class Navigation extends React.Component<NavigationInnerProps, {}> {
         ]
       }
 
-      const onClickLogin = () => showModal(FormModal, {
-        form: LoginForm,
-        formProps: { onLoginRegisterSuccess }
-      })
-
       return [
         this.renderNavItem(null, "/signup", "Sign Up"),
-        this.renderNavItem(null, null, "Login", onClickLogin)
+        this.renderNavItem(null, null, "Login")
       ]
     }
 
@@ -153,7 +142,6 @@ export default createFragmentContainer(
   compose(
     defaultProps({ simple: false }),
     withState("mobileMenuExpanded", "setMobileMenuExpanded", false),
-    connect(null, { showModal }),
     getContext({ onLogin: PropTypes.func, onLogout: PropTypes.func })
   )(Navigation),
   graphql`

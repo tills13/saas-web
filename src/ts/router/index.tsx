@@ -1,4 +1,5 @@
-import { createBrowserRouter, makeRouteConfig, Route } from "found"
+import { HashProtocol, queryMiddleware } from "farce"
+import { createFarceRouter, createRender, makeRouteConfig, Route } from "found"
 import React from "react"
 import { graphql } from "react-relay"
 
@@ -13,7 +14,10 @@ const DashboardQuery = graphql`
   }
 `
 
-export default createBrowserRouter({
+export default createFarceRouter({
+  historyProtocol: new HashProtocol(),
+  historyMiddlewares: [ queryMiddleware ],
+  render: createRender({}),
   routeConfig: makeRouteConfig(
     <Route
       Component={ Dashboard }

@@ -15,7 +15,7 @@ const LinkButton = ({ children, className, to, ...props }: LinkButtonProps) => {
 
   return (
     <Link to={ to } className={ mClassName }>
-      <Button {...props}>{ children }</Button>
+      <Button { ...props }>{ children }</Button>
     </Link>
   )
 }

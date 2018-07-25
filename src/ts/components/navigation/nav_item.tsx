@@ -14,13 +14,13 @@ interface NavItemProps extends React.Props<any> {
   to?: string
 }
 
-const NavItem = ({ children, className, icon, onClick, to }: NavItemProps) => {
+const NavItem = ({ children, className, icon, onClick, to = "" }: NavItemProps) => {
   const mClassName = classnames("NavItem", className)
 
-  if (!(to || onClick)) throw new Error("must provider either `to` or `onClick` to NavItem")
+  if (!(to !== "" || onClick)) throw new Error("must provider either `to` or `onClick` to NavItem")
 
   return (
-    <Link to={ to } className={ mClassName } onClick={ onClick }>
+    <Link to={ to || "" } className={ mClassName } onClick={ onClick }>
       { icon && <Icon icon={ icon } /> }
       { children }
     </Link>

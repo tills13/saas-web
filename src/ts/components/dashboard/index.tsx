@@ -3,15 +3,11 @@ import "./index.scss"
 import classnames from "classnames"
 import PropTypes from "prop-types"
 import React from "react"
-import { compose, defaultProps } from "recompose"
+import Relay, { createFragmentContainer, graphql } from "react-relay"
 
 import ErrorBoundary from "components/error_boundary"
-import { ModalManager } from "components/modal/manager"
 import Navigation from "components/navigation"
-import NotificationManager from "components/notification/manager"
 
-// import createRelayContainer from "components/create_relay_container"
-import { createFragmentContainer } from "react-relay"
 import { SetStateCallback, withState } from "recompose"
 
 interface DashboardComponentInnerProps extends DashboardComponentOuterProps {
@@ -73,8 +69,6 @@ class Dashboard extends React.Component<DashboardComponentInnerProps, {}> {
           <div className="Dashboard__content">
             { children }
           </div>
-          <NotificationManager />
-          <ModalManager />
         </div>
       </ErrorBoundary>
     )
