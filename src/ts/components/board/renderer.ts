@@ -7,7 +7,7 @@ interface BoardRendererOptions {
   height?: number
   width?: number
 
-  colorPallet?: { [name: string]: string }
+  colorPallet?: { [ name: string ]: string }
 }
 
 interface BoardState {
@@ -30,10 +30,10 @@ export class BoardRenderer {
   private height: number
   private width: number
 
-  private colorPalette: { [name: string]: string } = {}
+  private colorPalette: { [ name: string ]: string } = {}
 
-  private margin: number = 0.1
-  private padding: number = 2
+  private margin: number = 0.05
+  private padding: number = 0
   private unit: number = 1 - 2 * this.margin
   private halfUnit = this.unit / 2
   private offset: number = this.unit / 2 * -1
@@ -82,7 +82,7 @@ export class BoardRenderer {
     if (!force && this.backgroundRendered) return
     if (force) this.clearLayer(context)
 
-    context.fillStyle = this.colorPalette["tile"] || DEFAULT_PALETTE.tile
+    context.fillStyle = this.colorPalette[ "tile" ] || DEFAULT_PALETTE.tile
 
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
@@ -107,7 +107,7 @@ export class BoardRenderer {
     type: "food" | "gold" | "teleporter" | "wall",
     thing: GameAPI.Food | GameAPI.Gold | GameAPI.Teleporter | GameAPI.Wall
   ) => {
-    context.fillStyle = this.colorPalette[type] || DEFAULT_PALETTE[type] || "black"
+    context.fillStyle = this.colorPalette[ type ] || DEFAULT_PALETTE[ type ] || "black"
 
     context.beginPath()
     context.arc(thing.x, thing.y, this.halfUnit, 0, 2 * Math.PI)
@@ -137,7 +137,7 @@ export class BoardRenderer {
     context.lineJoin = "round"
 
     context.beginPath()
-    context.moveTo(coords[0].x, coords[0].y)
+    context.moveTo(coords[ 0 ].x, coords[ 0 ].y)
 
     coords.forEach(coord => context.lineTo(coord.x, coord.y))
 
@@ -153,7 +153,7 @@ export class BoardRenderer {
 
     this.imageCache.set(snake.id, headImage)
 
-    const headLoc = snake.coords[0]
+    const headLoc = snake.coords[ 0 ]
     const direction = getMovementDirection(snake)
 
     this.drawImage(context, headImage, headLoc.x, headLoc.y, this.unit, this.unit, (mContext) => {
@@ -164,12 +164,11 @@ export class BoardRenderer {
   }
 
   async render (
-    layers: [Context, Context],
+    layers: [ Context, Context ],
     boardState: Partial<BoardState>,
     forceBackgroundRedraw: boolean = false
   ) {
-    console.log('rendering')
-    const [fg, bg] = layers
+    const [ fg, bg ] = layers
 
     bg.canvas.style.zIndex = "0"
     fg.canvas.style.zIndex = "1"

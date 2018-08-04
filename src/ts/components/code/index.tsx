@@ -6,7 +6,7 @@ import * as utils from "utils"
 
 import { compose, defaultProps, SetStateCallback, withState } from "recompose"
 
-import Button from "components/form/button"
+import Button from "../form/button"
 
 import SyntaxHighlighter from "react-syntax-highlighter/dist/light"
 import github from "react-syntax-highlighter/dist/styles/github"
@@ -63,7 +63,7 @@ const Code = ({
       <SyntaxHighlighter
         className={ mClassName }
         language={ language }
-        style={ styles[style] }
+        style={ styles[ style ] }
         wrapLines={ wrapLines }
       >
         { text }

@@ -3,7 +3,6 @@ import "./index.scss"
 import classnames from "classnames"
 import { chunk, range } from "lodash"
 import React from "react"
-import { compose, defaultProps } from "recompose"
 
 export const LOADER_SPEED_SLOW = 100
 export const LOADER_SPEED_FAST = 50
@@ -19,17 +18,19 @@ interface LoaderState {
 }
 
 class Loader extends React.Component<LoaderProps, LoaderState> {
+  static defaultProps = { sideLength: 4, speed: LOADER_SPEED_SLOW }
+
   timer: number
 
-  state = { tickCount: 0 }
+  state: LoaderState = { tickCount: 0 }
 
-  componentDidMount() {
+  componentDidMount () {
     const { speed } = this.props
 
     this.timer = window.setTimeout(this.tick, speed)
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     if (this.timer) {
       window.clearTimeout(this.timer)
     }
@@ -43,7 +44,7 @@ class Loader extends React.Component<LoaderProps, LoaderState> {
     })
   }
 
-  activeForTickAndPosition(tick: number, rowNumber: number, cellNumber: number) {
+  activeForTickAndPosition (tick: number, rowNumber: number, cellNumber: number) {
     const { sideLength } = this.props
 
     if (tick < sideLength) {
@@ -57,7 +58,7 @@ class Loader extends React.Component<LoaderProps, LoaderState> {
     }
   }
 
-  cellIsActive(rowNumber: number, cellNumber: number) {
+  cellIsActive (rowNumber: number, cellNumber: number) {
     const { sideLength } = this.props
     const { tickCount } = this.state
 
@@ -69,7 +70,7 @@ class Loader extends React.Component<LoaderProps, LoaderState> {
       || this.activeForTickAndPosition(prevTick, rowNumber, cellNumber)
   }
 
-  renderCell(rowNumber: number, cellNumber: number) {
+  renderCell (rowNumber: number, cellNumber: number) {
     const className = classnames("Loader__cell", {
       "Loader__cell--active": this.cellIsActive(rowNumber, cellNumber)
     })
@@ -79,7 +80,7 @@ class Loader extends React.Component<LoaderProps, LoaderState> {
     )
   }
 
-  renderRow(row: number[], rowNumber: number) {
+  renderRow (row: number[], rowNumber: number) {
     return (
       <div className="Loader__row" key={ rowNumber }>
         { row.map((cell, cellNumber) => this.renderCell(rowNumber, cellNumber)) }
@@ -87,7 +88,7 @@ class Loader extends React.Component<LoaderProps, LoaderState> {
     )
   }
 
-  render() {
+  render () {
     const { className, sideLength = 3 } = this.props
 
     const mClassName = classnames("Loader", className)
@@ -102,6 +103,4 @@ class Loader extends React.Component<LoaderProps, LoaderState> {
   }
 }
 
-export default compose<LoaderProps, LoaderProps>(
-  defaultProps({ sideLength: 4, speed: LOADER_SPEED_SLOW })
-)(Loader)
+export default Loader

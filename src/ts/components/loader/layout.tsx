@@ -4,11 +4,9 @@ import React from "react"
 
 import Loader from "."
 
-interface LoaderLayoutProps extends React.Props<any> {
+interface LoaderLayoutProps extends React.AllHTMLAttributes<HTMLDivElement> { }
 
-}
-
-export const LoaderLayout = (props: LoaderLayoutProps) => {
+function LoaderLayout (props: LoaderLayoutProps) {
   return (
     <div className="LoaderLayout">
       <Loader />

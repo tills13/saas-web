@@ -31,7 +31,7 @@ export function fetchWithProgress (
     xhr.open(opts.method || "GET", url)
 
     for (let header in opts.headers || {}) {
-      xhr.setRequestHeader(header, opts.headers[header])
+      xhr.setRequestHeader(header, opts.headers[ header ])
     }
 
     xhr.onload = (event) => resolve((<any> event.target).responseText)
@@ -96,7 +96,7 @@ export const http = {
 
   get: (url: string, params: any = {}): Promise<any> => {
     const query = Object.keys(params)
-      .map((key, index) => `${ encodeURIComponent(key) }=${ encodeURIComponent(params[key]) }`)
+      .map((key, index) => `${ encodeURIComponent(key) }=${ encodeURIComponent(params[ key ]) }`)
       .join("&")
 
     return fetch(`${ BASE_URL }${ url }${ query.length > 0 ? `?${ query }` : "" }`, {
@@ -138,7 +138,7 @@ export const http = {
 
     Map<any, any>(data).map((value, key) => {
       if (value instanceof FileList && (<FileList> value).length > 0) {
-        mData.append(key, value[0])
+        mData.append(key, value[ 0 ])
       } else mData.append(key, value)
     })
 

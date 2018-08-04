@@ -5,8 +5,8 @@ import React from "react"
 import Relay from "react-relay/classic"
 import { compose, SetStateCallback, withState } from "recompose"
 
-import Icon from "components/icon"
-import ProgressBar from "components/progress_bar"
+import Icon from "../../icon"
+import ProgressBar from "../../progress_bar"
 
 import { uploadFile } from "utils/fetch"
 

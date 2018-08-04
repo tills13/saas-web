@@ -1,5 +1,5 @@
 import { Dispatch } from "react-redux"
-import { http } from "../utils/fetch"
+import { http } from "utils/fetch"
 
 export const GET_SNAKES = "GET_SNAKES"
 export const GET_TOP_SNAKES = "GET_TOP_SNAKES"

@@ -2,19 +2,19 @@ import "../styles/style.scss"
 
 import javascript from "highlight.js/lib/languages/javascript"
 import React from "react"
-import ReactDOM from "react-dom"
 import { Resolver } from "found-relay"
+import ReactDOM from "react-dom"
 
-import * as utils from "./utils"
+import * as utils from "utils"
 
 import { Map } from "immutable"
 import { AppContainer } from "react-hot-loader"
 import { Provider } from "react-redux"
 import { registerLanguage } from "react-syntax-highlighter/dist/light"
-import Router from "./router"
-import { store } from "./store"
+import Router from "router"
+import { store } from "store"
 
-import environment from "./relay/environment"
+import environment from "relay/environment"
 
 registerLanguage("javascript", javascript)
 

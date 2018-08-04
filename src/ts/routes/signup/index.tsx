@@ -6,7 +6,7 @@ import Container from "components/container/route_container"
 import Header from "components/header"
 import SignupForm from "forms/signup"
 
-export const Signup = () => {
+function Signup () {
   return (
     <Container className="Signup">
       <Header>

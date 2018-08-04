@@ -3,30 +3,34 @@ import "./index.scss"
 import classnames from "classnames"
 import React from "react"
 
-interface AlertProps extends React.Props<any> {
+export enum AlertType { Danger, Info, Success, Warning }
+
+interface AlertProps extends React.AllHTMLAttributes<HTMLDivElement> {
+  alertType: AlertType
   className?: string
   inline?: boolean
-  type: string
 }
 
-class Alert extends React.Component<AlertProps, any> {
-  static TYPE_SUCCESS = "success"
-  static TYPE_WARNING = "warning"
-  static TYPE_DANGER = "danger"
-  static TYPE_INFO = "info"
-
-  render () {
-    const { children, className, inline, type } = this.props
-    const mClassName = classnames("Alert", `Alert--${ type }`, className, {
-      "Alert--inline": inline
-    })
-
-    return (
-      <div className={ mClassName }>
-        { children }
-      </div>
-    )
+function getAlertTypeName (alertType: AlertType) {
+  switch (alertType) {
+    case AlertType.Danger: return "danger"
+    case AlertType.Info: return "info"
+    case AlertType.Success: return "success"
+    case AlertType.Warning: return "warning"
   }
+}
+
+function Alert ({ alertType, children, className, inline }: AlertProps) {
+  const type = getAlertTypeName(alertType)
+  const mClassName = classnames("Alert", `Alert--${ type }`, className, {
+    "Alert--inline": inline
+  })
+
+  return (
+    <div className={ mClassName }>
+      { children }
+    </div>
+  )
 }
 
 export default Alert

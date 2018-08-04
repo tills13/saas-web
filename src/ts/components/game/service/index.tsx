@@ -2,7 +2,7 @@ import React from "react"
 import { connect } from "react-redux"
 import io from "socket.io-client"
 
-import { RedirectModal } from "components/modal/redirect_modal"
+import { RedirectModal } from "modals/redirect_modal"
 
 import { showModal } from "actions"
 

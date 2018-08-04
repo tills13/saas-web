@@ -1,7 +1,7 @@
 import React from "react"
 
 import { compose, withState } from "recompose"
-import { BaseModal, BaseModalProps } from "../base"
+import { BaseModal, BaseModalProps } from "modals/base"
 
 interface FormModalComponentProps extends BaseModalProps {
   form: React.ComponentClass<any>
@@ -15,7 +15,7 @@ export const FormModal = (props: FormModalComponentProps) => {
     ...formProps
   })
 
-  return <BaseModal content={ mForm } {...rest} />
+  return <BaseModal content={ mForm } { ...rest } />
 }
 
 export default FormModal

@@ -5,12 +5,12 @@ import React from "react"
 import { Stack } from "immutable"
 import { extend } from "lodash"
 import { connect } from "react-redux"
-import { hideModal, showModal } from "../../actions"
+import { hideModal, showModal } from "actions"
 
 export interface ModalOptions {
   preventCloseOnUnfocus?: boolean
   showCloseButton?: boolean
-  [key: string]: any
+  [ key: string ]: any
 }
 
 export interface Modal {
@@ -43,7 +43,7 @@ class ModalManagerComponent extends React.Component<ModalManagerComponentProps, 
     }
   }
 
-  render() {
+  render () {
     const { modals, hideModal } = this.props
 
     if (!modals || modals.size === 0) return null
@@ -67,7 +67,7 @@ class ModalManagerComponent extends React.Component<ModalManagerComponentProps, 
   }
 }
 
-function mapStateToProps(state, props) {
+function mapStateToProps (state, props) {
   return {
     modals: state.modal.get("modals") as Stack<Modal>
   }

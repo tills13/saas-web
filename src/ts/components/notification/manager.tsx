@@ -5,7 +5,7 @@ import React from "react"
 import { connect } from "react-redux"
 import { CSSTransition, TransitionGroup } from "react-transition-group"
 import { compose } from "recompose"
-import { store } from "../../store"
+import { store } from "store"
 
 // console.log(t)
 

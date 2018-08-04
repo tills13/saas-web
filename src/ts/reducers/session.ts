@@ -4,7 +4,7 @@ import {
   LOGIN_COMPLETE_ACTION,
   LOGOUT_COMPLETED_ACTION,
   REGISTER_COMPLETED_ACTION
-} from "../actions/session"
+} from "actions/session"
 
 export interface SessionState {
   currentUser?: Models.User

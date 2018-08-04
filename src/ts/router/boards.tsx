@@ -8,9 +8,9 @@ import {
   Router as ReactRouter
 } from "react-router"
 
-import CreateBoard from "../routes/boards/create"
-import EditBoard from "../routes/boards/edit"
-import Boards from "../routes/boards/list"
+import CreateBoard from "routes/boards/CreateBoard"
+import EditBoard from "routes/boards/edit"
+import Boards from "routes/boards/list"
 
 import RouteContainer from "components/container/route_container"
 

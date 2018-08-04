@@ -3,10 +3,8 @@ import "./index.scss"
 import React from "react"
 import Relay from "react-relay/classic"
 
-import CreateEditDaemonForm from "components/daemon/form"
+import CreateEditDaemonForm from "components/daemon/CreateEditDaemonForm"
 import Header from "components/header"
-
-import createRelayContainer from "components/create_relay_container"
 
 interface EditDaemonProps extends React.Props<any> {
   node: Models.Daemon

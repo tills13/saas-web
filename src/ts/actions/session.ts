@@ -1,8 +1,8 @@
 import { Dispatch } from "react-redux"
 import { ThunkAction } from "redux-thunk"
 
-import { ApplicationState } from "../store"
-import { http } from "../utils/fetch"
+import { ApplicationState } from "store"
+import { http } from "utils/fetch"
 
 export const GET_USER = "GET_USER"
 export const GET_USERS_COMPLETED = "GET_USER"

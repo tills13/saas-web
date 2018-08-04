@@ -19,7 +19,7 @@ interface TextInputOuterProps {
   label?: string
   name?: string
   onBlur?: React.EventHandler<any>
-  onChange?: React.EventHandler<any>
+  onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
   placeholder?: string
   rows?: number
   textarea?: boolean
@@ -28,14 +28,14 @@ interface TextInputOuterProps {
 }
 
 class TextInput extends React.Component<TextInputInnerProps> {
-  renderField() {
+  renderField () {
     const { rows, textarea } = this.props
 
     if (rows || textarea) return this.renderTextArea()
     else return this.renderTextInput()
   }
 
-  renderTextArea() {
+  renderTextArea () {
     const { disabled, id, name, onBlur, onChange, placeholder, rows, value } = this.props
 
     return (
@@ -52,7 +52,7 @@ class TextInput extends React.Component<TextInputInnerProps> {
     )
   }
 
-  renderTextInput() {
+  renderTextInput () {
     const { disabled, id, name, onBlur, onChange, placeholder, type, value } = this.props
 
     return (
@@ -69,7 +69,7 @@ class TextInput extends React.Component<TextInputInnerProps> {
     )
   }
 
-  render() {
+  render () {
     const {
       className,
       containerClassName,

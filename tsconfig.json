@@ -19,7 +19,6 @@
     "paths": {
       "components": [ "components" ],
       "modals/*": [ "components/modal/*" ],
-      "mutations": [ "relay/mutations" ],
       "relay": [ "relay" ],
       "utils": [ "utils" ]
     },

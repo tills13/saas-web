@@ -6,9 +6,9 @@ import Relay from "react-relay/classic"
 import { Link } from "react-router"
 import { compose } from "recompose"
 
-import GameStatusBadge from "components/game/status_badge"
+import GameStatusBadge from "../../game/status_badge"
 
-import createRelayContainer from "components/create_relay_container"
+import createRelayContainer from "../../create_relay_container"
 
 interface SnakeGameListProps {
   snake: Models.Snake

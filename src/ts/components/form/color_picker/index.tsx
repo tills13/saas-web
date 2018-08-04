@@ -6,15 +6,12 @@ import withClickOutside from "react-click-outside"
 import { SketchPicker } from "react-color"
 import { compose, defaultProps, mapProps, SetStateCallback, withState } from "recompose"
 
-import TextInput from "components/form/text_input"
+import TextInput from "../text_input"
 
 interface ColorPickerInnerProps extends React.Props<any>, ColorPickerOuterProps {
   setShowColorPicker: SetStateCallback<boolean>
   showColorPicker: boolean
 }
-
-export type ColorChangeHandler =
-  (newValue: string) => void | React.ChangeEventHandler<any>
 
 interface ColorPickerOuterProps {
   className?: string
@@ -23,7 +20,7 @@ interface ColorPickerOuterProps {
   inputClassName?: string
   label?: string
   name?: string
-  onChange?: ColorChangeHandler
+  onChange?: React.ChangeEventHandler<HTMLInputElement>
   placeholder?: string
   value?: any
 }
@@ -33,8 +30,10 @@ class ColorPicker extends React.Component<ColorPickerInnerProps> {
     this.props.setShowColorPicker(false)
   }
 
-  onChange = ({ hex: newValue }) => {
-    this.props.onChange(newValue)
+  onChange = ({ hex }) => {
+    const { name } = this.props
+
+    // this.props.onChange({ target: { name, value: hex } } as any)
     // this.props.setShowColorPicker(false)
   }
 

@@ -3,7 +3,7 @@ import "./index.scss"
 import classnames from "classnames"
 import React from "react"
 
-import Icon from "components/icon"
+import Icon from "../icon"
 
 export type Option<T = any> = { icon: string | React.ReactElement<any>, key: T, label?: string }
 
@@ -14,7 +14,7 @@ interface ToggleProps<T = any> extends React.Props<any> {
   selectedOption: T
 }
 
-export const Toggle = ({ className, onSelectOption, options, selectedOption }: ToggleProps) => {
+function Toggle ({ className, onSelectOption, options, selectedOption }: ToggleProps) {
   const mClassName = classnames("Toggle", className)
 
   return (

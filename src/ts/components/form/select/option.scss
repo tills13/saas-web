@@ -2,11 +2,15 @@
   display: block;
   flex-direction: row;
 
-  padding: 0px 10px;
-  line-height: 38px;
+  padding: 12.5px 10px;
 
   white-space: nowrap;
   cursor: pointer;
+
+  &.--disabled,
+  &.--selected {
+    color: $font-color-grey;
+  }
 
   > * {
     display: inline-block;
@@ -17,19 +21,16 @@
   }
 }
 
-.SelectOption--disabled,
-.SelectOption--selected {
-  color: $font-color-grey;
-}
-
 .SelectOption__label {
   flex: 1 0 auto;
+  line-height: inherit;
 }
 
 .SelectOption__value {
   flex: 1 1 auto;
   margin-left: 10px;
 
-  font-size: 90%;
+  font-size: .9em;
+  line-height: inherit;
   color: $font-color-grey;
 }

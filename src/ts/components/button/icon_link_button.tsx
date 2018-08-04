@@ -2,8 +2,8 @@ import classnames from "classnames"
 import { Link } from "found"
 import React from "react"
 
-import Button from "components/form/button"
-import Icon from "components/icon"
+import Button from "../form/button"
+import Icon from "../icon"
 import { IconButton, IconButtonProps, OFFSET_FIXES } from "./icon_button"
 import { LinkButtonProps } from "./link_button"
 

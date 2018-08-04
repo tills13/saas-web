@@ -5,33 +5,27 @@ import PropTypes from "prop-types"
 import React from "react"
 import Relay, { createFragmentContainer, graphql } from "react-relay"
 
-import ErrorBoundary from "components/error_boundary"
-import Navigation from "components/navigation"
+import ErrorBoundary from "../error_boundary"
+import Navigation from "../navigation"
 
-import { SetStateCallback, withState } from "recompose"
-
-interface DashboardComponentInnerProps extends DashboardComponentOuterProps {
+interface DashboardComponentProps {
   className?: string
   relay: Relay.RelayProp
-  setCompactNav: SetStateCallback<boolean>
   simpleNavigation: boolean
-  compactNav: boolean
   viewer: GraphQL.Schema.Viewer
-}
-
-interface DashboardComponentOuterProps extends React.Props<any> {
-  simpleNavigation?: boolean
 }
 
 const SCROLL_TOP_THRESHOLD = 62
 
-class Dashboard extends React.Component<DashboardComponentInnerProps, {}> {
+class Dashboard extends React.Component<DashboardComponentProps, { compactNav: boolean }> {
   static childContextTypes = {
     onLogin: PropTypes.func,
     onLogout: PropTypes.func
   }
 
   static defaultProps = { simpleNavigation: true }
+
+  state = { compactNav: false }
 
   node: HTMLElement
 
@@ -43,18 +37,19 @@ class Dashboard extends React.Component<DashboardComponentInnerProps, {}> {
   }
 
   onScroll = (event: React.UIEvent<HTMLElement>) => {
-    const { compactNav, setCompactNav } = this.props
+    const { compactNav } = this.state
     const scrollTop = event.currentTarget.scrollTop
 
     if (compactNav && (scrollTop < SCROLL_TOP_THRESHOLD)) {
-      setCompactNav(false)
+      this.setState({ compactNav: false })
     } else if (!compactNav && (scrollTop > SCROLL_TOP_THRESHOLD)) {
-      setCompactNav(true)
+      this.setState({ compactNav: true })
     }
   }
 
   render () {
-    const { children, className, compactNav, simpleNavigation, viewer } = this.props
+    const { children, className, simpleNavigation, viewer } = this.props
+    const { compactNav } = this.state
     const mClassName = classnames("Dashboard", className)
 
     return (
@@ -75,10 +70,10 @@ class Dashboard extends React.Component<DashboardComponentInnerProps, {}> {
   }
 }
 
-export default createFragmentContainer(
-  withState("compactNav", "setCompactNav", false)(Dashboard),
+export default createFragmentContainer<DashboardComponentProps>(
+  Dashboard,
   graphql`
-    fragment dashboard_viewer on User {
+    fragment Dashboard_viewer on User {
       ...navigation_viewer
     }
   `

@@ -1,9 +1,9 @@
 import { applyMiddleware, compose, createStore } from "redux"
 import { FormStateMap } from "redux-form"
 import { createLogger } from "redux-logger"
-import { reducer } from "./reducers"
-import { ModalState } from "./reducers/modal"
-import { SessionState } from "./reducers/session"
+import { reducer } from "reducers"
+import { ModalState } from "reducers/modal"
+import { SessionState } from "reducers/session"
 
 import thunk from "redux-thunk"
 

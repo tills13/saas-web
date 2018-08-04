@@ -4,9 +4,9 @@ import classnames from "classnames"
 import React from "react"
 import clickOutside from "react-click-outside"
 
-import { find, isArray, isFunction, map } from "lodash"
+import { find, isArray, isFunction, map, isEqual } from "lodash"
 
-import Icon from "components/icon"
+import Icon from "../../icon"
 import Option from "./option"
 import SelectedValue from "./selected_value"
 
@@ -43,6 +43,7 @@ interface SelectOuterProps {
   multiple?: boolean
   name: string,
   onChange?: (newValue: any) => void
+  onSearch?: (term: string) => void
   options: (SelectOption | string)[],
   placeholder?: string
   searchable?: boolean
@@ -52,9 +53,30 @@ interface SelectOuterProps {
   value?: any
 }
 
-class Select extends React.Component<SelectInnerProps, any> {
+interface SelectState {
+  options: SelectOption[]
+  searchTerm?: string
+}
+
+class Select extends React.Component<SelectInnerProps, SelectState> {
   container: HTMLElement
   optionsContainer: HTMLElement
+
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      options: props.options,
+      searchTerm: ""
+    }
+  }
+
+  componentWillUpdate (nextProps: SelectInnerProps) {
+    if (!isEqual(nextProps.options, this.props.options)) {
+      console.log(this.props, nextProps)
+      this.setState({ options: nextProps.options })
+    }
+  }
 
   clearValue = (event?: React.MouseEvent<any>) => {
     const { disabled, setIsOpen } = this.props
@@ -71,6 +93,30 @@ class Select extends React.Component<SelectInnerProps, any> {
     setIsOpen(false)
   }
 
+  onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { onSearch, options: defaultOptions } = this.props
+    const searchTerm = event.target.value
+
+    if (onSearch) {
+      this.setState({ searchTerm }, () => {
+        onSearch(this.state.searchTerm)
+      })
+
+      return
+    }
+
+    const options = (!searchTerm || searchTerm === "")
+      ? defaultOptions
+      : defaultOptions.filter(({ label, value }) => {
+        const mLabel = isFunction(label) ? label(value) : label
+
+        return mLabel.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          value.toLowerCase().includes(searchTerm.toLowerCase())
+      })
+
+    this.setState({ options, searchTerm })
+  }
+
   onScroll = (event: React.UIEvent<HTMLDivElement>) => {
     event.preventDefault()
     event.stopPropagation()
@@ -84,7 +130,7 @@ class Select extends React.Component<SelectInnerProps, any> {
     if (disabled) return
 
     const mValue = multiple && newValue !== null
-      ? [...(value || []), newValue]
+      ? [ ...(value || []), newValue ]
       : newValue
 
     onChange(mValue)
@@ -112,20 +158,20 @@ class Select extends React.Component<SelectInnerProps, any> {
   }
 
   renderOptions () {
-    const { multiple, options, searchTerm, value } = this.props
-
-    const finalOptions = options.filter(({ label, value: mValue }) => {
-      const mLabel = isFunction(label) ? label(mValue) : label
-      return !searchTerm ||
-        mLabel.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        mValue.toLowerCase().includes(searchTerm.toLowerCase())
-    })
+    const { multiple, value } = this.props
+    const { options, searchTerm } = this.state
 
     if (options.length === 0) {
-      return <div className="SelectOption">Nothing here...</div>
+      return (
+        <div className="SelectOption">
+          { searchTerm
+            ? `Nothing found for ${ searchTerm }`
+            : "Nothing here..." }
+        </div>
+      )
     }
 
-    return finalOptions.map(({ label, value: mValue }) => {
+    return options.map(({ label, value: mValue }) => {
       const alreadySelected = multiple && isArray(value)
         ? value.indexOf(mValue) >= 0
         : value === mValue
@@ -144,9 +190,9 @@ class Select extends React.Component<SelectInnerProps, any> {
   }
 
   renderSearch () {
-    const { searchTerm, setSearchTerm, setIsOpen } = this.props
+    const { setIsOpen } = this.props
+    const { searchTerm } = this.state
 
-    const onChange = ({ target }) => setSearchTerm(target.value)
     const onFocus = () => setIsOpen(true)
     const onKeyDown = (event: React.KeyboardEvent<any>) => {
       const keyCode = event.keyCode
@@ -162,7 +208,7 @@ class Select extends React.Component<SelectInnerProps, any> {
         className="Select__search"
         name="search"
         placeholder="Search..."
-        onChange={ onChange }
+        onChange={ this.onSearch }
         onFocus={ onFocus }
         onKeyDown={ onKeyDown }
         value={ searchTerm }
@@ -229,15 +275,15 @@ class Select extends React.Component<SelectInnerProps, any> {
     } = this.props
 
     const mContainerClassName = classnames("Select__container", containerClassName, {
-      "Select__container--inline": inline,
-      "Select__container--up": this.shouldRenderUp(),
-      "Select__container--hasLabel": !!label
+      "--inline": inline,
+      "--up": this.shouldRenderUp(),
+      "--hasLabel": !!label
     })
 
     const mClassName = classnames("Select", className, {
-      "Select--disabled": disabled,
-      "Select--multiple": multiple,
-      "Select--small": small
+      "--disabled": disabled,
+      "--multiple": multiple,
+      "--small": small
     })
 
     return (

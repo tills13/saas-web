@@ -3,12 +3,12 @@ import "./index.scss"
 import React from "react"
 
 import { Link } from "react-router"
-import { BaseModal, BaseModalProps } from "../base"
+import { BaseModal, BaseModalProps } from "modals/base"
 
-import ButtonGroup from "components/button/button_group"
-import LinkButton from "components/button/link_button"
-import Button from "components/form/button"
-import Icon from "components/icon"
+import ButtonGroup from "../../button/button_group"
+import LinkButton from "../../button/link_button"
+import Button from "../../form/button"
+import Icon from "../../icon"
 
 export interface RedirectModalComponentOwnProps {
   game: Models.Game

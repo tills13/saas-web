@@ -3,7 +3,7 @@ import "./index.scss"
 import classnames from "classnames"
 import React from "react"
 
-import Icon from "components/icon"
+import Icon from "../../icon"
 
 export interface BaseModalProps {
   className?: string
@@ -15,7 +15,7 @@ export interface BaseModalProps {
 }
 
 export class BaseModal extends React.Component<BaseModalProps, any> {
-  renderContent() {
+  renderContent () {
     const { content, renderContent } = this.props
 
     if (!(content || renderContent)) {
@@ -28,7 +28,7 @@ export class BaseModal extends React.Component<BaseModalProps, any> {
     })
   }
 
-  renderFooter() {
+  renderFooter () {
     const { renderFooter } = this.props
 
     if (!renderFooter) return null
@@ -39,7 +39,7 @@ export class BaseModal extends React.Component<BaseModalProps, any> {
     }) : null
   }
 
-  renderHeader() {
+  renderHeader () {
     const { renderHeader } = this.props
 
     if (!renderHeader) return null
@@ -50,7 +50,7 @@ export class BaseModal extends React.Component<BaseModalProps, any> {
     }) : null
   }
 
-  render() {
+  render () {
     const { className, close, renderHeader } = this.props
     const mClassName = classnames("Modal", className, {
       "Modal--noHeader": !renderHeader

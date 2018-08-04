@@ -5,7 +5,8 @@ import React from "react"
 import { List } from "immutable"
 import { connect } from "react-redux"
 import { compose } from "recompose"
-import { hideModal, showModal } from "../../actions"
+import { hideModal, showModal } from "actions"
+import Select from "components/form/select"
 
 import Board from "components/board"
 import LinkButton from "components/button/link_button"
@@ -125,10 +126,31 @@ class IndexComponent extends React.Component<IndexComponentProps, IndexComponent
 
   render () {
     const { snakes } = this.state
+    const options = [
+      { label: "1", value: 1 },
+      { label: "2", value: 2 },
+      { label: "3", value: 3 },
+      { label: "4", value: 4 },
+      { label: "5", value: 5 },
+      { label: "6", value: 6 },
+      { label: "7", value: 7 },
+      { label: "8", value: 8 },
+      { label: "9", value: 9 },
+      { label: "0", value: 0 }
+    ].filter(item => !this.state.filter || item.label === this.state.filter)
 
     return (
       <Container className="Index">
         <h3 className="Index__title">Snake as a Service</h3>
+        <Select
+          name="test"
+          onChange={ newValue => this.setState({ value: newValue }) }
+          onSearch={ filter => this.setState({ filter }) }
+          options={ [ ...(this.state.value || []), options ] }
+          value={ this.state.value }
+          searchable
+          multiple
+        />
         <Board
           boardRows={ 11 }
           boardColumns={ 30 }

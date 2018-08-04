@@ -18,7 +18,7 @@ type Application implements Node {
   files(after: String, first: Int, before: String, last: Int): FileConnection
   games(limit: Int, after: Int): PaginatedListType_Game
   medals(after: String, first: Int, before: String, last: Int): MedalConnection
-  snakes(limit: Int, after: Int): PaginatedListType_Snake
+  snakes(after: Int, limit: Int, search: String): PaginatedListType_Snake
   users(after: String, first: Int, before: String, last: Int): UserConnection
   visibilityOptions: [String]
 }

@@ -6,12 +6,12 @@ import Relay from "react-relay/classic"
 import { Link } from "react-router"
 import { branch, compose, renderComponent } from "recompose"
 
-import IconLinkButton from "components/button/icon_link_button"
+import IconLinkButton from "../../button/icon_link_button"
 import Avatar from "components/snake/avatar"
-import Well from "components/well"
+import Well from "../../well"
 import SnakeGamesList from "./game_list"
 
-import createRelayContainer from "components/create_relay_container"
+import createRelayContainer from "../../create_relay_container"
 
 interface SnakeDetailsProps {
   className?: string

@@ -1,7 +1,7 @@
 import * as classnames from "classnames"
 import * as React from "react"
 
-import Icon from "components/icon"
+import Icon from "../icon"
 
 interface SidebarProps {
   className?: string

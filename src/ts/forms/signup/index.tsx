@@ -1,19 +1,18 @@
 import React from "react"
-import Relay from "react-relay/classic"
-import { Field, InjectedFormProps, reduxForm, SubmissionError } from "redux-form"
+import Relay from "react-relay"
 
-import Alert from "components/alert"
+import Alert, { AlertType } from "components/alert"
 import ButtonGroup from "components/button/button_group"
 import Button from "components/form/button"
 import TextInput from "components/form/text_input"
 
 import { CreateUserMutation } from "relay/mutations/user/create"
 
-interface SignupFormProps extends InjectedFormProps {
+interface SignupFormProps {
   onSubmit?: (data: any) => Promise<any>
 }
 
-class SignupForm extends React.Component<SignupFormProps> {
+class SignupForm extends React.Component<any> {
   onSubmit = (data) => {
     const { onSubmit } = this.props
 
@@ -21,49 +20,30 @@ class SignupForm extends React.Component<SignupFormProps> {
       if (onSubmit) return onSubmit(data)
       return data
     }).then(() => {
-      const mutation = new CreateUserMutation(data)
-      Relay.Store.commitUpdate(mutation, {
-        onFailure: () => {
-          throw new SubmissionError({
-            _error: "Something went wrong..."
-          })
-        }
-      })
+      // const mutation = new CreateUserMutation(data)
+      // Relay.Store.commitUpdate(mutation, {
+      //   onFailure: () => {
+
+      //   }
+      // })
     }).catch(err => {
       console.log(err)
       return err
     })
   }
 
-  render() {
+  render () {
     const { error, handleSubmit } = this.props
 
     return (
-      <form className="SignupForm" onSubmit={ handleSubmit(this.onSubmit) }>
-        { error && <Alert type="danger">{ error }</Alert> }
-        <Field
-          label="Username"
-          name="username"
-          component={ TextInput }
-        />
-        <Field
-          label="Email"
-          name="email"
-          type="email"
-          component={ TextInput }
-        />
-        <Field
-          label="Password"
-          name="password"
-          type="password"
-          component={ TextInput }
-        />
-        <Field
-          label="Confirm Password"
-          name="confirmPassword"
-          type="password"
-          component={ TextInput }
-        />
+      <form className="SignupForm" onSubmit={ this.onSubmit }>
+        { error && <Alert alertType={ AlertType.Danger }>{ error }</Alert> }
+
+        <TextInput label="Username" name="username" />
+        <TextInput label="Email" name="email" type="email" />
+        <TextInput label="Password" name="password" type="password" />
+        <TextInput label="Confirm Password" name="confirmPassword" type="password" />
+
         <ButtonGroup className="Signup__footer">
           <Button type="clear" color={ Button.COLOR_RED }>Clear</Button>
           <Button type="submit">Sign Up</Button>
@@ -73,6 +53,4 @@ class SignupForm extends React.Component<SignupFormProps> {
   }
 }
 
-export default reduxForm({
-  form: "SignupForm"
-})(SignupForm)
+export default SignupForm

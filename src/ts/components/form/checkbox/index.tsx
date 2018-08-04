@@ -5,7 +5,7 @@ import React from "react"
 
 import { compose, mapProps } from "recompose"
 
-import Icon from "components/icon"
+import Icon from "../../icon"
 
 interface CheckboxInnerProps extends React.Props<any>, CheckboxOuterProps {
   meta?: any
@@ -19,7 +19,7 @@ interface CheckboxOuterProps {
   input?: any
   label?: string
   name?: string
-  onChange?: React.ChangeEventHandler<any>
+  onChange?: React.ChangeEventHandler<HTMLInputElement>
   value?: any
 }
 

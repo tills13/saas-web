@@ -1,69 +1,36 @@
 import "./index.scss"
 
+import React from "react"
+import { createFragmentContainer, graphql } from "react-relay"
+
 import ButtonGroup from "components/button/button_group"
 import LinkButton from "components/button/link_button"
 import Code from "components/code"
 import Container from "components/container"
-import createContainer from "components/create_relay_container"
 import Checkbox from "components/form/checkbox"
 import FieldGroup from "components/form/field_group"
 import Select from "components/form/select"
 import TextInput from "components/form/text_input"
 import Table from "components/table"
 import Well from "components/well"
-import { PropTypes } from "prop-types"
-import React from "react"
-import Relay from "react-relay/classic"
-import { compose, getContext, SetStateCallback, withState } from "recompose"
-
 import Anchor from "./anchor"
 import Example from "./example"
 import Section from "./section"
 
-interface DocumentationInnerProps {
-  exampleUrl: string
-  isLegacy: boolean
-  selectedSnake?: Models.Snake
-  setExampleUrl: SetStateCallback
-  setIsLegacy: SetStateCallback
-  setSelectedSnake: SetStateCallback
+import { getExampleJson } from "./utils"
+
+interface DocumentationProps {
   viewer: GraphQL.Schema.Viewer
 }
 
-const defaultExampleUrl = "https://battlesnake.sbstn.ca/"
+interface DocumenationState {
+  exampleUrl: string
+  isLegacy: boolean
+  selectedSnake: Models.Snake[ "id" ]
+}
 
-export class Documentation extends React.Component<DocumentationInnerProps, {}> {
-  getExampleJson () {
-    const { isLegacy } = this.props
-
-    let requestJson: any = {
-      gameId: "5ac7cf8b-4b04-476a-b6a6-16bd8c83c048",
-      game_id: "5ac7cf8b-4b04-476a-b6a6-16bd8c83c048",
-      you: "5ac7cf8b-4b04-476a-b6a6-16bd8c83c048",
-      isLegacy,
-      width: 20,
-      height: 20,
-      turn: 1,
-      food: isLegacy ? [[5, 5], [15, 15]] : [{ x: 5, y: 5 }, { x: 10, y: 10 }],
-      gold: isLegacy ? [[10, 10]] : [{ x: 10, y: 10 }],
-      walls: [{ x: 0, y: 0 }],
-      snakes: [{
-        id: "5ac7cf8b-4b04-476a-b6a6-16bd8c83c048",
-        health: 50,
-        health_points: 50,
-        coords: isLegacy ? [[2, 2], [2, 3]] : [{ x: 2, y: 2, color: "white" }, { x: 2, y: 3 }]
-      }]
-    }
-
-    if (!isLegacy) {
-      requestJson["teleporters"] = [
-        { x: 5, y: 15, channel: 1 },
-        { x: 15, y: 5, channel: 1 }
-      ]
-    }
-
-    return requestJson
-  }
+export class Documentation extends React.Component<DocumentationProps, DocumenationState> {
+  state: DocumenationState = { exampleUrl: "https://battlesnake.sbstn.ca/", isLegacy: false, selectedSnake: null }
 
   renderDaemons () {
     const { viewer } = this.props
@@ -95,7 +62,7 @@ export class Documentation extends React.Component<DocumentationInnerProps, {}> 
             </div>
             <div>
               <h4 className="Documentation__title">Request Schema</h4>
-              <Table className="Documentation__table" columns={ ["Field", "Type", "Example"] } striped>
+              <Table className="Documentation__table" columns={ [ "Field", "Type", "Example" ] } striped>
                 <tr>
                   <td colSpan={ 3 }>
                     The <code>Daemon Update</code> endpoint receives almost the same data as the <a href="#move"><code>Move</code></a> endpoint.
@@ -109,7 +76,7 @@ export class Documentation extends React.Component<DocumentationInnerProps, {}> 
               </div>
 
               <h4 className="Documentation__title">Response Schema</h4>
-              <Table className="Documentation__table" columns={ ["Field", "Type", "Example"] } striped>
+              <Table className="Documentation__table" columns={ [ "Field", "Type", "Example" ] } striped>
                 <tr>
                   <td><code>$spawn</code></td>
                   <td>Object</td>
@@ -129,12 +96,12 @@ export class Documentation extends React.Component<DocumentationInnerProps, {}> 
   }
 
   renderBountyCheck () {
-    const { exampleUrl } = this.props
+    const { exampleUrl, isLegacy } = this.state
 
     return (
       <Section>
         <h4 className="Documentation__title">Request Schema</h4>
-        <Table className="Documentation__table" columns={ ["Field", "Type", "Example"] } striped>
+        <Table className="Documentation__table" columns={ [ "Field", "Type", "Example" ] } striped>
           <tr>
             <td colSpan={ 3 }>
               The <code>Check Bounty</code> endpoint receives the same data as the <a href="#move"><code>Move</code></a> endpoint.
@@ -147,7 +114,7 @@ export class Documentation extends React.Component<DocumentationInnerProps, {}> 
         </div>
 
         <h4 className="Documentation__title">Response Schema</h4>
-        <Table className="Documentation__table" columns={ ["Field", "Type", "Example"] } striped>
+        <Table className="Documentation__table" columns={ [ "Field", "Type", "Example" ] } striped>
           <tr>
             <td>continue</td>
             <td>Boolean</td>
@@ -161,18 +128,18 @@ export class Documentation extends React.Component<DocumentationInnerProps, {}> 
         </Table>
 
         <h4 className="Documentation__title">Example</h4>
-        <Example endpoint="bounty/check" data={ this.getExampleJson() } url={ exampleUrl } />
+        <Example endpoint="bounty/check" data={ getExampleJson(isLegacy) } url={ exampleUrl } />
       </Section>
     )
   }
 
   renderMove (bounty = false) {
-    const { exampleUrl, isLegacy } = this.props
+    const { exampleUrl, isLegacy } = this.state
 
     return (
       <Section>
         <h4 className="Documentation__title">Request Schema</h4>
-        <Table className="Documentation__table" columns={ ["Field", "Type", "Example"] } striped>
+        <Table className="Documentation__table" columns={ [ "Field", "Type", "Example" ] } striped>
           <tr>
             <td><code>you</code></td>
             <td>String (UUIDv4)</td>
@@ -247,7 +214,7 @@ export class Documentation extends React.Component<DocumentationInnerProps, {}> 
         </Table>
 
         <h4 className="Documentation__title">Response Schema</h4>
-        <Table className="Documentation__table" columns={ ["Field", "Type", "Example"] } striped>
+        <Table className="Documentation__table" columns={ [ "Field", "Type", "Example" ] } striped>
           <tr>
             <td><code>name</code></td>
             <td>String</td>
@@ -273,13 +240,13 @@ export class Documentation extends React.Component<DocumentationInnerProps, {}> 
         </Table>
 
         <h4 className="Documentation__title">Example</h4>
-        <Example endpoint="move" data={ this.getExampleJson() } url={ exampleUrl } />
+        <Example endpoint="move" data={ getExampleJson(isLegacy) } url={ exampleUrl } />
       </Section>
     )
   }
 
   renderStart () {
-    const { exampleUrl, isLegacy } = this.props
+    const { exampleUrl, isLegacy } = this.state
 
     const requestJson = {
       gameId: "5ac7cf8b-4b04-476a-b6a6-16bd8c83c048",
@@ -291,7 +258,7 @@ export class Documentation extends React.Component<DocumentationInnerProps, {}> 
     return (
       <Section>
         <h4 className="Documentation__title">Request Schema</h4>
-        <Table className="Documentation__table" columns={ ["Field", "Type", "Example"] } striped>
+        <Table className="Documentation__table" columns={ [ "Field", "Type", "Example" ] } striped>
           <tr>
             <td>{ isLegacy ? <code>game_id</code> : <code>gameId</code> }</td>
             <td>String (UUIDv4)</td>
@@ -310,7 +277,7 @@ export class Documentation extends React.Component<DocumentationInnerProps, {}> 
         </Table>
 
         <h4 className="Documentation__title">Response Schema</h4>
-        <Table className="Documentation__table" columns={ ["Field", "Type", "Example"] } striped>
+        <Table className="Documentation__table" columns={ [ "Field", "Type", "Example" ] } striped>
           <tr>
             <td><code>name</code></td>
             <td>String</td>
@@ -350,7 +317,7 @@ export class Documentation extends React.Component<DocumentationInnerProps, {}> 
   }
 
   renderTypes () {
-    const { isLegacy } = this.props
+    const { isLegacy } = this.state
 
     const snakeSchema = isLegacy
       ? `
@@ -435,7 +402,7 @@ export class Documentation extends React.Component<DocumentationInnerProps, {}> 
   }
 
   render () {
-    const { exampleUrl, isLegacy, selectedSnake, setExampleUrl, setIsLegacy, setSelectedSnake } = this.props
+    const { exampleUrl, isLegacy, selectedSnake } = this.state
     const { viewer } = this.props
 
     const onSnakeChanged = (snakeId: string) => {
@@ -443,9 +410,11 @@ export class Documentation extends React.Component<DocumentationInnerProps, {}> 
         ? viewer.snakes.edges.find(({ node: { id } }) => id === snakeId).node
         : null
 
-      setSelectedSnake(snakeId)
-      setIsLegacy(snake && !!snake.apiVersion)
-      setExampleUrl(snake ? snake.url : defaultExampleUrl)
+      this.setState({
+        exampleUrl: snake ? snake.url : "https://battlesnake.sbstn.ca/",
+        isLegacy: snake && !!snake.apiVersion,
+        selectedSnake: snake.id
+      })
     }
 
     const snakes = viewer
@@ -474,8 +443,12 @@ export class Documentation extends React.Component<DocumentationInnerProps, {}> 
                 name="exampleUrl"
                 inlineLabel="Testing URL"
                 value={ exampleUrl }
-                onChange={ ({ target }) => setExampleUrl(target.value) }
-                onBlur={ ({ target }) => setExampleUrl(target.value && target.value.length ? target.value : defaultExampleUrl) }
+                onChange={ ({ target }) => this.setState({ exampleUrl: target.value }) }
+                onBlur={ ({ target }) => this.setState({
+                  exampleUrl: target.value && target.value.length
+                    ? target.value
+                    : "https://battlesnake.sbstn.ca/"
+                }) }
               />
             </FieldGroup>
             <p>
@@ -494,7 +467,7 @@ export class Documentation extends React.Component<DocumentationInnerProps, {}> 
                 name="isLegacy"
                 label={ selectedSnake ? "Automatically set based on selected snake" : "Legacy mode" }
                 checked={ isLegacy }
-                onChange={ (isChecked) => setIsLegacy(isChecked) }
+                onChange={ (isLegacy) => this.setState({ isLegacy: !!isLegacy }) }
               />
             </div>
           </Well>
@@ -541,26 +514,39 @@ export class Documentation extends React.Component<DocumentationInnerProps, {}> 
   }
 }
 
-export default compose<any, any>(
-  createContainer({
-    fragments: {
-      viewer: () => Relay.QL`
-        fragment on User {
-          snakes(first: 10) {
-            edges {
-              node {
-                id
-                name
-                url
-              }
-            }
-          }
+export default createFragmentContainer(
+  Documentation,
+  graphql`
+    fragment documentation_viewer on User {
+      snakes(first: 10) {
+        edges {
+          node { id, name, url }
         }
-      `
+      }
     }
-  }),
-  getContext({ router: PropTypes.object }),
-  withState("exampleUrl", "setExampleUrl", defaultExampleUrl),
-  withState("isLegacy", "setIsLegacy", false),
-  withState("selectedSnake", "setSelectedSnake", null)
-)(Documentation)
+  `
+)
+
+// export default compose<any, any>(
+//   createContainer({
+//     fragments: {
+//       viewer: () => Relay.QL`
+//         fragment on User {
+//           snakes(first: 10) {
+//             edges {
+//               node {
+//                 id
+//                 name
+//                 url
+//               }
+//             }
+//           }
+//         }
+//       `
+//     }
+//   }),
+//   getContext({ router: PropTypes.object }),
+//   withState("exampleUrl", "setExampleUrl", defaultExampleUrl),
+//   withState("isLegacy", "setIsLegacy", false),
+//   withState("selectedSnake", "setSelectedSnake", null)
+// )(Documentation)

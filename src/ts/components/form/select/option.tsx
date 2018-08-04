@@ -17,8 +17,8 @@ interface SelectOptionProps extends SelectOption {
 
 const SelectOption = ({ className, disabled, label, onClick, selected, showValue, value }: SelectOptionProps) => {
   const mClassName = classnames("SelectOption", className, {
-    "SelectOption--disabled": disabled,
-    "SelectOption--selected": selected
+    "--disabled": disabled,
+    "--selected": selected
   })
 
   const mOnClick = !(selected || disabled)

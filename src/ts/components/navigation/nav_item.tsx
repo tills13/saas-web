@@ -5,7 +5,7 @@ import { Link } from "found"
 import React from "react"
 
 
-import Icon from "components/icon"
+import Icon from "../icon"
 
 interface NavItemProps extends React.Props<any> {
   className?: string

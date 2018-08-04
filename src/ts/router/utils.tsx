@@ -1,9 +1,8 @@
+import { RenderArgs } from "found"
 import React from "react"
 
 import LoaderLayout from "components/loader/layout"
 
-export function renderLoading(Component) {
-  return ({ props, routerProps, element }) => {
-    return props ? <Component {...props} /> : <LoaderLayout />
-  }
+export function renderLoading ({ props, Component }: RenderArgs) {
+  return (Component && props) ? <Component { ...props } /> : <LoaderLayout />
 }

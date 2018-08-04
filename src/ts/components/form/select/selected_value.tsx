@@ -2,7 +2,7 @@ import "./selected_value.scss"
 
 import React from "react"
 
-import Icon from "components/icon"
+import Icon from "../../icon"
 
 interface SelectedValueProps extends React.Props<any> {
   label?: string

@@ -3,9 +3,9 @@ import "./index.scss"
 import classnames from "classnames"
 import React from "react"
 
-import ButtonGroup from "components/button/button_group"
-import Button from "components/form/button"
-import { BaseModal, BaseModalProps } from "../base"
+import ButtonGroup from "../../button/button_group"
+import Button from "../../form/button"
+import { BaseModal, BaseModalProps } from "modals/base"
 
 export interface MessageModalProps {
   body: string | JSX.Element
@@ -81,7 +81,7 @@ export class MessageModal extends React.Component<MessageModalProps & BaseModalP
     )
   }
 
-  render() {
+  render () {
     const {
       title, body, primaryButtonText,
       secondaryButtonText, onClickPrimaryButton,

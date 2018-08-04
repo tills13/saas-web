@@ -2,22 +2,20 @@ import "./index.scss"
 
 import classnames from "classnames"
 import React from "react"
-import { compose, defaultProps } from "recompose"
 
-import IconButton from "components/button/icon_button"
-import Select from "components/form/select"
-// import { PaginationProps as PaginationOptionProps } from "./paginate"
+import IconButton from "../button/icon_button"
+import Select from "../form/select"
 
 interface PaginationProps {
   adjustableItemsPerPage?: boolean
   after: number
   className?: string
-  itemsPerPage: number
-  itemsPerPageOptions: number[]
-  onChangeItemsPerPage: (itemsPerPage: number) => void
-  onClickNextPage: () => void
-  onClickPreviousPage: () => void
-  totalItems: number
+  count: number
+  limit: number
+  limitOptions: number[]
+  onChangeLimit: (itemsPerPage: number) => void
+  onClickNextPage: (after: number, limit: number) => void
+  onClickPreviousPage: (after: number, limit: number) => void
 }
 
 class Pagination extends React.Component<PaginationProps, any> {
@@ -25,25 +23,26 @@ class Pagination extends React.Component<PaginationProps, any> {
 
   onClickNextPage = (event: React.MouseEvent<HTMLElement>) => {
     const { onClickNextPage } = this.props
-    onClickNextPage()
+    onClickNextPage(this.props.after, this.props.limit)
   }
 
   onClickPreviousPage = (event: React.MouseEvent<HTMLElement>) => {
     const { onClickPreviousPage } = this.props
-    onClickPreviousPage()
+    onClickPreviousPage(this.props.after, this.props.limit)
   }
 
   renderPageLimitSelect () {
-    const { adjustableItemsPerPage, itemsPerPage, itemsPerPageOptions, onChangeItemsPerPage } = this.props
+    const { adjustableItemsPerPage, limit, limitOptions, onChangeLimit } = this.props
 
     if (!adjustableItemsPerPage) {
-      const options = itemsPerPageOptions.map((value) => ({ label: `${ value }`, value }))
+      const options = limitOptions.map((value) => ({ label: `${ value }`, value }))
+
       return (
         <Select
           name="itemsPerPage"
           options={ options }
-          onChange={ onChangeItemsPerPage }
-          value={ itemsPerPage }
+          onChange={ onChangeLimit }
+          value={ limit }
           clearable={ false }
           inline
           small
@@ -53,7 +52,7 @@ class Pagination extends React.Component<PaginationProps, any> {
   }
 
   render () {
-    const { after, className, itemsPerPage, totalItems } = this.props
+    const { after, className, limit, count } = this.props
     const mClassName = classnames("Pagination", className)
     const mAfter = (after || 0) + 1
 
@@ -64,7 +63,7 @@ class Pagination extends React.Component<PaginationProps, any> {
         </div>
         <div className="Pagination__right">
           <div className="Pagination__total">
-            Showing { mAfter } to { Math.min(mAfter + itemsPerPage, totalItems) } of { totalItems }
+            Showing { mAfter } to { Math.min(mAfter + limit, count) } of { count }
           </div>
           <IconButton
             icon="chevron-left"
@@ -75,7 +74,7 @@ class Pagination extends React.Component<PaginationProps, any> {
           <IconButton
             icon="chevron-right"
             onClick={ this.onClickNextPage }
-            disabled={ Math.min((mAfter - 1) + itemsPerPage, totalItems) >= totalItems }
+            disabled={ Math.min((mAfter - 1) + limit, count) >= count }
           />
         </div>
       </div>

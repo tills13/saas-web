@@ -45,7 +45,7 @@ class FileUpload extends React.Component<FileUploadInnerProps, {}> {
     const { multiple, onChange, onUploadFile, value } = this.props
 
     const mValue = multiple
-      ? [uploadedFile].concat(value)
+      ? [ uploadedFile ].concat(value)
       : uploadedFile
 
     console.log(mValue, uploadedFile)
@@ -120,7 +120,7 @@ class FileUpload extends React.Component<FileUploadInnerProps, {}> {
         let dataTransferFileList = []
 
         for (let index = 0; index < dataTransfer.files.length; index++) {
-          dataTransferFileList.push(dataTransfer.files[index])
+          dataTransferFileList.push(dataTransfer.files[ index ])
         }
 
         return dataTransferFileList
@@ -128,7 +128,7 @@ class FileUpload extends React.Component<FileUploadInnerProps, {}> {
         let dataTransferItemsList = []
 
         for (let index = 0; index < dataTransfer.items.length; index++) {
-          dataTransferItemsList.push(dataTransfer.items[index])
+          dataTransferItemsList.push(dataTransfer.items[ index ])
         }
 
         return dataTransferItemsList
@@ -176,9 +176,9 @@ class FileUpload extends React.Component<FileUploadInnerProps, {}> {
     const { id, multiple, setFiles } = this.props
 
     const onChange = (event) => {
-      const file: TempFile = event.target.files[0]
+      const file: TempFile = event.target.files[ 0 ]
       file.tempId = uniqueId("UploadFile")
-      setFiles([file])
+      setFiles([ file ])
     }
 
     return (
@@ -250,7 +250,7 @@ class FileUpload extends React.Component<FileUploadInnerProps, {}> {
   }
 }
 
-export default compose<any, any>(
+export default compose<FileUploadInnerProps, FileUploadOuterProps>(
   defaultProps({ multiple: false }),
   mapProps(({ input, label, limit, multiple, placeholder, value, ...rest }) => {
     const mValue = input ? input.value : value
@@ -269,6 +269,6 @@ export default compose<any, any>(
   withState("dragActive", "setDragActive", false),
   withState("draggedFiles", "setDraggedFiles", false),
   withState("files", "setFiles", ({ multiple, value }) => {
-    return (!value || isArray(value)) ? value : [value]
+    return (!value || isArray(value)) ? value : [ value ]
   })
 )(FileUpload)

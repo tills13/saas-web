@@ -1,16 +1,9 @@
 @import "reset";
 @import "mdi/materialdesignicons";
 @import "mdi";
-//@import "variables";
-//@import "bootstrap";
-//@import "breakpoint";
-// @import "fa/font-awesome";
-//@import "bootstrap-overrides";
-//@import "node_modules/sass-material-colors/sass/sass-material-colors";
-//@import "routes/routes";
 
 html {
-  font-family: 'VT323', sans-serif;
+  font-family: "VT323", sans-serif;
   color: $font-color-blue;
   letter-spacing: 0.1em;
 

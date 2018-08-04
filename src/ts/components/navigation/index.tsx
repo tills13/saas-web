@@ -7,9 +7,9 @@ import Relay, { createFragmentContainer, graphql } from "react-relay"
 import { CSSTransition, TransitionGroup } from "react-transition-group"
 import { compose, defaultProps, getContext, SetStateCallback, withState } from "recompose"
 
-import Container from "components/container"
-import FormModal from "components/modal/form_modal"
-import LoginForm from "routes/landing/login/form"
+import Container from "../container"
+// import FormModal from "modals/form_modal"
+// import LoginForm from "routes/landing/login/form"
 import NavItem from "./nav_item"
 
 import * as utils from "utils/auth"
@@ -138,8 +138,8 @@ class Navigation extends React.Component<NavigationInnerProps, {}> {
   }
 }
 
-export default createFragmentContainer(
-  compose(
+export default createFragmentContainer<NavigationOuterProps>(
+  compose<any, NavigationOuterProps>(
     defaultProps({ simple: false }),
     withState("mobileMenuExpanded", "setMobileMenuExpanded", false),
     getContext({ onLogin: PropTypes.func, onLogout: PropTypes.func })
