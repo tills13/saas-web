@@ -30,11 +30,8 @@ class ColorPicker extends React.Component<ColorPickerInnerProps> {
     this.props.setShowColorPicker(false)
   }
 
-  onChange = ({ hex }) => {
-    const { name } = this.props
-
-    // this.props.onChange({ target: { name, value: hex } } as any)
-    // this.props.setShowColorPicker(false)
+  onChangeColorPicker = ({ hex }) => {
+    this.props.onChange(hex)
   }
 
   render () {
@@ -74,7 +71,7 @@ class ColorPicker extends React.Component<ColorPickerInnerProps> {
             className="ColorPicker__picker"
             color={ value }
             disableAlpha={ true }
-            onChangeComplete={ this.onChange }
+            onChangeComplete={ this.onChangeColorPicker }
           />
         ) }
       </div>

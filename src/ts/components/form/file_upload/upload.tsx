@@ -75,8 +75,6 @@ class Upload extends React.Component<UploadInnerProps, {}> {
   renderPreview () {
     const { file } = this.props
 
-    console.log(file)
-
     const filePreview = (file as Models.File).url
       ? (file as Models.File).url
       : URL.createObjectURL(file)

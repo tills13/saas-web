@@ -11,21 +11,15 @@ import Header from "components/header"
 import Icon from "components/icon/offset_icon"
 import List from "components/list"
 import Toggle from "components/toggle"
-
-enum ViewMode { List, Quilt }
+import ViewModeToggle, { ViewMode } from "components/ViewModeToggle"
 
 interface ViewDaemonsProps {
   application: GraphQL.Schema.Application
 }
 
 interface ViewDaemonState {
-  currentView: ViewMode
+  viewMode: ViewMode
 }
-
-const viewOptions = [
-  { icon: "view-list", key: ViewMode.List },
-  { icon: "view-quilt", key: ViewMode.Quilt }
-]
 
 export const ViewDaemonsQuery = graphql`
   query ViewDaemonsQuery ($after: Int, $limit: Int) {
@@ -44,7 +38,7 @@ export const ViewDaemonsQuery = graphql`
 `
 
 class ViewDaemons extends React.Component<ViewDaemonsProps, ViewDaemonState> {
-  state = { currentView: ViewMode.List }
+  state: ViewDaemonState = { viewMode: ViewMode.List }
 
   renderQuilt () {
     const { application } = this.props
@@ -65,18 +59,17 @@ class ViewDaemons extends React.Component<ViewDaemonsProps, ViewDaemonState> {
   }
 
   renderHeader () {
-    const { currentView } = this.state
+    const { viewMode } = this.state
 
     return (
       <Header className="Daemons__header">
         <div><h2 className="Header__title">Daemons</h2></div>
         <ButtonGroup>
-          <Toggle
-            options={ viewOptions }
-            onSelectOption={ cv => this.setState({ currentView: cv }) }
-            selectedOption={ currentView }
+          <ViewModeToggle
+            onSelectView={ viewMode => this.setState({ viewMode }) }
+            selectedView={ viewMode }
           />
-          <LinkButton to="daemons/create" fill small>Create Daemon</LinkButton>
+          <LinkButton to="/daemons/create" fill small>Create Daemon</LinkButton>
         </ButtonGroup>
       </Header>
     )
@@ -108,17 +101,15 @@ class ViewDaemons extends React.Component<ViewDaemonsProps, ViewDaemonState> {
   }
 
   render () {
-    const { currentView } = this.state
+    const { viewMode } = this.state
 
     return (
       <div>
         { this.renderHeader() }
         <div className="DaemonsContainer">
-          {
-            currentView === ViewMode.Quilt
-              ? this.renderQuilt()
-              : this.renderList()
-          }
+          { viewMode === ViewMode.Quilt
+            ? this.renderQuilt()
+            : this.renderList() }
         </div>
       </div>
     )

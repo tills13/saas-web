@@ -3,6 +3,8 @@ import React from "react"
 
 import Toggle from "../toggle"
 
+export enum ViewMode { List, Quilt }
+
 interface ViewModeToggleProps<T = ViewMode> extends React.AllHTMLAttributes<HTMLDivElement> {
   className?: string
   onSelectView: (selectedView: T) => void
@@ -10,9 +12,7 @@ interface ViewModeToggleProps<T = ViewMode> extends React.AllHTMLAttributes<HTML
   selectedView: T
 }
 
-export enum ViewMode { List, Quilt }
-
-export const defaultViewOptions = [
+export const defaultViewOptions: ViewModeToggleProps<ViewMode>[ "options" ] = [
   { icon: "view-list", key: ViewMode.List },
   { icon: "view-quilt", key: ViewMode.Quilt }
 ]

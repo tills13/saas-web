@@ -27,7 +27,7 @@ function ViewGames ({ application, pagination }: ViewGamesProps) {
       <Header className="Games__header">
         <div><h2 className="Header__title">Games</h2></div>
         <div>
-          <LinkButton to="games/create" fill small>Create Game</LinkButton>
+          <LinkButton to="/games/create" fill small>Create Game</LinkButton>
         </div>
       </Header>
       <GameList games={ games.items } />

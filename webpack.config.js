@@ -42,7 +42,7 @@ module.exports = {
             options: {
               resources: [
                 "./src/styles/variables.scss",
-                "./src/styles/mixins.scss"
+                "./src/styles/_breakpoint.scss"
               ]
             }
           }

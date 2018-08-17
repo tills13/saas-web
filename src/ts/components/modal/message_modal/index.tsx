@@ -3,17 +3,19 @@ import "./index.scss"
 import classnames from "classnames"
 import React from "react"
 
+import { BaseModal, BaseModalProps } from "modals/base"
 import ButtonGroup from "../../button/button_group"
 import Button from "../../form/button"
-import { BaseModal, BaseModalProps } from "modals/base"
+
+import Color from "enums/Color"
 
 export interface MessageModalProps {
   body: string | JSX.Element
   onClickPrimaryButton?: () => void
   onClickSecondaryButton?: () => void
-  primaryButtonColor?: string
+  primaryButtonColor?: Color
   primaryButtonText?: string
-  secondaryButtonColor?: string
+  secondaryButtonColor?: Color
   secondaryButtonText?: string
   title?: string | JSX.Element
 }
@@ -41,18 +43,21 @@ export class MessageModal extends React.Component<MessageModalProps & BaseModalP
 
   renderActions = () => {
     const {
-      body, primaryButtonColor, primaryButtonText,
-      secondaryButtonColor, secondaryButtonText
+      body,
+      primaryButtonColor,
+      primaryButtonText,
+      secondaryButtonColor,
+      secondaryButtonText
     } = this.props
 
     return (
       <ButtonGroup block>
         { !!secondaryButtonText && (
-          <Button color={ secondaryButtonColor || Button.COLOR_RED } onClick={ this.onClickSecondaryButton } >
+          <Button color={ secondaryButtonColor || Color.Red } onClick={ this.onClickSecondaryButton } >
             { secondaryButtonText }
           </Button>
         ) }
-        <Button color={ primaryButtonColor || Button.COLOR_GREEN } onClick={ this.onClickPrimaryButton } fill>
+        <Button color={ primaryButtonColor || Color.Green } onClick={ this.onClickPrimaryButton } fill>
           { primaryButtonText || "OK" }
         </Button>
       </ButtonGroup>

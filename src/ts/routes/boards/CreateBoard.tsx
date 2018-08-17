@@ -15,7 +15,6 @@ export const CreateBoardQuery = graphql`
 `
 
 function CreateBoard ({ application }: CreateBoardProps) {
-
   return (
     <div className="CreateOrEditBoard">
       <Header className="Boards__header">

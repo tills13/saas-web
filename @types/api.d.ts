@@ -1,4 +1,20 @@
 declare namespace GameAPI {
+  interface BoardState {
+    food: Food[]
+    gold: Gold[]
+    snakes: Snake[]
+    teleport: Teleporter[]
+    walls: Wall[]
+  }
+
+  interface GameState {
+    board: BoardState
+    daemon: Daemon
+    errors: { [ snakeId: string ]: string }
+    turnNumber: number
+    viewers: number
+  }
+
   interface Position {
     x: number
     y: number
@@ -11,7 +27,7 @@ declare namespace GameAPI {
 
   interface Snake extends Colorable {
     coords: (Position & Colorable)[]
-    death: { turn: number, reason: string, killer: Snake["id"] }
+    death: { turn: number, reason: string, killer: Snake[ "id" ] }
     error: string,
     goldCount: number
     head: { url: string }
@@ -36,4 +52,6 @@ declare namespace GameAPI {
     name: string
     message: string
   }
+
+  type Cell = Food | Gold | Teleporter | Wall
 }

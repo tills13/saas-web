@@ -2,13 +2,13 @@ import "./index.scss"
 
 import React from "react"
 
-import { Link } from "react-router"
 import { BaseModal, BaseModalProps } from "modals/base"
-
 import ButtonGroup from "../../button/button_group"
 import LinkButton from "../../button/link_button"
 import Button from "../../form/button"
 import Icon from "../../icon"
+
+import Color from "enums/Color"
 
 export interface RedirectModalComponentOwnProps {
   game: Models.Game
@@ -37,7 +37,7 @@ export class RedirectModal extends React.Component<RedirectModalComponentProps, 
     return (
       <ButtonGroup block>
         <LinkButton
-          color={ Button.COLOR_RED }
+          color={ Color.Red }
           to="/games"
           onClick={ close }
         >

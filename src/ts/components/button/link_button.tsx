@@ -4,7 +4,7 @@ import classnames from "classnames"
 import { Link } from "found"
 import React from "react"
 
-import { ButtonProps, default as Button } from "../form/button"
+import Button, { ButtonProps } from "../form/button"
 
 export interface LinkButtonProps extends ButtonProps {
   to: string

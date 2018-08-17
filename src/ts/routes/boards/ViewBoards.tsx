@@ -53,7 +53,7 @@ class ViewBoards extends React.Component<ViewBoardsProps, ViewBoardsState> {
             onSelectView={ view => this.setState({ currentView: view }) }
             selectedView={ currentView }
           />
-          <LinkButton to="boards/create" fill small>Create Board</LinkButton>
+          <LinkButton to="/boards/create" fill small>Create Board</LinkButton>
         </ButtonGroup>
       </Header>
     )

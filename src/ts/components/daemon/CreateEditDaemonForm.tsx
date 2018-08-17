@@ -1,11 +1,10 @@
 import "./CreateEditDaemonForm.scss"
 
 import classnames from "classnames"
+import { withRouter, WithRouter } from "found"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-
-import { connect } from "react-redux"
-import { compose, mapProps } from "recompose"
+import { compose, withProps } from "recompose"
 
 import Alert, { AlertType } from "../alert"
 import ButtonGroup from "../button/button_group"
@@ -13,61 +12,60 @@ import Button from "../form/button"
 import Select from "../form/select"
 import TextInput from "../form/text_input"
 
-import { enumToSelect, VISIBILITY_PRIVATE, VisibilityEnum } from "relay/enums"
-// import { CreateDaemonMutation, UpdateDaemonMutation } from "relay/mutations"
+import { FormProps, withForm } from "utils/hocs"
 
-import createRelayContainer from "../create_relay_container"
-import { showNotification } from "../notification"
-import { withMutation } from "utils/enhancers"
-import { withForm } from "utils/hocs";
+import { enumToSelect, VISIBILITY_PRIVATE, VisibilityEnum, VISIBILITY_PUBLIC } from "relay/enums"
+import { createDaemon, deleteDaemon, updateDaemon } from "relay/mutations"
 
-interface CreateEditDaemonFormProps {
+import { CreateDaemonMutationResponse } from "../../../__artifacts__/CreateDaemonMutation.graphql"
+import { UpdateDaemonMutationResponse } from "../../../__artifacts__/UpdateDaemonMutation.graphql"
+import { Color } from "enums/Color";
+
+interface CreateEditDaemonFormProps extends WithRouter {
   className?: string
   daemon?: Models.Daemon
 }
 
-class CreateEditDaemonForm extends React.Component<any, {}> {
-  onSubmit = (data: any) => {
-    const { daemon } = this.props
-    // return mutate({ daemonId: daemon ? daemon.id : null, ...data }).then((response) => {
-    //   const mDaemon = daemon
-    //     ? response.updateDaemonMutation.daemon
-    //     : response.createDaemonMutation.daemon
+class CreateEditDaemonForm extends React.Component<CreateEditDaemonFormProps & FormProps> {
+  onClickDelete = () => {
+    const { daemon, router } = this.props
 
-    //   showNotification(`Successfully ${ daemon ? "updated" : "created" } ${ mDaemon.name }`)
-    // }).catch((err) => {
-    //   return new SubmissionError({ _error: "Something went wrong..." })
-    // })
+    return deleteDaemon({ daemonId: daemon.id }).then(_ => {
+      router.push("/daemons")
+    })
+  }
+
+  onSubmit = (_: any, data: any) => {
+    const { daemon } = this.props
+
+    const mutation: Promise<UpdateDaemonMutationResponse | CreateDaemonMutationResponse> = daemon
+      ? updateDaemon({ daemonId: daemon.id, ...data }) : createDaemon(data)
+
+    return mutation
   }
 
   render () {
-    const { className, daemon, error, handleSubmit, pristine, reset } = this.props
+    const { className, daemon, error, field, handleSubmit, pristine, reset } = this.props
     const mClassName = classnames("CreateEditDaemonForm", className)
 
     return (
       <form className={ mClassName } onSubmit={ handleSubmit(this.onSubmit) }>
-        { error && <Alert alertType={ AlertType.Danger }>{ error }</Alert> }
+        { error && <Alert alertType={ AlertType.Danger }>{ error.message || error.name || "something went wrong" }</Alert> }
+
+        <TextInput label="Name" placeholder="name" { ...field("name") } />
+        <TextInput label="URL" placeholder="url" { ...field("url") } />
 
         <TextInput
-          name="name"
-          label="Name"
-          placeholder="name"
-        />
-        <TextInput
-          name="url"
-          label="URL"
-          placeholder="url"
-        />
-        <TextInput
-          name="description"
           label="Description"
           placeholder="description"
           rows={ 5 }
+          { ...field("description") }
         />
+
         <Select
-          name="visibility"
           label="Visibility"
           options={ enumToSelect(VisibilityEnum) }
+          { ...field("visibility") }
         />
 
         <div className="CreateEditDaemonForm__footer">
@@ -78,6 +76,11 @@ class CreateEditDaemonForm extends React.Component<any, {}> {
             <Button onClick={ reset } type="clear">
               { daemon ? "Reset" : "Clear" }
             </Button>
+            { daemon && (
+              <Button color={ Color.Red } onClick={ this.onClickDelete } type="button">
+                Delete
+              </Button>
+            ) }
           </ButtonGroup>
         </div>
       </form >
@@ -85,8 +88,19 @@ class CreateEditDaemonForm extends React.Component<any, {}> {
   }
 }
 
-export default createFragmentContainer(
-  withForm()(CreateEditDaemonForm),
+export default createFragmentContainer<CreateEditDaemonFormProps>(
+  compose<any, CreateEditDaemonFormProps>(
+    withRouter,
+    withProps(({ daemon }: CreateEditDaemonFormProps) => ({
+      initialFormData: {
+        description: daemon ? daemon.description : "",
+        name: daemon ? daemon.name : "",
+        url: daemon ? daemon.url : "",
+        visibility: daemon ? daemon.visibility : VISIBILITY_PUBLIC
+      }
+    })),
+    withForm(),
+  )(CreateEditDaemonForm),
   graphql`
     fragment CreateEditDaemonForm_daemon on Daemon {
       id, name, url, description, visibility

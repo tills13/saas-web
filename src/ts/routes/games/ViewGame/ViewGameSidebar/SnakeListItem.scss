@@ -8,15 +8,25 @@
   }
 }
 
-.SnakeListItem__healthContainer {
-  position: relative;
-  height: 40px;
-  margin-bottom: 10px;
-  padding: 0px 10px;
-  line-height: 40px;
-  background: $color-lighter-grey;
-  border-radius: $border-radius-base;
+.SnakeListItem__info {
+  display: flex;
+
+  .SnakeAvatar { flex: 0; }
+
+  .SnakeListItem__healthContainer {
+    flex: 1;
+
+    position: relative;
+    height: 40px;
+    margin-bottom: 10px;
+    padding: 0px 10px;
+    line-height: 40px;
+    background: $color-lighter-grey;
+    border-radius: $border-radius-base;
+  }
 }
+
+
 
 .SnakeListItem__health {
   position: absolute;

@@ -108,6 +108,20 @@ input DaemonInput {
   visibility: VisibilityEnum!
 }
 
+input DeleteDaemonInput {
+  daemonId: ID
+}
+
+input DeleteDaemonMutationInput {
+  deleteDaemonInput: DeleteDaemonInput
+  clientMutationId: String
+}
+
+type DeleteDaemonMutationPayload {
+  daemonId: ID
+  clientMutationId: String
+}
+
 input DeleteSnakeInput {
   snakeId: ID
 }
@@ -184,9 +198,11 @@ type Game implements Node {
   completedAt: Int
   daemon: Daemon
   devMode: Boolean
+  gameType: GameTypeEnum
   parentGame: Game
+  pinTail: Boolean
   responseTime: Int
-  snakes(after: String, first: Int, before: String, last: Int): SnakeConnection
+  snakes(after: String, first: Int, before: String, last: Int): GameSnakeConnection
   status: GameStatusEnum
   startedAt: Int
   tickRate: Int
@@ -239,6 +255,26 @@ input GameInput {
   visibility: VisibilityEnum!
 }
 
+# A connection to a list of items.
+type GameSnakeConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [GameSnakeEdge]
+  count: Int
+}
+
+# An edge in a connection.
+type GameSnakeEdge {
+  # The item at the end of the edge
+  node: Snake
+
+  # A cursor for use in pagination
+  cursor: String!
+  place: Int
+}
+
 enum GameStatusEnum {
   COMPLETED
   CREATED
@@ -246,6 +282,12 @@ enum GameStatusEnum {
   RESTARTED
   STARTED
   STOPPED
+}
+
+enum GameTypeEnum {
+  CUSTOM
+  PLACEMENT
+  SCORE
 }
 
 input GameUpdateInput {
@@ -326,6 +368,7 @@ type MutationRootType {
   createBoardConfigurationMutation(input: CreateBoardConfigurationMutationInput!): CreateBoardConfigurationMutationPayload
   updateBoardConfigurationMutation(input: UpdateBoardConfigurationMutationInput!): UpdateBoardConfigurationMutationPayload
   createDaemonMutation(input: CreateDaemonMutationInput!): CreateDaemonMutationPayload
+  deleteDaemonMutation(input: DeleteDaemonMutationInput!): DeleteDaemonMutationPayload
   updateDaemonMutation(input: UpdateDaemonMutationInput!): UpdateDaemonMutationPayload
 
   # Initialize a file - returning a signed URL for uploading to
@@ -433,7 +476,7 @@ type Snake implements Node {
   bountyDescription: String
   defaultColor: String
   devUrl: String
-  games(after: String, first: Int, before: String, last: Int): GameConnection
+  games(after: String, first: Int, before: String, last: Int): SnakeGameConnection
   head: File
   isBountySnake: Boolean
   apiVersion: APIVersionEnum
@@ -462,6 +505,26 @@ type SnakeEdge {
 
   # A cursor for use in pagination
   cursor: String!
+}
+
+# A connection to a list of items.
+type SnakeGameConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [SnakeGameEdge]
+  count: Int
+}
+
+# An edge in a connection.
+type SnakeGameEdge {
+  # The item at the end of the edge
+  node: Game
+
+  # A cursor for use in pagination
+  cursor: String!
+  place: Int
 }
 
 input SnakeInput {
@@ -540,10 +603,10 @@ input UpdateSnakeInput {
   snakeId: ID!
   apiVersion: APIVersionEnum!
   defaultColor: String!
-  devUrl: String!
+  devUrl: String
   headId: ID!
   isBountySnake: Boolean!
-  bountyDescription: String!
+  bountyDescription: String
   name: String!
   url: String!
   visibility: VisibilityEnum!

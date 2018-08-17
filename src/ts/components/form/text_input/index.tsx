@@ -15,7 +15,6 @@ interface TextInputOuterProps {
   id?: string
   inline?: boolean
   inlineLabel?: string
-  input?: any
   label?: string
   name?: string
   onBlur?: React.EventHandler<any>
@@ -104,11 +103,10 @@ class TextInput extends React.Component<TextInputInnerProps> {
 }
 
 export default compose<TextInputInnerProps, TextInputOuterProps>(
-  mapProps(({ label, inline, inlineLabel, input, ...rest }: TextInputOuterProps) => {
+  mapProps(({ label, inline, inlineLabel, ...rest }: TextInputOuterProps) => {
     return {
       label: inline || inlineLabel || label,
       inline: inline || inlineLabel,
-      ...input,
       ...rest
     }
   })

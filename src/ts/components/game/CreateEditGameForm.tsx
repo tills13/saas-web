@@ -1,15 +1,12 @@
 import "./CreateEditGameForm.scss"
 
+import { WithRouter, withRouter } from "found"
 import { isArray } from "lodash"
-import { PropTypes } from "prop-types"
 import React from "react"
-import { connect } from "react-redux"
 import { createFragmentContainer, graphql } from "react-relay"
-import { compose, getContext, mapProps } from "recompose"
+import { compose, withProps } from "recompose"
 
-import { showModal } from "actions"
-import { withForm } from "utils/hocs"
-import { ApplicationState } from "store"
+import { FormProps, withForm } from "utils/hocs"
 
 import Alert, { AlertType } from "../alert"
 import Board from "../board"
@@ -31,53 +28,30 @@ import {
   VisibilityEnum
 } from "relay/enums"
 
-import { showErrorNotification, showNotification } from "../notification"
+import { createGame, updateGame } from "relay/mutations"
 
-interface CreateEditGameFormProps {
-  application: GraphQL.Schema.Application
-  formData: any
-  game: Models.Game
-}
+import { CreateGameMutationResponse } from "../../../__artifacts__/CreateGameMutation.graphql"
+import { UpdateGameMutationResponse } from "../../../__artifacts__/UpdateGameMutation.graphql"
 
-interface CreateOrEditGameFormInnerProps extends CreateOrEditGameFormOuterProps {
-  formValues: {
-    boardConfig: Models.Board
-    boardHasGold: boolean
-    boardHasTeleporters: boolean
-    boardHasWalls: boolean
-    devMode: boolean
-    selectedBoardConfig: string
-    selectedSnakes: string[]
-  }
-  mutate: (data: any) => Promise<any>
-  router: any
-  showModal: typeof showModal
-}
-
-interface CreateOrEditGameFormOuterProps {
+interface CreateEditGameFormProps extends WithRouter {
   application: GraphQL.Schema.Application
   game?: GraphQL.Schema.Node<Models.Game>
 }
 
-class CreateOrEditGameForm extends React.Component<CreateEditGameFormProps, any> {
-  handleSubmit = (data: any) => {
-    const { application, game } = this.props
+class CreateEditGameForm extends React.Component<CreateEditGameFormProps & FormProps> {
+  handleSubmit = (_: any, data: any) => {
+    const { application, game, router } = this.props
+    console.log(data)
 
-    // return mutate({
-    //   applicationId: application.id,
-    //   gameId: game ? game.id : null,
-    //   ...data
-    // }).then((response) => {
-    //   const mGame = game
-    //     ? response.updateGameMutation.game
-    //     : response.createGameMutation.game
+    const mutation: Promise<UpdateGameMutationResponse | CreateGameMutationResponse> = game
+      ? updateGame({ gameId: game.id, ...data }) : createGame(data)
 
-    //   showNotification(`Successfully ${ game ? "updated" : "updated" } game`)
+    return mutation.then(response => {
+      const mutationData = (response as UpdateGameMutationResponse).updateGameMutation ||
+        (response as CreateGameMutationResponse).createGameMutation
 
-    //   if (mGame) router.push(`/games/${ mGame.id }/edit`)
-    // }).catch(({ errors }) => {
-    //   showErrorNotification(errors[ 0 ].message, null, { timeout: -1 })
-    // })
+      router.push(`/games/${ mutationData.game.id }/edit`)
+    }).catch(console.log)
   }
 
   showDevModeHelpModal = () => {
@@ -93,7 +67,7 @@ class CreateOrEditGameForm extends React.Component<CreateEditGameFormProps, any>
   }
 
   renderDimensionsFields () {
-    const { formData: { boardConfig } } = this.props
+    const { field, formData: { boardConfig } } = this.props
 
     return (
       <div>
@@ -106,15 +80,15 @@ class CreateOrEditGameForm extends React.Component<CreateEditGameFormProps, any>
         <FieldGroup>
           <TextInput
             label="Board Columns (Width)"
-            name="boardColumns"
             type="number"
             disabled={ !!boardConfig }
+            { ...field("boardColumns") }
           />
           <TextInput
             label="Board Rows (Height)"
-            name="boardRows"
             type="number"
             disabled={ !!boardConfig }
+            { ...field("boardRows") }
           />
         </FieldGroup>
       </div>
@@ -122,60 +96,57 @@ class CreateOrEditGameForm extends React.Component<CreateEditGameFormProps, any>
   }
 
   renderFoodFields () {
+    const { field } = this.props
+
     return (
       <FieldGroup>
         <TextInput
           label="Food Count"
-          name="boardFoodCount"
           type="number"
+          { ...field("boardFoodCount") }
         />
         <Select
           label="Food Spawn Strategy"
-          name="boardFoodStrategy"
           options={ enumToSelect(SpawnStrategyEnum) }
           clearable={ false }
+          { ...field("boardFoodStrategy") }
         />
       </FieldGroup>
     )
   }
 
   renderGoldFields () {
-    const { formData: { boardHasGold } } = this.props
+    const { field, formData: { boardHasGold } } = this.props
 
     return (
       <div>
         <FieldGroup>
-          <Checkbox
-            label="Place Gold"
-            name="boardHasGold"
-            containerClassName="InlineFields__labelOffset"
-          />
           <TextInput
             label="Gold Count"
-            name="boardGoldCount"
             type="number"
             disabled={ !boardHasGold }
+            { ...field("boardGoldCount") }
           />
           <Select
             label="Gold Spawning Strategy"
-            name="boardGoldStrategy"
             options={ enumToSelect(SpawnStrategyEnum) }
             disabled={ !boardHasGold }
             clearable={ false }
+            { ...field("boardGoldStrategy") }
           />
         </FieldGroup>
         <FieldGroup>
           <TextInput
             label="Gold Respawn Timeout"
-            name="boardGoldRespawnTimeout"
             type="number"
             disabled={ !boardHasGold }
+            { ...field("boardGoldRespawnTimeout") }
           />
           <TextInput
             label="Gold Win Threshold"
-            name="boardGoldWinningThreshold"
             type="number"
             disabled={ !boardHasGold }
+            { ...field("boardGoldWinningThreshold") }
           />
         </FieldGroup>
       </div>
@@ -183,7 +154,7 @@ class CreateOrEditGameForm extends React.Component<CreateEditGameFormProps, any>
   }
 
   renderTeleporterFields () {
-    const { formData: { boardHasTeleporters } } = this.props
+    const { field, formData: { boardHasTeleporters } } = this.props
 
     return (
       <FieldGroup>
@@ -191,9 +162,9 @@ class CreateOrEditGameForm extends React.Component<CreateEditGameFormProps, any>
         <div>
           <TextInput
             label="Teleporter Count"
-            name="boardTeleporterCount"
             type="number"
             disabled={ !boardHasTeleporters }
+            { ...field("boardTeleporterCount") }
           />
           <p>* denotes teleporter <i>pairs</i>.</p>
         </div>
@@ -202,29 +173,30 @@ class CreateOrEditGameForm extends React.Component<CreateEditGameFormProps, any>
   }
 
   renderTimingFields () {
+    const { field } = this.props
+
     return (
       <FieldGroup>
         <TextInput
           label="API Response Time (ms)"
-          name="responseTime"
           type="number"
+          { ...field("responseTime") }
         />
         <TextInput
           label="Tick Rate (ms)"
-          name="tickRate"
           type="number"
+          { ...field("tickRate") }
         />
       </FieldGroup>
     )
   }
 
   render () {
-    const { application, error, formData, game, handleSubmit, pristine, reset } = this.props
-    const { boardHasGold, boardHasTeleporters, boardHasWalls, devMode, selectedBoardConfig, selectedSnakes } = formData
+    const { application, error, field, formData, game, handleSubmit, pristine, reset } = this.props
+    const { boardHasGold, boardHasTeleporters, boardHasWalls, selectedBoardConfig, selectedSnakes } = formData
     const { boards, daemons, snakes: { items: snakes } } = application
 
-    const mSelectedSnakes = selectedSnakes && isArray(selectedSnakes)
-      ? selectedSnakes : []
+    const mSelectedSnakes = selectedSnakes && isArray(selectedSnakes) ? selectedSnakes : []
 
     const hasLegacySnake = mSelectedSnakes
       .map((snakeId) => snakes.find(({ id }) => id === snakeId))
@@ -235,8 +207,12 @@ class CreateOrEditGameForm extends React.Component<CreateEditGameFormProps, any>
       ? boards.items.find((boardConfig) => boardConfig.id === selectedBoardConfig)
       : null
 
+    const boardConfigOptions = boards.items.map(boardConfig => ({ label: boardConfig.name, value: boardConfig.id }))
+    const daemonOptions = daemons.items.map(daemon => ({ label: daemon.name, value: daemon.id }))
+    const snakeOptions = snakes.map(snake => ({ label: snake.name, value: snake.id }))
+
     return (
-      <form className="CreateOrEditGameForm" onSubmit={ handleSubmit(this.handleSubmit) }>
+      <form className="CreateEditGameForm" onSubmit={ handleSubmit(this.handleSubmit) }>
         { error && <div className="alert alert-danger">{ error }</div> }
 
         { game && game.status === GameStatusEnum[ "COMPLETED" ] && (
@@ -251,43 +227,22 @@ class CreateOrEditGameForm extends React.Component<CreateEditGameFormProps, any>
           </Alert>
         ) }
 
-        { false && (
-          <div className="alert alert-success">
-            Successfully { game ? "updated" : "created" } your game.
-          </div>
-        ) }
-
         <Select
-          name="snakes"
           label="Snakes"
-          options={ snakes.map((snake) => ({ label: snake.name, value: snake.id })) }
+          options={ snakeOptions }
           searchable
           multiple
+          { ...field("snakes") }
         />
 
-        <FieldGroup>
-          <Checkbox
-            name="devMode"
-            label="Development Mode"
-          />
-          { devMode && (
-            <Alert alertType={ AlertType.Warning } inline>
-              <Icon icon="alert-octagon" onClick={ this.showDevModeHelpModal } /> Dev mode is enabled.
-            </Alert>
-          ) }
-        </FieldGroup>
+        <Checkbox label="Development Mode" { ...field("devMode") } />
 
-        <h5 className="CreateOrEditGameForm__sectionTitle">Board Options</h5>
+        <h5>Board Options</h5>
 
         { this.renderDimensionsFields() }
 
         { false && <FieldGroup label="Board Configuration" labelFor="boardConfiguration">
-          <Select
-            name="boardConfiguration"
-            options={ boards.items.map((boardConfig) => {
-              return { label: boardConfig.name, value: boardConfig.id }
-            }) }
-          />
+          <Select options={ boardConfigOptions } { ...field("boardConfiguration") } />
           <Button
             disabled={ !mSelectedBoardConfig }
             className="InlineFields__labelOffset"
@@ -298,34 +253,36 @@ class CreateOrEditGameForm extends React.Component<CreateEditGameFormProps, any>
         </FieldGroup> }
 
 
-        <h5 className="CreateOrEditGameForm__sectionTitle">Food</h5>
+        <h5>Food</h5>
         { this.renderFoodFields() }
 
-        <h5 className="CreateOrEditGameForm__sectionTitle">Gold</h5>
+        <FieldGroup>
+          <h5>Gold</h5>
+          <Checkbox
+            label="Place Gold"
+            containerClassName="InlineFields__labelOffset"
+            { ...field("boardHasGold") }
+          />
+        </FieldGroup>
+
         { this.renderGoldFields() }
 
-        <h5 className="CreateOrEditGameForm__sectionTitle">Misc.</h5>
+        <h5>Misc.</h5>
         { this.renderTimingFields() }
 
         <Checkbox name="boardHasWalls" label="Place Walls" />
 
-        { false && <FieldGroup>
-          <Select
-            name="daemon"
-            label="Daemon"
-            options={ daemons.items.map((daemon) => {
-              return { label: daemon.name, value: daemon.id }
-            }) }
-          />
+        <FieldGroup>
+          <Select label="Daemon" options={ daemonOptions } { ...field("daemon") } />
           <Select
             label="Visibility"
-            name="visibility"
             options={ enumToSelect(VisibilityEnum) }
             clearable={ false }
+            { ...field("visibility") }
           />
-        </FieldGroup> }
+        </FieldGroup>
 
-        <h5 className="CreateOrEditGameForm__sectionTitle">Teleporters</h5>
+        <h5>Teleporters</h5>
         { this.renderTeleporterFields() }
 
         <ButtonGroup>
@@ -341,8 +298,31 @@ class CreateOrEditGameForm extends React.Component<CreateEditGameFormProps, any>
   }
 }
 
-export default createFragmentContainer(
-  withForm()(CreateOrEditGameForm),
+export default createFragmentContainer<CreateEditGameFormProps>(
+  compose<any, CreateEditGameFormProps>(
+    withRouter,
+    withProps(({ game }: CreateEditGameFormProps) => ({
+      initialFormData: {
+        boardColumns: game ? game.boardColumns : 20,
+        boardConfiguration: game && game.boardConfiguration ? game.boardConfiguration.id : null,
+        boardFoodCount: game ? game.boardFoodCount : 4,
+        boardFoodStrategy: game ? game.boardFoodStrategy : SPAWN_STRATEGY_RANDOM,
+        boardGoldCount: game ? game.boardGoldCount : 1,
+        boardGoldStrategy: game ? game.boardGoldStrategy : SPAWN_STRATEGY_RANDOM,
+        boardGoldRespawnTimeout: game ? game.boardGoldRespawnTimeout : 10000,
+        boardGoldWinningThreshold: game ? game.boardGoldWinningThreshold : 5,
+        boardRows: game ? game.boardRows : 20,
+        boardTeleporterCount: game ? game.boardTeleporterCount : 2,
+        daemon: game && game.daemon ? game.daemon.id : null,
+        devMode: game ? game.devMode : true,
+        responseTime: game ? game.responseTime : 100,
+        snakes: game ? game.snakes.edges.map(({ node: snake }) => snake.id) : null,
+        tickRate: game ? game.tickRate : 100,
+        visibility: game ? game.visibility : VISIBILITY_PRIVATE
+      }
+    })),
+    withForm()
+  )(CreateEditGameForm),
   {
     application: graphql`
       fragment CreateEditGameForm_application on Application {

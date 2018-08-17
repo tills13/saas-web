@@ -10,13 +10,12 @@ interface CreateGameProps {
 
 export const CreateGameQuery = graphql`
   query CreateGameQuery {
-    application {
-      ...CreateEditGameForm_application
-    }
+    application { ...CreateEditGameForm_application }
   }
 `
 
 function CreateGame ({ application }: CreateGameProps) {
+  console.log("here")
   return (
     <div className="CreateOrEditGame">
       <Header className="Games__header">

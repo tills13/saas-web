@@ -20,8 +20,6 @@ export const EditGameQuery = graphql`
 `
 
 function EditGame ({ application, game }: EditGameProps) {
-  console.log(game)
-
   return (
     <div className="EditGame">
       <Header className="Games__header">

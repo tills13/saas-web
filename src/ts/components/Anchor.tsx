@@ -1,9 +1,9 @@
-import "./anchor.scss"
+import "./Anchor.scss"
 
 import classnames from "classnames"
 import React from "react"
 
-import Container from "components/container"
+import Container from "./container"
 
 interface AnchorProps extends React.Props<any> {
   anchor: string

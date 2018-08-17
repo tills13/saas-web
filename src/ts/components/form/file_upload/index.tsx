@@ -48,8 +48,6 @@ class FileUpload extends React.Component<FileUploadInnerProps, {}> {
       ? [ uploadedFile ].concat(value)
       : uploadedFile
 
-    console.log(mValue, uploadedFile)
-
     onUploadFile && onUploadFile(uploadedFile)
     onChange && onChange(mValue)
   }

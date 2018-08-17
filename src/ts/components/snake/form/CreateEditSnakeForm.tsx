@@ -1,8 +1,10 @@
 import "./CreateEditSnakeForm.scss"
 
 import { showModal } from "actions"
+import { WithRouter, withRouter } from "found"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { compose, withProps } from "recompose"
 
 import Alert, { AlertType } from "../../alert"
 import ButtonGroup from "../../button/button_group"
@@ -16,64 +18,46 @@ import TextInput from "../../form/text_input"
 import { MessageModal, MessageModalProps } from "modals/message_modal"
 
 import { enumToSelect, VisibilityEnum } from "relay/enums"
-import { CreateSnakeMutation, DeleteSnakeMutation, UpdateSnakeMutation } from "relay/mutations"
+import { createSnake, deleteSnake, updateSnake, CreateSnakeMutationInput } from "relay/mutations"
 
 import { showNotification } from "../../notification"
-import { withForm } from "utils/hocs"
+import { withForm, FormProps } from "utils/hocs"
 
-interface CreateEditSnakeFormProps {
+import { CreateSnakeMutationResponse } from "../../../../__artifacts__/CreateSnakeMutation.graphql"
+import { UpdateSnakeMutationResponse } from "../../../../__artifacts__/UpdateSnakeMutation.graphql"
+
+import Color from "enums/Color"
+
+interface CreateEditSnakeFormProps extends FormProps, WithRouter {
   formValues: { [ field: string ]: any }
-  router: any
-  showModal: typeof showModal
   snake?: Models.Snake
 }
 
-class CreateEditSnakeForm extends React.Component<any, any> {
+class CreateEditSnakeForm extends React.Component<CreateEditSnakeFormProps, any> {
   handleDelete = () => {
     const { router, snake } = this.props
 
-    const mutation = new DeleteSnakeMutation({
-      snakeId: snake.id
-    })
-
-    // Relay.Store.commitUpdate(mutation, {
-    //   onSuccess: () => router.push("/snakes"),
-    //   onFailure: () => { }
-    // })
+    return deleteSnake({ snakeId: snake.id })
+      .then(() => router.push("/snakes"))
+      .catch(err => console.log(err))
   }
 
-  onSubmit = (event: React.FormEvent, data: any) => {
-    console.log(data)
+  onSubmit = (_: React.FormEvent, { head, ...rest }: any) => {
+    const { router, snake } = this.props
+    const data = { ...rest, headId: head.id }
 
-    return new Promise(resolve => {
-      resolve()
-    })
+    const mutation: Promise<CreateSnakeMutationResponse | UpdateSnakeMutationResponse> = snake
+      ? updateSnake({ snakeId: snake.id, ...data })
+      : createSnake(data)
 
-
-    // const { router, snake } = this.props
-    // const data = { headId: head.id, ...rest }
-
-    // const mutation = snake
-    //   ? new UpdateSnakeMutation({ snakeId: snake.id, ...data })
-    //   : new CreateSnakeMutation(data)
-
-    // return new Promise((resolve, reject) => {
-    //   // Relay.Store.commitUpdate(mutation, {
-    //   //   onSuccess: (mMutation) => {
-    //   //     const mSnake = snake
-    //   //       ? mMutation.updateSnakeMutation.snake
-    //   //       : mMutation.createSnakeMutation.snake
-
-    //   //     showNotification(`Successfully ${ snake ? "updated" : "created" } ${ mSnake.name }`)
-
-    //   //     if (!snake) router.push(`/snakes/${ mSnake.id }/edit`)
-    //   //     resolve()
-    //   //   },
-    //   //   onFailure: (transaction) => {
-    //   //     reject(new SubmissionError({ _error: `unable to ${ snake ? "update" : "create" } snake` }))
-    //   //   }
-    //   // })
-    // })
+    return mutation
+      .then((data) => {
+        if (!snake) {
+          const snakeId = (data as CreateSnakeMutationResponse).createSnakeMutation.snake.id
+          router.push(`/snakes/${ snakeId }/edit`)
+        }
+      })
+      .catch(err => console.log("err", err))
   }
 
   onClickDelete = (event: React.MouseEvent<any>) => {
@@ -93,7 +77,7 @@ class CreateEditSnakeForm extends React.Component<any, any> {
   }
 
   render () {
-    const { error, formData, handleSubmit, onFieldChange, snake } = this.props
+    const { error, field, formData, handleSubmit, snake } = this.props
     const { apiVersion, defaultColor, isBountySnake } = formData
     const apiVersionOptions = [
       { label: "2017", value: "VERSION_2017" },
@@ -105,48 +89,47 @@ class CreateEditSnakeForm extends React.Component<any, any> {
         { error && <div className="alert alert-danger">{ error }</div> }
 
         <FieldGroup>
-          <TextInput label="Name" name="name" onChange={ onFieldChange } placeholder="Name" />
-          <ColorPicker label="Default Color" name="defaultColor" onChange={ onFieldChange("defaultColor") } value={ defaultColor } placeholder="Color" />
+          <TextInput label="Name" placeholder="Name" { ...field("name") } />
+          <ColorPicker label="Default Color" placeholder="Color" { ...field("defaultColor") } />
         </FieldGroup>
 
         <FieldGroup>
-          <TextInput label="URL" name="url" onChange={ onFieldChange } placeholder="URL" />
-          <TextInput label="Dev URL" name="devUrl" onChange={ onFieldChange } placeholder="Development URL" />
+          <TextInput label="URL" placeholder="URL" { ...field("url") } />
+          <TextInput label="Dev URL" placeholder="Development URL" { ...field("devUrl") } />
         </FieldGroup>
 
         <Checkbox
           label="Bounty Snake"
-          name="isBountySnake"
           containerClassName="InlineFields__labelOffset"
+          { ...field("isBountySnake") }
         />
 
         <TextInput
           label="Bounty Description"
-          name="bountyDescription"
           disabled={ !isBountySnake }
           rows={ 4 }
+          { ...field("bountDescriptiony") }
         />
 
         <FileUpload
           label="Head Image"
-          name="head"
           placeholder="Head Image"
           uploadType="snake-head"
           limit={ 1 }
+          { ...field("head") }
         />
 
         <FieldGroup>
           <Select
             containerClassName="InlineFields__labelOffset"
             label="API Version"
-            name="apiVersion"
             options={ apiVersionOptions }
+            { ...field("apiVersion") }
           />
           <Select
             label="Visibility"
-            name="visibility"
             options={ enumToSelect(VisibilityEnum) }
-            clearable={ false }
+            { ...field("visibility") }
           />
         </FieldGroup>
 
@@ -161,7 +144,7 @@ class CreateEditSnakeForm extends React.Component<any, any> {
         <ButtonGroup className="CreateEditSnakeForm__footer">
           <Button>{ snake ? "Update" : "Create" } Snake</Button>
           <Button
-            color={ Button.COLOR_RED }
+            color={ Color.Red }
             disabled={ !snake }
             onClick={ this.onClickDelete }
             type="button"
@@ -175,7 +158,11 @@ class CreateEditSnakeForm extends React.Component<any, any> {
 }
 
 export default createFragmentContainer<any>(
-  withForm()(CreateEditSnakeForm),
+  compose(
+    withRouter,
+    withProps((props: CreateEditSnakeFormProps) => ({ initialFormData: props.snake })),
+    withForm()
+  )(CreateEditSnakeForm),
   graphql`
     fragment CreateEditSnakeForm_snake on Snake {
       id, apiVersion, name, defaultColor, devUrl, url, isBountySnake
@@ -183,51 +170,3 @@ export default createFragmentContainer<any>(
     }
   `
 )
-
-// export default compose<CreateEditSnakeFormInnerProps, CreateEditSnakeFormOuterProps>(
-//   creatRelayContainer({
-//     fragments: {
-//       snake: () => Relay.QL`
-//         fragment on Snake {
-//           id
-//           apiVersion
-//           name
-//           defaultColor
-//           devUrl
-//           url
-//           isBountySnake
-//           bountyDescription
-//           visibility
-
-//           head {
-//             id
-//             name
-//             url
-//           }
-//         }
-//       `
-//     }
-//   }),
-//   connect((state) => ({
-//     formValues: mFormValueSelector(state) || {}
-//   }), { showModal }),
-//   mapProps(({ snake, ...rest }) => {
-//     return {
-//       initialValues: {
-//         apiVersion: snake ? snake.apiVersion : null,
-//         bountyDescription: snake ? snake.bountyDescription : "",
-//         defaultColor: snake ? snake.defaultColor : "#114B5F",
-//         devUrl: snake ? snake.devUrl : "",
-//         head: snake ? snake.head : null,
-//         isBountySnake: snake ? snake.isBountySnake : false,
-//         name: snake ? snake.name : "",
-//         url: snake ? snake.url : "",
-//         visibility: snake ? snake.visibility : "PUBLIC"
-//       },
-//       snake,
-//       ...rest
-//     }
-//   }),
-//   reduxForm({ form: "CreateEditSnakeForm" }),
-//   getContext({ router: PropTypes.object })
-// )(CreateEditSnakeForm)

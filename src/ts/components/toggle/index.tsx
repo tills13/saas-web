@@ -1,11 +1,12 @@
 import "./index.scss"
 
 import classnames from "classnames"
+import { capitalize } from "lodash"
 import React from "react"
 
 import Icon from "../icon"
 
-export type Option<T = any> = { icon: string | React.ReactElement<any>, key: T, label?: string }
+export type Option<T = any> = { icon?: string | React.ReactElement<any>, key: T, label?: string }
 
 interface ToggleProps<T = any> extends React.Props<any> {
   className?: string
@@ -30,8 +31,8 @@ function Toggle ({ className, onSelectOption, options, selectedOption }: ToggleP
             className={ oClassName }
             onClick={ (event) => onSelectOption(option.key) }
           >
-            { typeof option.icon === "string" ? <Icon icon={ option.icon } /> : option.icon }
-            { option.label }
+            { option.icon && (typeof option.icon === "string" ? <Icon icon={ option.icon } /> : option.icon) }
+            { option.label || capitalize(option.key) }
           </div>
         )
       }) }

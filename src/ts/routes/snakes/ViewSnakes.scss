@@ -13,7 +13,9 @@
 }
 
 .SnakeList__list {
+  max-width: 100%;
   flex: 1 0 auto;
+  overflow-x: hidden;
 
   .List {
     padding-bottom: 30px;

@@ -9,15 +9,10 @@
   border-bottom: 2px solid $color-blue;
 
   z-index: 10;
-}
 
-.Navigation--compact:not(.Navigation--expanded) {
-  .Navigation__inner {
-    .NavItem__brand {
-      font-size: 20px;
-    }
-
-    .NavItem {
+  &.--compact:not(.--expanded) {
+    .NavItem, .NavItem__container {
+      height: 40px;
       line-height: 40px;
     }
   }
@@ -28,15 +23,10 @@
   justify-content: space-between;
 }
 
-.Navigation__right {
-
-}
-
 .Navigation__toggle {
   display: none;
-  margin: 0px;
-  margin-right: -20px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
 
   font-size: 24px !important;
   line-height: 40px;

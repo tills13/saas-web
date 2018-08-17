@@ -20,7 +20,8 @@
       "components": [ "components" ],
       "modals/*": [ "components/modal/*" ],
       "relay": [ "relay" ],
-      "utils": [ "utils" ]
+      "utils": [ "utils" ],
+      "__artifacts__": [ "/../__artifacts__" ]
     },
     "preserveConstEnums": true,
     "removeComments": true,

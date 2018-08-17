@@ -55,7 +55,12 @@ $btn-default-color: $brand-primary;
 $btn-default-bg: #fff !default;
 $btn-default-border: $brand-primary;
 
-$screen-size-xs: 320px;
-$screen-size-sm: 480px;
-$screen-size-md: 720px;
-$screen-size-lg: 960px;
+$screen-size-sm: 450px;
+$screen-size-sm-md: 740px;
+$screen-size-md: 1250px;
+
+$desktop-only: $screen-size-md + 1px;
+$tablet-only: $screen-size-sm + 1px $screen-size-md;
+$tablet-down: max-width $screen-size-md;
+$sm-md-down: max-width $screen-size-sm-md;
+$phone-only: max-width $screen-size-sm;

@@ -3,10 +3,12 @@ import "./index.scss"
 import classnames from "classnames"
 import React from "react"
 
-export interface ButtonProps extends React.Props<any> {
+import Color from "enums/Color"
+
+export interface ButtonProps extends React.AllHTMLAttributes<HTMLButtonElement> {
   block?: boolean
   className?: string
-  color?: string
+  color?: Color
   disabled?: boolean
   fill?: boolean
   onClick?: React.MouseEventHandler<HTMLButtonElement>
@@ -15,35 +17,26 @@ export interface ButtonProps extends React.Props<any> {
   type?: string
 }
 
-export class Button extends React.Component<ButtonProps> {
-  public static COLOR_BLUE = "blue"
-  public static COLOR_GREEN = "green"
-  public static COLOR_RED = "red"
+function Button ({ block, children, className, color, disabled, fill, onClick, small, tall, type }: ButtonProps) {
+  const mClassName = classnames("Button", color ? `Button--${ color }` : "Button--default", className, {
+    "Button--block": block,
+    "Button--disabled": disabled,
+    "Button--fill": fill,
+    "Button--small": small,
+    "Button--tall": tall
+  })
 
-  render() {
-    const { block, children, className, color, disabled, fill, onClick, small, tall, type } = this.props
+  const mOnClick = !disabled ? onClick : null
 
-    const mClassName = classnames("Button", color ? `Button--${ color }` : "Button--default", className, {
-      "Button--block": block,
-      "Button--disabled": disabled,
-      "Button--fill": fill,
-      "Button--small": small,
-      "Button--tall": tall
-    })
-
-    const mOnClick = !disabled ? onClick : null
-
-    return (
-      <button
-        className={ mClassName }
-        onClick={ mOnClick }
-        type={ type || "submit" }
-      >
-        { children }
-      </button>
-    )
-  }
+  return (
+    <button
+      className={ mClassName }
+      onClick={ mOnClick }
+      type={ type || "submit" }
+    >
+      { children }
+    </button>
+  )
 }
 
-// export default hoistStatics(Button)
 export default Button

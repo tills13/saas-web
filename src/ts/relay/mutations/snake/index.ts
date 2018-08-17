@@ -1,3 +1,3 @@
-export * from "./create"
-export * from "./delete"
-export * from "./update"
+export * from "./CreateSnake"
+export * from "./DeleteSnake"
+export * from "./UpdateSnake"

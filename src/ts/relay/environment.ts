@@ -1,10 +1,15 @@
 import { Environment, Network, RecordSource, Store } from "relay-runtime"
 
+import { getSessionToken } from "utils/auth"
+
 function fetchQuery (operation, variables, cacheConfig, uploadables) {
   return fetch("/graphql", {
     method: "POST",
     body: JSON.stringify({ query: operation.text, variables }),
-    headers: { "content-type": "application/json" }
+    headers: {
+      "Authorization": getSessionToken(),
+      "Content-Type": "application/json"
+    }
   }).then(response => response.json())
 }
 

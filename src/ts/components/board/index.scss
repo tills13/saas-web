@@ -1,13 +1,23 @@
 .Board {
-  position: relative;
   width: 100%;
 
-  canvas {
-    position: relative;
+  &:not(.--dom) {
+    display: flex;
+    justify-content: center;
+  }
 
-    &:not(:first-child) {
-      position: absolute;
-      left: 0;
+  .Board__container {
+    position: relative;
+    display: inline-block;
+    margin: auto;
+
+    canvas {
+      position: relative;
+
+      &:not(:first-child) {
+        position: absolute;
+        top: 0; left: 0;
+      }
     }
   }
 }

@@ -26,6 +26,7 @@ export default createFragmentContainer(
   GameList,
   graphql`
     fragment GameList_games on Game @relay(plural: true) {
+      id
       ...GameListItem_game
     }
   `

@@ -1,18 +1,14 @@
 import "./index.scss"
 
 import classnames from "classnames"
-import PropTypes from "prop-types"
 import React from "react"
-import Relay, { createFragmentContainer, graphql } from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 import { CSSTransition, TransitionGroup } from "react-transition-group"
-import { compose, defaultProps, getContext, SetStateCallback, withState } from "recompose"
 
 import Container from "../container"
-// import FormModal from "modals/form_modal"
-// import LoginForm from "routes/landing/login/form"
-import NavItem from "./nav_item"
+import NavItem from "./NavItem"
 
-import * as utils from "utils/auth"
+import { logout } from "utils/auth"
 
 const transitionClassNames = {
   appear: "Navigation__mobile--appear",
@@ -23,15 +19,7 @@ const transitionClassNames = {
   exitActive: "Navigation__mobile--exitActive"
 }
 
-interface NavigationInnerProps extends NavigationOuterProps {
-  mobileMenuExpanded: boolean
-  onLogin: () => void
-  onLogout: () => void
-  relay: Relay.RelayProp
-  setMobileMenuExpanded: SetStateCallback<boolean>
-}
-
-interface NavigationOuterProps extends React.Props<any> {
+interface NavigationProps extends React.AllHTMLAttributes<any> {
   className?: string
   compact?: boolean
   onItemClick?: React.MouseEventHandler<HTMLElement>
@@ -39,82 +27,71 @@ interface NavigationOuterProps extends React.Props<any> {
   viewer: GraphQL.Schema.Viewer
 }
 
-class Navigation extends React.Component<NavigationInnerProps, {}> {
-  renderNavItem (className: string, to: string, content, onClick?: React.MouseEventHandler<HTMLElement>, icon?, key?) {
-    const { onItemClick, setMobileMenuExpanded } = this.props
+interface NavigationState {
+  mobileMenuExpanded: boolean
+}
 
-    const mOnItemClick = (event) => {
-      setMobileMenuExpanded(false)
-      onItemClick && onItemClick(event)
-    }
+class Navigation extends React.Component<NavigationProps, NavigationState> {
+  static defaultProps = { simple: false }
 
-    let mOnClick = onClick
-      ? (event: React.MouseEvent<HTMLElement>) => onClick(event) && mOnItemClick(event)
-      : mOnItemClick || onClick
+  state: NavigationState = { mobileMenuExpanded: false }
 
-    return (
-      <NavItem
-        key={ key || to || content }
-        className={ className }
-        to={ to }
-        onClick={ mOnClick }
-        icon={ icon }
-      >
-        { content }
-      </NavItem>
-    )
+  toggleMobileMenu = (_: React.MouseEvent<any>) => {
+    this.setState(({ mobileMenuExpanded }) => ({ mobileMenuExpanded: !mobileMenuExpanded }))
   }
 
   renderLeftNav () {
     return (
       <div className="Navigation__left">
-        { this.renderNavItem("NavItem__brand", "/", "SaaS") }
-        { this.renderNavItem(null, "/games", "Games") }
-        { this.renderNavItem(null, "/snakes", "Snakes") }
-        { false && this.renderNavItem(null, "/leaderboards", "Leaderboards") }
-        { this.renderNavItem(null, "/documentation", "Documentation") }
+        <NavItem className="NavItem__brand" to="/">SaaS</NavItem>
+        <NavItem to="/games" />
+        <NavItem to="/snakes" />
+        <NavItem to="/documentation" />
+        <NavItem overflow={ [ <NavItem to="/daemons" />, <NavItem to="/boards" /> ] }>
+          More
+        </NavItem>
       </div>
     )
   }
 
-  renderRightNav () {
-    const { mobileMenuExpanded, relay, setMobileMenuExpanded, simple, viewer } = this.props
-    const { onLogin: onLoginRegisterSuccess, onLogout } = this.props
+  renderViewerControls () {
+    const { viewer } = this.props
 
-    const renderRightNavContent = () => {
-      if (viewer) {
-        return [
-          this.renderNavItem(null, null, viewer.username, (event) => { }),
-          this.renderNavItem(null, null, "Logout", () => {
-            utils.logout()
-            onLogout()
-          })
-        ]
-      }
-
-      return [
-        this.renderNavItem(null, "/signup", "Sign Up"),
-        this.renderNavItem(null, null, "Login")
-      ]
+    if (!viewer) {
+      return (
+        <React.Fragment>
+          <NavItem to="/login" />
+          <NavItem to="/register" />
+        </React.Fragment>
+      )
     }
+
+    return <NavItem onClick={ _ => logout() }>Logout</NavItem>
+  }
+
+  renderRightNav () {
+    const { viewer } = this.props
+    const { mobileMenuExpanded } = this.state
 
     return (
       <div className="Navigation__right">
+        { this.renderViewerControls() }
         <NavItem
           className="Navigation__toggle"
           icon={ mobileMenuExpanded ? "close" : "menu" }
-          onClick={ () => setMobileMenuExpanded(!mobileMenuExpanded) }
+          onClick={ this.toggleMobileMenu }
         />
-        { !simple && renderRightNavContent() }
       </div>
     )
   }
 
   render () {
-    const { className, compact, mobileMenuExpanded } = this.props
+    const { className, compact } = this.props
+    const { mobileMenuExpanded } = this.state
+
     const mClassName = classnames("Navigation", className, {
-      "Navigation--compact": compact,
-      "Navigation--expanded": mobileMenuExpanded
+      "--compact": compact,
+      "--expanded": mobileMenuExpanded
     })
 
     return (
@@ -138,14 +115,10 @@ class Navigation extends React.Component<NavigationInnerProps, {}> {
   }
 }
 
-export default createFragmentContainer<NavigationOuterProps>(
-  compose<any, NavigationOuterProps>(
-    defaultProps({ simple: false }),
-    withState("mobileMenuExpanded", "setMobileMenuExpanded", false),
-    getContext({ onLogin: PropTypes.func, onLogout: PropTypes.func })
-  )(Navigation),
+export default createFragmentContainer<NavigationProps>(
+  Navigation,
   graphql`
-    fragment navigation_viewer on User {
+    fragment Navigation_viewer on User {
       id, username
     }
   `

@@ -3,7 +3,7 @@ import "./BoardEditor.scss"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import Board, { CellType, BoardRenderer } from "."
+import Board, { BoardRenderer, CellType } from "."
 import Container from "../container"
 import Sidebar from "./BoardEditorSidebar"
 
@@ -174,11 +174,18 @@ class BoardEditor extends React.Component<BoardEditorProps, BoardEditorState> {
   }
 }
 
-export default createFragmentContainer(
+export default createFragmentContainer<BoardEditorProps>(
   BoardEditor,
-  graphql`
-    fragment BoardEditor_application on Application {
-      ...BoardEditorSidebar_application
-    }
-  `
+  {
+    application: graphql`
+      fragment BoardEditor_application on Application {
+        ...BoardEditorSidebar_application
+      }
+    `,
+    board: graphql`
+      fragment BoardEditor_board on BoardConfiguration {
+        configuration
+      }
+    `
+  }
 )

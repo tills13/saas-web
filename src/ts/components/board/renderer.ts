@@ -4,10 +4,10 @@ import { getMovementDirection, DIRECTION } from "./coordinate"
 type Context = CanvasRenderingContext2D
 
 interface BoardRendererOptions {
-  height?: number
-  width?: number
-
+  bgCanvas: HTMLCanvasElement
   colorPallet?: { [ name: string ]: string }
+  dimensions: { width: number, height: number }
+  fgCanvas: HTMLCanvasElement
 }
 
 interface BoardState {
@@ -30,6 +30,11 @@ export class BoardRenderer {
   private height: number
   private width: number
 
+  private bgCanvas: HTMLCanvasElement
+  private bgContext: CanvasRenderingContext2D
+  private fgCanvas: HTMLCanvasElement
+  private fgContext: CanvasRenderingContext2D
+
   private colorPalette: { [ name: string ]: string } = {}
 
   private margin: number = 0.05
@@ -42,16 +47,37 @@ export class BoardRenderer {
 
   private imageCache = new Map<string, HTMLImageElement>()
 
+  private boardState: Partial<BoardState>
+  private timer: any
+
   constructor (opts: BoardRendererOptions) {
     this.colorPalette = opts.colorPallet || DEFAULT_PALETTE
 
-    this.height = opts.height
-    this.width = opts.width
+    this.width = opts.dimensions.width
+    this.height = opts.dimensions.height
+
+    this.bgCanvas = opts.bgCanvas
+    this.fgCanvas = opts.fgCanvas
+
+    this.initializeCanvases()
   }
 
   clearLayer = (context: Context) => {
     const { height, width } = context.canvas
     context.clearRect(0, 0, width, height)
+  }
+
+  initializeCanvases () {
+    this.bgContext = this.bgCanvas.getContext("2d")
+    this.fgContext = this.fgCanvas.getContext("2d")
+
+    this.bgCanvas.style.zIndex = "0"
+    this.fgCanvas.style.zIndex = "1"
+  }
+
+  normalizeLayer = (context: Context) => {
+    this.scaleLayer(context)
+    context.translate(0.5, 0.5)
   }
 
   scaleLayer = (context: Context) => {
@@ -73,9 +99,19 @@ export class BoardRenderer {
     context.translate(this.padding / 2, this.padding / 2)
   }
 
-  resizeCanvas (context: Context) {
-    const canvas = context.canvas
+  updateBoardState (boardState: Partial<BoardState>) {
+    this.boardState = Object.assign(
+      { food: [], gold: [], snakes: [], walls: [] },
+      boardState
+    )
+  }
 
+  start () {
+    this.renderLoop()
+  }
+
+  stop () {
+    clearTimeout(this.timer)
   }
 
   drawGrid = (context: Context, force: boolean) => {
@@ -102,11 +138,7 @@ export class BoardRenderer {
     })
   }
 
-  drawItem = (
-    context: Context,
-    type: "food" | "gold" | "teleporter" | "wall",
-    thing: GameAPI.Food | GameAPI.Gold | GameAPI.Teleporter | GameAPI.Wall
-  ) => {
+  drawItem = (context: Context, type: "food" | "gold" | "teleporter" | "wall", thing: GameAPI.Cell) => {
     context.fillStyle = this.colorPalette[ type ] || DEFAULT_PALETTE[ type ] || "black"
 
     context.beginPath()
@@ -114,8 +146,8 @@ export class BoardRenderer {
     context.fill()
   }
 
-  drawSnake = async (context: Context, boardState: BoardState, snake: GameAPI.Snake) => {
-    const { turnNumber } = boardState
+  drawSnake = (context: Context, snake: GameAPI.Snake) => {
+    const { turnNumber } = this.boardState
     const { death, coords } = snake
 
     if (snake.health <= 0 && death) {
@@ -163,51 +195,28 @@ export class BoardRenderer {
     })
   }
 
-  async render (
-    layers: [ Context, Context ],
-    boardState: Partial<BoardState>,
-    forceBackgroundRedraw: boolean = false
-  ) {
-    const [ fg, bg ] = layers
+  renderLoop = () => {
+    this.render()
+    this.timer = setTimeout(this.renderLoop, 1000 / 60)
+  }
 
-    bg.canvas.style.zIndex = "0"
-    fg.canvas.style.zIndex = "1"
+  render = (forceBackgroundRedraw: boolean = false) => {
+    if (!this.boardState) return
 
-    if (!(fg && bg)) {
-      console.error("no contexts supplied, skipping")
-      return
-    }
-
-    withinContext(bg, this.drawGrid, this.scaleLayer, forceBackgroundRedraw)
-
-    this.clearLayer(fg)
-
-    const food = boardState.food || []
-    const snakes = boardState.snakes || []
-    const walls = boardState.walls || []
-    const gold = boardState.gold || []
-
-    snakes.forEach(makeContext(fg, this.drawSnake, this.scaleLayer, boardState))
-
-    food.forEach(
-      makeContext(fg, this.drawItem, (context) => {
-        this.scaleLayer(context)
-        context.translate(0.5, 0.5)
-      }, "food")
+    withinContext(
+      this.bgContext,
+      this.drawGrid,
+      this.scaleLayer,
+      forceBackgroundRedraw
     )
 
-    gold.forEach(
-      makeContext(fg, this.drawItem, (context) => {
-        this.scaleLayer(context)
-        context.translate(0.5, 0.5)
-      }, "gold")
-    )
+    this.clearLayer(this.fgContext)
 
-    walls.forEach(
-      makeContext(fg, this.drawItem, (context) => {
-        this.scaleLayer(context)
-        context.translate(0.5, 0.5)
-      }, "wall")
-    )
+    const { food, gold, snakes, walls } = this.boardState
+
+    snakes.forEach(makeContext(this.fgContext, this.drawSnake, this.scaleLayer))
+    food.forEach(makeContext(this.fgContext, this.drawItem, this.normalizeLayer, "food"))
+    gold.forEach(makeContext(this.fgContext, this.drawItem, this.normalizeLayer, "gold"))
+    walls.forEach(makeContext(this.fgContext, this.drawItem, this.normalizeLayer, "wall"))
   }
 }

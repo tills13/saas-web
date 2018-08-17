@@ -2,7 +2,7 @@ import React from "react"
 import { connect } from "react-redux"
 import io from "socket.io-client"
 
-import { RedirectModal } from "modals/redirect_modal"
+// import { RedirectModal } from "modals/redirect_modal"
 
 import { showModal } from "actions"
 
@@ -14,15 +14,12 @@ interface WrapperProps {
 
 export interface GameServiceInjectedProps {
   connecting: boolean
-  viewers: number
+  gameState: GameAPI.GameState
 }
 
 export interface WrapperState {
   connecting: boolean
   gameState: any
-  turnLimit: number
-  turnNumber: number
-  viewers: number
 }
 
 export const gameService = () => {
@@ -31,14 +28,12 @@ export const gameService = () => {
       socket: SocketIOClient.Socket
       state: WrapperState = {
         connecting: true,
-        gameState: {},
-        turnNumber: 0,
-        turnLimit: 0,
-        viewers: 0
+        gameState: null
       }
 
       componentDidMount () {
         document.addEventListener("keypress", this.handleKeyPress)
+        this.connect()
       }
 
       componentDidUpdate (prevProps, prevState) {
@@ -66,12 +61,10 @@ export const gameService = () => {
       connect () {
         const { game } = this.props
 
-        this.socket = io.connect(`${ location.origin }`)
+        this.socket = io.connect("localhost:3001")
 
-        // this.socket.on("message", this.handleMessage)
         this.socket.on("redirect", this.handleRedirect)
         this.socket.on("update", this.handleUpdate)
-        this.socket.on("viewer_count", (viewers) => this.setState({ viewers }))
 
         return new Promise((resolve, reject) => {
           this.socket.on("connect", () => {
@@ -104,21 +97,15 @@ export const gameService = () => {
       handleRedirect = (redirect) => {
         const { game, showModal } = this.props
 
-        showModal(RedirectModal, {
-          childGame: redirect,
-          game
-        })
+        // showModal(RedirectModal, {
+        //   childGame: redirect,
+        //   game
+        // })
       }
 
-      handleUpdate = (update) => {
-        const { turn } = update
-
-        this.setState({ gameState: update })
-      }
+      handleUpdate = (update) => this.setState({ gameState: update })
 
       render () {
-        const { game } = this.props
-
         return (
           <Component
             { ...this.state }

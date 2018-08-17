@@ -1,18 +1,19 @@
-import "./snake_list_item.scss"
+import "./SnakeListItem.scss"
 
 import classnames from "classnames"
+import { range } from "lodash"
 import React from "react"
+import { createFragmentContainer, graphql } from "react-relay"
 
-import { Range } from "immutable"
+import SnakeAvatar from "components/snake/SnakeAvatar"
 
 interface SnakeListItemProps {
-  snake: GameAPI.Snake
+  snake: GameAPI.Snake & Models.Snake
 }
 
-const SnakeListItem = ({ snake }: SnakeListItemProps) => {
-  const mClassName = classnames("SnakeListItem", {
-    "--dead": snake.health === 0
-  })
+function SnakeListItem ({ snake }: SnakeListItemProps) {
+  const mClassName = classnames("SnakeListItem", { "--dead": snake.health === 0 })
+  console.log(snake)
 
   const style = {
     width: `${ snake.health || 100 }%`,
@@ -22,17 +23,17 @@ const SnakeListItem = ({ snake }: SnakeListItemProps) => {
   return (
     <div className={ mClassName }>
       <div className="SnakeListItem__info">
-        <img src={ snake.head ? snake.head.url : null } />
+        <SnakeAvatar snake={ snake } />
         <div className="SnakeListItem__healthContainer">
           <div className="SnakeListItem__health" style={ style } />
-          <div className="SnakeListItem__snakeInfo">{ snake.name } ({ snake.health || 100 })</div>
+          <div className="SnakeListItem__snakeInfo">
+            { snake.name } ({ snake.health || 100 })
+          </div>
         </div>
       </div>
       { snake.goldCount > 0 && (
         <div className="SnakeListItem__goldContainer">
-          { Range(0, snake.goldCount).map((index) => {
-            return <span className="SnakeListItem__gold" key={ index } />
-          }) }
+          { range(0, snake.goldCount).map((index) => <span key={ index } />) }
         </div>
       ) }
       <div className="SnakeListItem__taunt">
@@ -47,4 +48,12 @@ const SnakeListItem = ({ snake }: SnakeListItemProps) => {
   )
 }
 
-export default SnakeListItem
+export default createFragmentContainer(
+  SnakeListItem,
+  graphql`
+    fragment SnakeListItem_snake on Snake {
+      name
+      ...SnakeAvatar_snake
+    }
+  `
+)

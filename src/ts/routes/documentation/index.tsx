@@ -3,6 +3,7 @@ import "./index.scss"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
+import Anchor from "components/Anchor"
 import ButtonGroup from "components/button/button_group"
 import LinkButton from "components/button/link_button"
 import Code from "components/code"
@@ -13,7 +14,6 @@ import Select from "components/form/select"
 import TextInput from "components/form/text_input"
 import Table from "components/table"
 import Well from "components/well"
-import Anchor from "./anchor"
 import Example from "./example"
 import Section from "./section"
 
@@ -28,6 +28,18 @@ interface DocumenationState {
   isLegacy: boolean
   selectedSnake: Models.Snake[ "id" ]
 }
+
+export const DocumenationQuery = graphql`
+  query DocumentationQuery {
+    viewer {
+      snakes(first: 10) {
+        edges {
+          node { id, name, url }
+        }
+      }
+    }
+  }
+`
 
 export class Documentation extends React.Component<DocumentationProps, DocumenationState> {
   state: DocumenationState = { exampleUrl: "https://battlesnake.sbstn.ca/", isLegacy: false, selectedSnake: null }
@@ -514,39 +526,4 @@ export class Documentation extends React.Component<DocumentationProps, Documenat
   }
 }
 
-export default createFragmentContainer(
-  Documentation,
-  graphql`
-    fragment documentation_viewer on User {
-      snakes(first: 10) {
-        edges {
-          node { id, name, url }
-        }
-      }
-    }
-  `
-)
-
-// export default compose<any, any>(
-//   createContainer({
-//     fragments: {
-//       viewer: () => Relay.QL`
-//         fragment on User {
-//           snakes(first: 10) {
-//             edges {
-//               node {
-//                 id
-//                 name
-//                 url
-//               }
-//             }
-//           }
-//         }
-//       `
-//     }
-//   }),
-//   getContext({ router: PropTypes.object }),
-//   withState("exampleUrl", "setExampleUrl", defaultExampleUrl),
-//   withState("isLegacy", "setIsLegacy", false),
-//   withState("selectedSnake", "setSelectedSnake", null)
-// )(Documentation)
+export default Documentation

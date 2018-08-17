@@ -98,20 +98,23 @@ declare namespace Models {
 
   export interface Snake {
     id: string
+    apiVersion: "VERSION_2017" | "VERSION_2018"
     bountyDescription: string
     createdAt: number
     defaultColor: string
     deletedAt: number
+    devUrl: string
     games: GraphQL.Schema.GraphConnection<Game, { place: number }>
     head: File
     isBountySnake: boolean
     lastCheckedAt: number
     lastSuccessfullyCheckedAt: number
-    apiVersion: "VERSION_2017" | "VERSION_2018"
     name: string
+    realId: string
     owner: User
     updatedAt: number
     url: string
+    visibility: VisibilityType
   }
 
   export interface User {

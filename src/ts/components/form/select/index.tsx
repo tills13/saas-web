@@ -62,6 +62,11 @@ class Select extends React.Component<SelectInnerProps, SelectState> {
   container: HTMLElement
   optionsContainer: HTMLElement
 
+  static defaultProps = {
+    emptyLabel: "Select a Value",
+    clearable: false
+  }
+
   constructor (props) {
     super(props)
 
@@ -73,7 +78,6 @@ class Select extends React.Component<SelectInnerProps, SelectState> {
 
   componentWillUpdate (nextProps: SelectInnerProps) {
     if (!isEqual(nextProps.options, this.props.options)) {
-      console.log(this.props, nextProps)
       this.setState({ options: nextProps.options })
     }
   }
@@ -327,10 +331,6 @@ class Select extends React.Component<SelectInnerProps, SelectState> {
 }
 
 export default compose<SelectInnerProps, SelectOuterProps>(
-  defaultProps({
-    emptyLabel: "Select a Value",
-    clearable: true
-  }),
   mapProps(({ inline, inlineLabel, input, label, multiple, options, value, ...rest }: SelectOuterProps) => {
     const mValue = input ? input.value : value
     const mOptions = options.map(option => {
