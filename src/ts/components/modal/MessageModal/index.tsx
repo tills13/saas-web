@@ -3,11 +3,12 @@ import "./index.scss"
 import classnames from "classnames"
 import React from "react"
 
-import { BaseModal, BaseModalProps } from "modals/base"
 import ButtonGroup from "../../button/button_group"
 import Button from "../../form/button"
+import BaseModal, { BaseModalProps } from "../BaseModal"
 
 import Color from "enums/Color"
+import Modal from "..";
 
 export interface MessageModalProps {
   body: string | JSX.Element
@@ -20,7 +21,7 @@ export interface MessageModalProps {
   title?: string | JSX.Element
 }
 
-export class MessageModal extends React.Component<MessageModalProps & BaseModalProps, any> {
+class MessageModal extends React.Component<MessageModalProps & BaseModalProps, any> {
   onClickPrimaryButton = () => {
     const { close, onClickPrimaryButton } = this.props
 
@@ -94,13 +95,11 @@ export class MessageModal extends React.Component<MessageModalProps & BaseModalP
     } = this.props
 
     return (
-      <BaseModal
-        className="MessageModal"
-        renderContent={ this.renderContent }
-        renderFooter={ this.renderActions }
-        renderHeader={ this.renderHeader }
-        { ...rest }
-      />
+      <Modal className="MessageModal">
+
+      </Modal>
     )
   }
 }
+
+export default MessageModal as React.ComponentClass<MessageModalProps>

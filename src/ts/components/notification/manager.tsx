@@ -1,13 +1,7 @@
 import "./manager.scss"
 
-import { CLEAR_NOTIFICATION } from "actions"
 import React from "react"
-import { connect } from "react-redux"
 import { CSSTransition, TransitionGroup } from "react-transition-group"
-import { compose } from "recompose"
-import { store } from "store"
-
-// console.log(t)
 
 import Notification from "./notification"
 
@@ -25,15 +19,15 @@ const transitionClassNames = {
 }
 
 class NotificationManager extends React.Component<NotificationManagerProps> {
-  renderNotification() {
+  renderNotification () {
     const { notifications } = this.props
 
     return notifications.reverse().map((notification, index) => {
       const clearNotification = () => {
-        store.dispatch({
-          type: CLEAR_NOTIFICATION,
-          notificationId: notification.id
-        })
+        // store.dispatch({
+        //   type: CLEAR_NOTIFICATION,
+        //   notificationId: notification.id
+        // })
       }
 
       return (
@@ -43,7 +37,7 @@ class NotificationManager extends React.Component<NotificationManagerProps> {
           timeout={ 500 }
         >
           <Notification
-            {...notification}
+            { ...notification }
             clear={ clearNotification }
           />
         </CSSTransition>
@@ -51,7 +45,7 @@ class NotificationManager extends React.Component<NotificationManagerProps> {
     })
   }
 
-  render() {
+  render () {
     const { notifications } = this.props
 
     return (
@@ -64,6 +58,4 @@ class NotificationManager extends React.Component<NotificationManagerProps> {
   }
 }
 
-export default connect<any, any, any>((state) => {
-  return { notifications: state.notification.get("notifications") }
-})(NotificationManager)
+export default NotificationManager

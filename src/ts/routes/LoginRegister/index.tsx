@@ -17,7 +17,9 @@ import { FormProps, withForm } from "utils/hocs"
 
 export enum Mode { Login = "login", Register = "register" }
 
-interface LoginRegisterProps extends FormProps, WithRouter { }
+interface LoginRegisterProps extends FormProps, WithRouter {
+  mode: "login" | "register"
+}
 
 interface LoginRegisterState {
   mode: Mode
@@ -31,10 +33,10 @@ const toggleOptions: ToggleOption[] = [
 class LoginRegister extends React.Component<LoginRegisterProps, LoginRegisterState> {
   static defaultProps = { mode: Mode.Register }
 
-  constructor (props) {
+  constructor (props: LoginRegisterProps) {
     super(props)
 
-    this.state = { mode: props.mode }
+    this.state = { mode: props.mode as Mode }
   }
 
   onChangeMode = (newMode: Mode) => {

@@ -1,10 +1,7 @@
 import React from "react"
-import { connect } from "react-redux"
 import io from "socket.io-client"
 
 // import { RedirectModal } from "modals/redirect_modal"
-
-import { showModal } from "actions"
 
 interface WrapperProps {
   game: Models.Game
@@ -24,7 +21,7 @@ export interface WrapperState {
 
 export const gameService = () => {
   return (Component: React.ComponentType<any>) => {
-    class GameServiceWrapper extends React.Component<WrapperProps, WrapperState> {
+    return class GameServiceWrapper extends React.Component<WrapperProps, WrapperState> {
       socket: SocketIOClient.Socket
       state: WrapperState = {
         connecting: true,
@@ -114,8 +111,6 @@ export const gameService = () => {
         )
       }
     }
-
-    return connect(null, { showModal })(GameServiceWrapper)
   }
 }
 

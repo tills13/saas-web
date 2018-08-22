@@ -15,25 +15,32 @@ import FieldGroup from "../../form/field_group"
 import FileUpload from "../../form/file_upload"
 import Select from "../../form/select"
 import TextInput from "../../form/text_input"
-import { MessageModal, MessageModalProps } from "modals/message_modal"
+import MessageModal from "../../Modal/MessageModal"
 
-import { enumToSelect, VisibilityEnum } from "relay/enums"
-import { createSnake, deleteSnake, updateSnake, CreateSnakeMutationInput } from "relay/mutations"
+import { enumToSelect, VISIBILITY_PUBLIC, VisibilityEnum } from "relay/enums"
+import { createSnake, CreateSnakeMutationInput, deleteSnake, updateSnake } from "relay/mutations"
 
+import { FormProps, withForm } from "utils/hocs"
 import { showNotification } from "../../notification"
-import { withForm, FormProps } from "utils/hocs"
 
 import { CreateSnakeMutationResponse } from "../../../../__artifacts__/CreateSnakeMutation.graphql"
 import { UpdateSnakeMutationResponse } from "../../../../__artifacts__/UpdateSnakeMutation.graphql"
 
 import Color from "enums/Color"
+import Modal from "../../Modal";
 
 interface CreateEditSnakeFormProps extends FormProps, WithRouter {
   formValues: { [ field: string ]: any }
   snake?: Models.Snake
 }
 
-class CreateEditSnakeForm extends React.Component<CreateEditSnakeFormProps, any> {
+interface CreateEditSnakeFormState {
+  showDeleteModal: boolean
+}
+
+class CreateEditSnakeForm extends React.Component<CreateEditSnakeFormProps, CreateEditSnakeFormState> {
+  state: CreateEditSnakeFormState = { showDeleteModal: false }
+
   handleDelete = () => {
     const { router, snake } = this.props
 
@@ -60,25 +67,14 @@ class CreateEditSnakeForm extends React.Component<CreateEditSnakeFormProps, any>
       .catch(err => console.log("err", err))
   }
 
-  onClickDelete = (event: React.MouseEvent<any>) => {
-    const { snake } = this.props
-
-    event.stopPropagation()
-
-    // this.props.showModal<MessageModalProps>(MessageModal, {
-    //   body: `Are you sure you want to delete ${ snake.name }?`,
-    //   onClickPrimaryButton: this.handleDelete,
-    //   primaryButtonColor: Button.COLOR_RED,
-    //   primaryButtonText: `Delete ${ snake.name }`,
-    //   secondaryButtonColor: Button.COLOR_GREEN,
-    //   secondaryButtonText: "Cancel",
-    //   title: `Delete Snake?`
-    // })
+  onClickDelete = (_: React.MouseEvent<any>) => {
+    this.setState({ showDeleteModal: true })
   }
 
   render () {
     const { error, field, formData, handleSubmit, snake } = this.props
-    const { apiVersion, defaultColor, isBountySnake } = formData
+    const { showDeleteModal } = this.state
+    const { apiVersion, isBountySnake } = formData
     const apiVersionOptions = [
       { label: "2017", value: "VERSION_2017" },
       { label: "2018", value: "VERSION_2018" }
@@ -122,8 +118,9 @@ class CreateEditSnakeForm extends React.Component<CreateEditSnakeFormProps, any>
         <FieldGroup>
           <Select
             containerClassName="InlineFields__labelOffset"
-            label="API Version"
+            label="BattleSnake API Version"
             options={ apiVersionOptions }
+            clearable
             { ...field("apiVersion") }
           />
           <Select
@@ -139,6 +136,20 @@ class CreateEditSnakeForm extends React.Component<CreateEditSnakeFormProps, any>
             It is recommend that you update your snake to support SaaS specific features
             such as teleporters, wrapping edges (coming soon), and gold.
           </Alert>
+        ) }
+
+        { showDeleteModal && (
+          <Modal className="MessageModal">
+            <MessageModal
+              body={ `Are you sure you want to delete ${ snake.name }?` }
+              onClickPrimaryButton={ this.handleDelete }
+              primaryButtonColor={ Color.Red }
+              primaryButtonText={ `Delete ${ snake.name }` }
+              secondaryButtonColor={ Color.Green }
+              secondaryButtonText="Cancel"
+              title="`Delete Snake?"
+            />
+          </Modal>
         ) }
 
         <ButtonGroup className="CreateEditSnakeForm__footer">
@@ -160,13 +171,20 @@ class CreateEditSnakeForm extends React.Component<CreateEditSnakeFormProps, any>
 export default createFragmentContainer<any>(
   compose(
     withRouter,
-    withProps((props: CreateEditSnakeFormProps) => ({ initialFormData: props.snake })),
+    withProps((props: CreateEditSnakeFormProps) => ({
+      initialFormData: {
+        apiVersion: "VERSION_2018",
+        defaultColor: "#BADA55",
+        visibility: VISIBILITY_PUBLIC,
+        ...props.snake
+      }
+    })),
     withForm()
   )(CreateEditSnakeForm),
   graphql`
-    fragment CreateEditSnakeForm_snake on Snake {
-      id, apiVersion, name, defaultColor, devUrl, url, isBountySnake
+            fragment CreateEditSnakeForm_snake on Snake {
+              id, apiVersion, name, defaultColor, devUrl, url, isBountySnake
       bountyDescription, visibility, head { id, name, url }
-    }
-  `
+          }
+        `
 )

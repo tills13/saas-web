@@ -8,13 +8,13 @@ import Icon from "../../icon"
 export interface BaseModalProps {
   className?: string
   close: () => void
-  content?: JSX.Element // React.DOMElement<any, any>
-  renderContent?: () => JSX.Element // React.DOMElement<any, any>
-  renderFooter?: () => JSX.Element // React.DOMElement<any, any>
-  renderHeader?: () => JSX.Element // React.DOMElement<any, any>
+  content?: JSX.Element
+  renderContent?: () => JSX.Element
+  renderFooter?: () => JSX.Element
+  renderHeader?: () => JSX.Element
 }
 
-export class BaseModal extends React.Component<BaseModalProps, any> {
+class BaseModal extends React.Component<BaseModalProps, {}> {
   renderContent () {
     const { content, renderContent } = this.props
 
@@ -55,8 +55,6 @@ export class BaseModal extends React.Component<BaseModalProps, any> {
     const mClassName = classnames("Modal", className, {
       "Modal--noHeader": !renderHeader
     })
-
-
 
     return (
       <div className={ mClassName }>

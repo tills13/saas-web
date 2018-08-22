@@ -1,22 +1,12 @@
 import "./example.scss"
 
 import classnames from "classnames"
+import fetch from "isomorphic-fetch"
 import React from "react"
 import { compose, mapProps, SetStateCallback, withState } from "recompose"
 
 import Code from "components/code"
 import Button from "components/form/button"
-
-import { http } from "utils/fetch"
-
-const exampleResponse = (url: string, endpoint: string, data = {}) => {
-  if (!url.endsWith("/")) url = `${ url }/`
-
-  return http.post(`${ url }${ endpoint }`, data, {
-    overrideBaseUrl: true,
-    includeCredentials: false
-  })
-}
 
 interface ExampleInnerProps extends React.Props<any>, ExampleOuterProps {
   error: any
@@ -34,6 +24,15 @@ interface ExampleOuterProps {
   onClickShowExample?: () => Promise<any>
   requestExampleText?: string | object
   url: string
+}
+
+function getExampleResponse (url: string, endpoint: string, data = {}) {
+  if (!url.endsWith("/")) url = `${ url }/`
+
+  return fetch(
+    `${ url }${ endpoint }`,
+    { method: "POST", body: JSON.stringify(data) }
+  )
 }
 
 const Example = ({
@@ -59,7 +58,7 @@ const Example = ({
         : Promise.resolve()
 
       beforeRun.then(() => {
-        return exampleResponse(url, endpoint, data)
+        return getExampleResponse(url, endpoint, data)
       }).then((response) => {
         setLoading(false)
         setResponse(response)
