@@ -4,7 +4,7 @@
   "description": "Snake as a Service web client",
   "main": "src/ts/index.ts",
   "scripts": {
-    "build": "webpack --config webpack.config.prod.js",
+    "build": "NODE_ENV=production webpack --config webpack.config.js",
     "relay": "relay-compiler --src ./src/ --schema ./src/graphql/schema.graphql --language typescript --artifactDirectory ./src/__artifacts__",
     "start": "NODE_ENV=development webpack-serve --config ./webpack.config.js",
     "sync-schema": "get-graphql-schema http://localhost:3000/graphql > src/graphql/schema.graphql"

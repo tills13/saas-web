@@ -14,11 +14,13 @@ console.log(`building for ${ environment }, ${ __dirname }`)
 
 const api = `${ environment === "production" ? "https://saas.sbstn.ca" : "http://localhost:3000" }/api`
 const htmlTemplate = `src/assets/index${ environment === "production" ? ".prod" : ".dev" }.html`
+const externals = environment === "production" ? { "lodash": "_", "react": "React", "react-dom": "ReactDOM" } : undefined
 
 module.exports = {
   context: __dirname,
   target: "web",
   entry: [ "react-hot-loader/patch", "babel-polyfill", "./src/ts/index.tsx" ],
+  externals,
   mode: devMode ? "development" : "production",
   module: {
     rules: [
