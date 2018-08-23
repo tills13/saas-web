@@ -1,4 +1,5 @@
-import { BASE_URL } from "utils/fetch"
+type Context = CanvasRenderingContext2D
+type PrepareContextCallback = (context: CanvasRenderingContext2D, ...args: any[]) => void
 
 export function getSnakeHead (snake: GameAPI.Snake): Promise<HTMLImageElement> {
   const head = "bendr" || snake.head.url
@@ -13,12 +14,12 @@ export function getSnakeHead (snake: GameAPI.Snake): Promise<HTMLImageElement> {
 
       const xml = request.responseXML
 
-      if (!xml || !xml.children[0]) {
+      if (!xml || !xml.children[ 0 ]) {
         reject("no xml element")
         return
       }
 
-      resolve(svgToImage(<SVGSVGElement> xml.children[0], snake.color))
+      resolve(svgToImage(<SVGSVGElement> xml.children[ 0 ], snake.color))
     })
 
     request.send()
@@ -27,25 +28,22 @@ export function getSnakeHead (snake: GameAPI.Snake): Promise<HTMLImageElement> {
 
 export function getSnakeTail (snakeOrTailType: string | GameAPI.Snake) {
   const uri = typeof snakeOrTailType === "string"
-    ? `${ BASE_URL }/assets/snake/head/${ snakeOrTailType }`
+    ? `${ location.hostname }/assets/snake/head/${ snakeOrTailType }`
     : snakeOrTailType.head.url
 
   return fetch(uri).then(response => response.blob())
 }
 
-export function makeContext<T>(
-  context: CanvasRenderingContext2D,
-  callback: Function,
-  prepareContext?: (context: CanvasRenderingContext2D, ...args: any[]) => void,
-  ...mArgs
-) {
-  return (...args) => withinContext(context, callback, prepareContext, ...mArgs, ...args)
+export function makeContext<T> (context: Context, callback: Function, prepareContext?: PrepareContextCallback, ...mArgs) {
+  return function (...args) {
+    return withinContext(context, callback, prepareContext, ...mArgs, ...args)
+  }
 }
 
 export function svgToImage (svg: SVGElement, color) {
   svg.setAttribute("fill", color)
 
-  const blob = new Blob([svg.outerHTML], { type: "image/svg+xml" })
+  const blob = new Blob([ svg.outerHTML ], { type: "image/svg+xml" })
   const url = URL.createObjectURL(blob)
 
   const image = new Image()
@@ -57,12 +55,7 @@ export function svgToImage (svg: SVGElement, color) {
   })
 }
 
-export function withinContext (
-  context: CanvasRenderingContext2D,
-  fn: Function,
-  prepareContext?: (context: CanvasRenderingContext2D, ...args: any[]) => void,
-  ...args
-) {
+export function withinContext (context: Context, fn: Function, prepareContext?: PrepareContextCallback, ...args) {
   context.save()
   prepareContext && prepareContext(context, ...args)
   const result = fn(context, ...args)

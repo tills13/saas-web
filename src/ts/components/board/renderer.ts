@@ -1,5 +1,5 @@
+import { DIRECTION, getMovementDirection } from "./coordinate"
 import { getSnakeHead, makeContext, withinContext } from "./utils"
-import { getMovementDirection, DIRECTION } from "./coordinate"
 
 type Context = CanvasRenderingContext2D
 
@@ -175,20 +175,24 @@ export class BoardRenderer {
 
     context.stroke()
 
-    this.drawSnakeHead(context, snake)
+    return this.drawSnakeHead(context, snake)
   }
 
   drawSnakeHead = async (context: Context, snake: GameAPI.Snake) => {
-    const headImage = this.imageCache.has(snake.id)
-      ? this.imageCache.get(snake.id)
-      : await getSnakeHead(snake)
+    const headImage = await Promise.resolve().then(() => {
+      return this.imageCache.has(snake.id)
+        ? this.imageCache.get(snake.id)
+        : getSnakeHead(snake)
+    }).catch(() => null)
 
     this.imageCache.set(snake.id, headImage)
+
+    if (!headImage) return
 
     const headLoc = snake.coords[ 0 ]
     const direction = getMovementDirection(snake)
 
-    this.drawImage(context, headImage, headLoc.x, headLoc.y, this.unit, this.unit, (mContext) => {
+    return this.drawImage(context, headImage, headLoc.x, headLoc.y, this.unit, this.unit, (mContext) => {
       if (direction === DIRECTION.UP) mContext.rotate(Math.PI / 2)
       else if (direction === DIRECTION.LEFT) mContext.scale(-1, 1)
       else if (direction === DIRECTION.DOWN) mContext.rotate(-Math.PI / 2)
@@ -196,8 +200,9 @@ export class BoardRenderer {
   }
 
   renderLoop = () => {
-    this.render()
-    this.timer = setTimeout(this.renderLoop, 1000 / 60)
+    this.render().then(
+      () => this.timer = setTimeout(this.renderLoop, 1000 / 60)
+    )
   }
 
   render = (forceBackgroundRedraw: boolean = false) => {
@@ -214,9 +219,10 @@ export class BoardRenderer {
 
     const { food, gold, snakes, walls } = this.boardState
 
-    snakes.forEach(makeContext(this.fgContext, this.drawSnake, this.scaleLayer))
     food.forEach(makeContext(this.fgContext, this.drawItem, this.normalizeLayer, "food"))
     gold.forEach(makeContext(this.fgContext, this.drawItem, this.normalizeLayer, "gold"))
     walls.forEach(makeContext(this.fgContext, this.drawItem, this.normalizeLayer, "wall"))
+
+    return Promise.all(snakes.map(makeContext(this.fgContext, this.drawSnake, this.scaleLayer)))
   }
 }
