@@ -166,16 +166,6 @@ type FileEdge {
   cursor: String!
 }
 
-input FileInitializeInput {
-  contentType: String!
-  fileName: String!
-  uploadType: String
-}
-
-input FilePublishInput {
-  fileId: ID!
-}
-
 type Game implements Node {
   # The ID of an object
   id: ID!
@@ -314,8 +304,14 @@ input GameUpdateInput {
   visibility: VisibilityEnum!
 }
 
+input InitializeFileInput {
+  contentType: String!
+  fileName: String!
+  uploadType: String
+}
+
 input InitializeFileMutationInput {
-  initializeFileMutationInput: FileInitializeInput
+  initializeFileInput: InitializeFileInput
   clientMutationId: String
 }
 
@@ -450,8 +446,12 @@ type PaginatedListType_Snake {
   items: [Snake]
 }
 
+input PublishFileInput {
+  fileId: ID!
+}
+
 input PublishFileMutationInput {
-  publishFileMutationInput: FilePublishInput
+  publishFileInput: PublishFileInput
   clientMutationId: String
 }
 

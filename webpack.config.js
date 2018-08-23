@@ -80,6 +80,7 @@ module.exports = {
 
 module.exports.serve = {
   content: [ __dirname ],
+  host: "0.0.0.0",
   add (app) {
     app.use(convert(proxy("/api", { target: "http://localhost:3000" })))
     app.use(convert(proxy("/static", { target: "http://localhost:3000" })))
