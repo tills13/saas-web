@@ -6,7 +6,6 @@ import io from "socket.io-client"
 interface WrapperProps {
   game: Models.Game
   params: { gameId: GraphQL.Schema.GraphQLID }
-  showModal: typeof showModal
 }
 
 export interface GameServiceInjectedProps {
@@ -63,7 +62,7 @@ export const gameService = () => {
         this.socket.on("redirect", this.handleRedirect)
         this.socket.on("update", this.handleUpdate)
 
-        return new Promise((resolve, reject) => {
+        return new Promise(resolve => {
           this.socket.on("connect", () => {
             this.setState({ connecting: false })
             this.socket.emit("watch", game.realId)
@@ -71,10 +70,6 @@ export const gameService = () => {
             resolve()
           })
         })
-
-        // this.socket.on("redirect", this.handleRedirect)
-        // this.socket.on("message", this.handleSocketIO)
-        // this.socket.on("update", this.handleUpdate)
       }
 
       disconnect () {
@@ -92,7 +87,7 @@ export const gameService = () => {
       }
 
       handleRedirect = (redirect) => {
-        const { game, showModal } = this.props
+        const { game } = this.props
 
         // showModal(RedirectModal, {
         //   childGame: redirect,

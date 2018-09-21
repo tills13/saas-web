@@ -7,39 +7,39 @@
   border-width: 1px;
   border-style: solid;
   border-radius: $border-radius-base;
-}
 
-.Alert--inline {
-  // display: inline-block;
-  height: 38px;
-  padding: 10px;
-  margin-bottom: 0px;
-  line-height: 18px;
-  white-space: nowrap;
-  overflow-x: auto;
-  overflow-y: hidden;
-}
+  &.--inline {
+    // display: inline-block;
+    height: 38px;
+    padding: 10px;
+    margin-bottom: 0px;
+    line-height: 18px;
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
 
-.Alert--success {
-  color: $font-color-dark-grey;
-  background: $color-green;
-  border-color: $color-dark-green;
-}
+  &.--success {
+    color: $font-color-dark-grey;
+    background: $color-green;
+    border-color: $color-dark-green;
+  }
 
-.Alert--warning {
-  color: $font-color-dark-grey;
-  background: $color-yellow;
-  border-color: $color-dark-yellow;
-}
+  &.--warning {
+    color: $font-color-dark-grey;
+    background: $color-yellow;
+    border-color: $color-dark-yellow;
+  }
 
-.Alert--danger {
-  color: white;
-  background: $color-red;
-  border-color: $color-dark-red;
-}
+  &.--danger {
+    color: white;
+    background: $color-red;
+    border-color: $color-dark-red;
+  }
 
-.Alert--info {
-  color: $font-color-dark-grey;
-  background: $color-light-grey;
-  border-color: $color-grey;
+  &.--info {
+    color: $font-color-dark-grey;
+    background: $color-light-grey;
+    border-color: $color-grey;
+  }
 }

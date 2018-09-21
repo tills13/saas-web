@@ -18,6 +18,20 @@ export function refreshViewer () {
   return Relay.fetchQuery(Environment, UpdateViewerQuery, null, { force: true })
 }
 
+export async function handleResponse<T = any> (response: Response): Promise<T> {
+  try {
+    const json = await response.json()
+
+    if (!response.ok) {
+      throw new Error((json && json.err) || "Something went wrong")
+    }
+
+    return json
+  } catch (err) {
+    throw new Error(typeof err === "string" ? err : err.message)
+  }
+}
+
 export function login (data) {
   const mData = pick(data, [ "username", "password" ])
 
@@ -28,7 +42,7 @@ export function login (data) {
   }
 
   return fetch("/api/login", options)
-    .then(response => response.json())
+    .then(handleResponse, handleResponse)
     .then(responseJson => {
       return setSessionToken(responseJson.token)
     })

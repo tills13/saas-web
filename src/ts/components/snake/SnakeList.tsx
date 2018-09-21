@@ -29,7 +29,6 @@ class SnakeList extends React.Component<SnakeListProps> {
         <SnakeAvatar snake={ snake } small />
         <div className="SnakeList__itemInfo">
           <div className="SnakeList__name">{ snake.name }</div>
-          <div className="SnakeList__name">{ snake.id }</div>
           <div className="SnakeList__owner">{ snake.owner.username }</div>
         </div>
       </div>

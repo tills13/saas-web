@@ -1,6 +1,5 @@
 import "./CreateEditSnakeForm.scss"
 
-import { showModal } from "actions"
 import { WithRouter, withRouter } from "found"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -57,13 +56,12 @@ class CreateEditSnakeForm extends React.Component<CreateEditSnakeFormProps, Crea
       ? updateSnake({ snakeId: snake.id, ...data })
       : createSnake(data)
 
-    return mutation
-      .then((data) => {
-        if (!snake) {
-          const snakeId = (data as CreateSnakeMutationResponse).createSnakeMutation.snake.id
-          router.push(`/snakes/${ snakeId }/edit`)
-        }
-      })
+    return mutation.then((data) => {
+      if (!snake) {
+        const snakeId = (data as CreateSnakeMutationResponse).createSnakeMutation.snake.id
+        router.push(`/snakes/${ snakeId }/edit`)
+      }
+    })
       .catch(err => console.log("err", err))
   }
 
@@ -104,7 +102,7 @@ class CreateEditSnakeForm extends React.Component<CreateEditSnakeFormProps, Crea
           label="Bounty Description"
           disabled={ !isBountySnake }
           rows={ 4 }
-          { ...field("bountDescriptiony") }
+          { ...field("bountyDescription") }
         />
 
         <FileUpload
@@ -182,9 +180,9 @@ export default createFragmentContainer<any>(
     withForm()
   )(CreateEditSnakeForm),
   graphql`
-            fragment CreateEditSnakeForm_snake on Snake {
-              id, apiVersion, name, defaultColor, devUrl, url, isBountySnake
+    fragment CreateEditSnakeForm_snake on Snake {
+      id, apiVersion, name, defaultColor, devUrl, url, isBountySnake
       bountyDescription, visibility, head { id, name, url }
-          }
-        `
+    }
+  `
 )

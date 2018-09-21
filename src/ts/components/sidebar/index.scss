@@ -1,9 +1,0 @@
-.Sidebar {
-  width: 400px;
-  box-sizing: border-box;
-  transition: width 1s ease;
-
-  &.--collapsed {
-    width: 90px;
-  }
-}

@@ -1,0 +1,17 @@
+.CreateEditSnake {
+  .CreateEditSnake__container {
+    display: flex;
+
+    > * {
+      flex: 1;
+
+      &:first-child {
+        margin-right: 20px;
+      }
+
+      &.SnakeDetails {
+        padding: 0;
+      }
+    }
+  }
+}

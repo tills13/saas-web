@@ -5,10 +5,16 @@
     > * {
       position: relative;
 
-      .Board {
-        position: relative;
-        margin-bottom: 20px;
+      .Board__container {
+        min-height: 200px;
+
+        .Board {
+          position: relative;
+          margin-bottom: 20px;
+        }
       }
+
+
 
       .Screen {
         position: absolute;

@@ -28,7 +28,10 @@ export interface UpdateGameMutationInput {
 const mutation = graphql`
   mutation UpdateGameMutation ($input: UpdateGameMutationInput!) {
     updateGameMutation (input: $input) {
-      game { id }
+      game {
+        id, boardRows, boardColumns,
+        boardConfiguration { configuration }
+      }
     }
   }
 `

@@ -11,7 +11,7 @@ import { BoardRenderer as Renderer } from "./renderer"
 export enum BoardRenderer { Canvas, Dom }
 export enum CellType { Food, Gold, Snake, Teleporter, Wall }
 
-interface BoardComponentOwnProps {
+interface BoardProps {
   width?: number
   height?: number
   className?: string
@@ -33,7 +33,7 @@ interface BoardComponentOwnProps {
   updateOnPropsChanged?: boolean
 }
 
-class Board extends React.Component<BoardComponentOwnProps, {}> {
+class Board extends React.Component<BoardProps, {}> {
   static defaultProps = { renderer: BoardRenderer.Canvas, updateOnPropsChanged: false }
 
   boardRef: HTMLDivElement
@@ -46,7 +46,6 @@ class Board extends React.Component<BoardComponentOwnProps, {}> {
   componentDidMount () {
     const { height, renderer, width } = this.props
 
-
     if (renderer === BoardRenderer.Canvas) {
       this.renderer = new Renderer({
         dimensions: { width, height },
@@ -54,7 +53,7 @@ class Board extends React.Component<BoardComponentOwnProps, {}> {
         fgCanvas: this.fgCanvasRef
       })
 
-      this.renderer.updateBoardState(this.props)
+      this.renderer.updateState(width, height, this.props)
 
       window.onresize = this.onResize
       this.onResize()
@@ -62,11 +61,12 @@ class Board extends React.Component<BoardComponentOwnProps, {}> {
     }
   }
 
-  componentWillUpdate (nextProps) {
-    const { renderer } = this.props
+  componentDidUpdate (_: BoardProps) {
+    const { height, renderer, width } = this.props
 
     if (renderer === BoardRenderer.Canvas) {
-      this.renderer.updateBoardState(nextProps)
+      this.onResize()
+      this.renderer.updateState(width, height, this.props)
     }
   }
 
@@ -114,7 +114,7 @@ class Board extends React.Component<BoardComponentOwnProps, {}> {
     const parentHeight = parent ? parent.clientHeight : Infinity
 
     if (this.container.clientHeight === 0) {
-      this.container.style.height = `${ Math.max(parentHeight, document.body.clientHeight) }`
+      this.container.style.height = `${ Math.max(parentHeight, document.body.clientHeight) }px`
     }
 
     const ratio = this.props.width / this.props.height

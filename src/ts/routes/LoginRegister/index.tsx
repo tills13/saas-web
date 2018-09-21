@@ -1,6 +1,6 @@
 import "./index.scss"
 
-import { withRouter, WithRouter } from "found"
+import { RouteProps, withRouter, WithRouter } from "found"
 import React from "react"
 import { compose } from "recompose"
 
@@ -17,44 +17,27 @@ import { FormProps, withForm } from "utils/hocs"
 
 export enum Mode { Login = "login", Register = "register" }
 
-interface LoginRegisterProps extends FormProps, WithRouter {
-  mode: "login" | "register"
-}
-
-interface LoginRegisterState {
-  mode: Mode
-}
+interface LoginRegisterProps extends FormProps, WithRouter, RouteProps { }
 
 const toggleOptions: ToggleOption[] = [
   { key: Mode.Login },
   { key: Mode.Register }
 ]
 
-class LoginRegister extends React.Component<LoginRegisterProps, LoginRegisterState> {
-  static defaultProps = { mode: Mode.Register }
-
-  constructor (props: LoginRegisterProps) {
-    super(props)
-
-    this.state = { mode: props.mode as Mode }
-  }
-
+class LoginRegister extends React.Component<LoginRegisterProps, {}> {
   onChangeMode = (newMode: Mode) => {
-    this.setState({ mode: newMode })
+    this.props.router.push(`/${ newMode }`)
   }
 
   onSubmit = (_: React.FormEvent<any>, data) => {
-    const { router } = this.props
-    const { mode } = this.state
-
+    const { params: { mode }, router } = this.props
     const action = mode === Mode.Login ? login(data) : register(data)
 
     return action.then(_ => refreshViewer().then(_ => router.push("/")))
   }
 
   render () {
-    const { error, field, handleSubmit } = this.props
-    const { mode } = this.state
+    const { error, field, handleSubmit, params: { mode } } = this.props
 
     return (
       <Container className="LoginRegister">
@@ -68,7 +51,7 @@ class LoginRegister extends React.Component<LoginRegisterProps, LoginRegisterSta
             <Toggle
               onSelectOption={ this.onChangeMode }
               options={ toggleOptions }
-              selectedOption={ this.state.mode }
+              selectedOption={ mode }
             />
           </div>
         </Header>

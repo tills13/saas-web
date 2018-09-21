@@ -5,15 +5,14 @@ interface ErrorBoundaryState {
   hasError: boolean
 }
 
-class ErrorBoundary extends React.Component {
+class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
   state: ErrorBoundaryState = { error: null, hasError: false }
 
-  componentDidCatch(error: Error, info: React.ErrorInfo) {
+  componentDidCatch (error: Error, info: React.ErrorInfo) {
     this.setState({ error, hasError: true })
-    console.log(error, info)
   }
 
-  render() {
+  render () {
     const { error, hasError } = this.state
     const { children } = this.props
 

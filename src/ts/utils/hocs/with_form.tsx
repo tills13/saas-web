@@ -49,6 +49,7 @@ export function withForm<T = any> () {
       }
 
       private setFieldValue = (name: string, value: any) => {
+        console.log(name, value)
         this.setState(({ formData }) => {
           return {
             pristine: false,

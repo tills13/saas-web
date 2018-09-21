@@ -7,42 +7,39 @@ import { compose, mapProps } from "recompose"
 
 import Icon from "../../icon"
 
-interface CheckboxInnerProps extends React.Props<any>, CheckboxOuterProps {
-  meta?: any
-}
-
-interface CheckboxOuterProps {
+interface CheckboxProps extends React.AllHTMLAttributes<HTMLInputElement> {
   check?: string
-  checked?: boolean
   className?: string
   containerClassName?: string
   input?: any
   label?: string
   name?: string
-  onChange?: React.ChangeEventHandler<HTMLInputElement>
+  onChange?: (checked: boolean) => void
   value?: any
 }
 
-const Checkbox = (props: CheckboxInnerProps) => {
-  const { check, checked, className, containerClassName, label, meta, ...rest } = props
+function Checkbox (props: CheckboxProps) {
+  const { check, className, containerClassName, label, name, onChange, value } = props
   const mContainerClassName = classnames("Checkbox__container", containerClassName)
-  const mClassName = classnames("Checkbox", className, {
-    "Checkbox--checked": checked
-  })
+  const mClassName = classnames("Checkbox", className, { "Checkbox--checked": value })
 
   return (
-    <label className={ mContainerClassName } htmlFor={ rest.name }>
+    <label className={ mContainerClassName } htmlFor={ name }>
       <div className={ mClassName }>
         <Icon className="Checkbox__icon" icon={ check || "check" } />
-        <input id={ rest.name } type="checkbox" checked={ checked } { ...rest } />
+        <input
+          id={ name }
+          checked={ value || false }
+          name={ name }
+          onChange={ event => onChange(event.target.checked) }
+          type="checkbox"
+        />
       </div>
       { label && <span className="Checkbox__label">{ label }</span> }
     </label>
   )
 }
 
-export default compose<CheckboxInnerProps, CheckboxOuterProps>(
-  mapProps(({ input, value, ...rest }: CheckboxOuterProps) => {
-    return { checked: !!(value || (input && input.value) || rest.checked), ...input, ...rest }
-  })
-)(Checkbox)
+export default mapProps(function ({ input, value, ...rest }: CheckboxProps) {
+  return { value: value || rest.checked, ...input, ...rest }
+})(Checkbox)

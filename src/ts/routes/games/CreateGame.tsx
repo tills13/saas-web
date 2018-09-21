@@ -1,3 +1,5 @@
+import "./CreateGame.scss"
+
 import React from "react"
 import { graphql } from "react-relay"
 
@@ -15,9 +17,8 @@ export const CreateGameQuery = graphql`
 `
 
 function CreateGame ({ application }: CreateGameProps) {
-  console.log("here")
   return (
-    <div className="CreateOrEditGame">
+    <div className="CreateGame">
       <Header className="Games__header">
         <div><h2 className="Header__title">Create Game</h2></div>
       </Header>

@@ -429,9 +429,7 @@ export class Documentation extends React.Component<DocumentationProps, Documenat
       })
     }
 
-    const snakes = viewer
-      ? viewer.snakes.edges
-      : []
+    const snakes = viewer ? viewer.snakes.edges : []
 
     return (
       <div className="Documentation">

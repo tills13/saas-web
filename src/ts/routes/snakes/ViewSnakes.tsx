@@ -1,28 +1,41 @@
 import "./ViewSnakes.scss"
 
+import { withRouter, WithRouter } from "found"
 import React from "react"
 import Relay, { createRefetchContainer, graphql } from "react-relay"
+import { compose } from "recompose"
 
 import LinkButton from "components/button/link_button"
 import Header from "components/header"
 import Pagination from "components/pagination"
-// import SnakeDetails from "components/snake/details"
+import SnakeDetails from "components/snake/SnakeDetails"
 import SnakeList from "components/snake/SnakeList"
 
 import { PaginationProps, withPagination } from "utils/hocs/with_pagination"
 
-interface ViewSnakesProps extends PaginationProps {
+interface ViewSnakesProps extends PaginationProps, WithRouter {
   application: GraphQL.Schema.Application
   relay: Relay.RelayRefetchProp
+  selectedSnake: Models.Snake
 }
 
 export const ViewSnakesQuery = graphql`
-  query ViewSnakesQuery ($after: Int, $limit: Int = 10) {
+  query ViewSnakesQuery ($after: Int, $limit: Int = 10, $hasSnakeId: Boolean!, $snakeId: ID!) {
     application { ...ViewSnakes_application }
+
+    selectedSnake: node (id: $snakeId) @include(if: $hasSnakeId) {
+      ...SnakeDetails_snake
+    }
   }
 `
 
-function ViewSnakes ({ application: { snakes: { items: snakes } }, pagination }: ViewSnakesProps) {
+export function viewSnakesPrepareVariables (params) {
+  return { ...params, snakeId: params.snakeId || "", hasSnakeId: !!params.snakeId }
+}
+
+function ViewSnakes ({ application, pagination, router, selectedSnake }: ViewSnakesProps) {
+  const { snakes: { items: snakes } } = application
+
   return (
     <div>
       <Header>
@@ -33,25 +46,33 @@ function ViewSnakes ({ application: { snakes: { items: snakes } }, pagination }:
       </Header>
       <div className="SnakeList__container">
         <div className="SnakeList__list">
-          <SnakeList selectedSnake={ null } snakes={ snakes } />
+          <SnakeList
+            onClickSnake={ snake => router.push(`/snakes/${ snake.id }`) }
+            selectedSnake={ null }
+            snakes={ snakes }
+          />
+          <Pagination { ...pagination } />
         </div>
+        { selectedSnake && <SnakeDetails snake={ selectedSnake } /> }
       </div>
-      <Pagination { ...pagination } />
     </div>
   )
 }
 
 export default createRefetchContainer(
-  withPagination((props: ViewSnakesProps, { onChangeAfter, onChangeLimit }) => {
-    const { application: { snakes: { pageInfo: { count } } }, relay } = props
+  compose<ViewSnakesProps, ViewSnakesProps>(
+    withRouter,
+    withPagination((props: ViewSnakesProps, { onChangeAfter, onChangeLimit }) => {
+      const { application: { snakes: { pageInfo: { count } } }, relay } = props
 
-    return {
-      count,
-      onChangeLimit: (newLimit) => onChangeLimit(newLimit, relay),
-      onClickNextPage: (after, limit) => onChangeAfter(after + limit, relay),
-      onClickPreviousPage: (after, limit) => onChangeAfter(after - limit, relay)
-    }
-  })(ViewSnakes),
+      return {
+        count,
+        onChangeLimit: (newLimit) => onChangeLimit(newLimit, relay),
+        onClickNextPage: (after, limit) => onChangeAfter(after + limit, relay),
+        onClickPreviousPage: (after, limit) => onChangeAfter(after - limit, relay)
+      }
+    })
+  )(ViewSnakes),
   graphql`
     fragment ViewSnakes_application on Application
     @argumentDefinitions (
@@ -70,4 +91,3 @@ export default createRefetchContainer(
     }
   `
 )
-

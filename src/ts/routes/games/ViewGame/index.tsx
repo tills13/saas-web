@@ -76,12 +76,14 @@ class ViewGame extends React.Component<ViewGameProps & GameServiceInjectedProps>
     return (
       <div className={ mClassName }>
         <div className="ViewGame__boardContainer">
-          { (!connecting && gameState) && (
-            <Board
-              { ...gameState.board }
-              renderer={ BoardRenderer.Canvas }
-            />
-          ) }
+          { connecting && <div className="Screen" /> }
+          <Board
+            width={ game.boardColumns }
+            height={ game.boardRows }
+            { ...(gameState || { board: null }).board }
+            renderer={ BoardRenderer.Canvas }
+          />
+
           { this.renderControls() }
         </div>
         <div className="ViewGame__sidebarContainer">

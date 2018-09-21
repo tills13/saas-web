@@ -40,8 +40,7 @@ interface CreateEditGameFormProps extends WithRouter {
 
 class CreateEditGameForm extends React.Component<CreateEditGameFormProps & FormProps> {
   handleSubmit = (_: any, data: any) => {
-    const { application, game, router } = this.props
-    console.log(data)
+    const { game, router } = this.props
 
     const mutation: Promise<UpdateGameMutationResponse | CreateGameMutationResponse> = game
       ? updateGame({ gameId: game.id, ...data }) : createGame(data)
@@ -203,9 +202,6 @@ class CreateEditGameForm extends React.Component<CreateEditGameFormProps & FormP
       .reduce((carry, { apiVersion }) => carry || !!apiVersion, false)
 
     const hasLegacyFeatures = boardHasGold || boardHasTeleporters || boardHasWalls
-    const mSelectedBoardConfig = selectedBoardConfig
-      ? boards.items.find((boardConfig) => boardConfig.id === selectedBoardConfig)
-      : null
 
     const boardConfigOptions = boards.items.map(boardConfig => ({ label: boardConfig.name, value: boardConfig.id }))
     const daemonOptions = daemons.items.map(daemon => ({ label: daemon.name, value: daemon.id }))
@@ -241,16 +237,9 @@ class CreateEditGameForm extends React.Component<CreateEditGameFormProps & FormP
 
         { this.renderDimensionsFields() }
 
-        { false && <FieldGroup label="Board Configuration" labelFor="boardConfiguration">
-          <Select options={ boardConfigOptions } { ...field("boardConfiguration") } />
-          <Button
-            disabled={ !mSelectedBoardConfig }
-            className="InlineFields__labelOffset"
-            tall
-          >
-            Show Board Configuration
-          </Button>
-        </FieldGroup> }
+        <FieldGroup label="Board Configuration" labelFor="boardConfiguration">
+          <Select options={ boardConfigOptions } { ...field("boardConfiguration") } clearable />
+        </FieldGroup>
 
 
         <h5>Food</h5>

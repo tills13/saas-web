@@ -12,6 +12,8 @@ import TextInput from "../form/text_input"
 import { CellType } from "."
 import { CellExtraOptions, CellOption } from "./BoardEditor"
 
+import { withForm } from "utils/hocs"
+
 interface BoardEditorSidebarProps {
   application: GraphQL.Schema.Application
   configuration: Models.Board[ "configuration" ]
@@ -135,51 +137,53 @@ class BoardEditorSidebar extends React.Component<BoardEditorSidebarProps, BoardE
 
     return (
       <div className="BoardEditorSidebar">
-        <TextInput
-          label="Board Name"
-          placeholder="Board Name"
-          onChange={ this.onInputChanged.bind(null, "name", null) }
-          value={ "" }
-        />
+        <form className="">
 
-        <FieldGroup label="Dimensions">
           <TextInput
-            type="number"
-            onChange={ this.onInputChanged.bind(null, "boardRows", (value) => parseInt(value, 10)) }
-            value={ configuration.boardRows }
+            label="Board Name"
+            placeholder="Board Name"
+            onChange={ this.onInputChanged.bind(null, "name", null) }
           />
-          <TextInput
-            type="number"
-            onChange={ this.onInputChanged.bind(null, "boardColumns", (value) => parseInt(value, 10)) }
-            value={ configuration.boardColumns }
+
+          <FieldGroup label="Dimensions">
+            <TextInput
+              type="number"
+              onChange={ this.onInputChanged.bind(null, "boardRows", (value) => parseInt(value, 10)) }
+              value={ configuration.boardRows }
+            />
+            <TextInput
+              type="number"
+              onChange={ this.onInputChanged.bind(null, "boardColumns", (value) => parseInt(value, 10)) }
+              value={ configuration.boardColumns }
+            />
+          </FieldGroup>
+
+          <Select
+            label="Placement Type"
+            name="placementOption"
+            onChange={ onChangePlacementType }
+            options={ placementOptions }
+            placeholder="Placement Type"
+            showValue={ false }
+            value={ placementType }
+            clearable={ false }
           />
-        </FieldGroup>
 
-        <Select
-          label="Placement Type"
-          name="placementOption"
-          onChange={ onChangePlacementType }
-          options={ placementOptions }
-          placeholder="Placement Type"
-          showValue={ false }
-          value={ placementType }
-          clearable={ false }
-        />
+          { this.renderColorOptions() }
+          { this.renderExtraOptions() }
 
-        { this.renderColorOptions() }
-        { this.renderExtraOptions() }
-
-        <ButtonGroup>
-          <Button>Create Board</Button>
-          <Button>Reset Board</Button>
-        </ButtonGroup>
+          <ButtonGroup>
+            <Button>Create Board</Button>
+            <Button>Reset Board</Button>
+          </ButtonGroup>
+        </form>
       </div>
     )
   }
 }
 
 export default createFragmentContainer(
-  BoardEditorSidebar,
+  withForm()(BoardEditorSidebar),
   graphql`
     fragment BoardEditorSidebar_application on Application {
       snakes (limit: 100) {

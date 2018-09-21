@@ -16,7 +16,7 @@ const mutation = graphql`
 `
 
 export function publishFile (publishFileInput: PublishFileMutationInput) {
-  const variables = { input: { publishFileInput } }
+  const variables = { input: publishFileInput }
 
   return new Promise<PublishFileMutationResponse>((resolve, reject) => {
     commitMutation(Environment, {

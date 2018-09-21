@@ -11,7 +11,7 @@ interface ProgressBarProps {
   total?: number
 }
 
-const ProgressBar = ({ className, containerClassName, progress, small, total }: ProgressBarProps) => {
+function ProgressBar ({ className, containerClassName, progress, small, total }: ProgressBarProps) {
   const mContainerClassName = classnames("ProgressBar__container", containerClassName, {
     "ProgressBar__container--small": small
   })

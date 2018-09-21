@@ -4,7 +4,7 @@ import { Link } from "found"
 import React from "react"
 import { graphql } from "react-relay"
 
-import Board from "components/board"
+import Board, { BoardRenderer } from "components/board"
 import ButtonGroup from "components/button/button_group"
 import LinkButton from "components/button/link_button"
 import Grid from "components/grid"
@@ -91,8 +91,9 @@ class ViewBoards extends React.Component<ViewBoardsProps, ViewBoardsState> {
       <Grid itemsPerRow={ 4 }>
         { application.boards.items.map((board) => (
           <div key={ board.id }>
-            <div className="Screen" />
-            <Board { ...board.configuration } isPreview={ true } />
+            <div className="Board__container">
+              <Board { ...board.configuration } isPreview={ true } />
+            </div>
             <h2>{ board.name }</h2>
             <h4>{ board.creator.username }</h4>
           </div>

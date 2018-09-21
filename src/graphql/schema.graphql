@@ -304,14 +304,10 @@ input GameUpdateInput {
   visibility: VisibilityEnum!
 }
 
-input InitializeFileInput {
+input InitializeFileMutationInput {
   contentType: String!
   fileName: String!
   uploadType: String
-}
-
-input InitializeFileMutationInput {
-  initializeFileInput: InitializeFileInput
   clientMutationId: String
 }
 
@@ -446,12 +442,8 @@ type PaginatedListType_Snake {
   items: [Snake]
 }
 
-input PublishFileInput {
-  fileId: ID!
-}
-
 input PublishFileMutationInput {
-  publishFileInput: PublishFileInput
+  fileId: ID!
   clientMutationId: String
 }
 
@@ -601,11 +593,11 @@ type UpdateGameMutationPayload {
 
 input UpdateSnakeInput {
   snakeId: ID!
-  apiVersion: APIVersionEnum!
+  apiVersion: APIVersionEnum
   defaultColor: String!
   devUrl: String
   headId: ID!
-  isBountySnake: Boolean!
+  isBountySnake: Boolean = false
   bountyDescription: String
   name: String!
   url: String!

@@ -18,7 +18,7 @@ const mutation = graphql`
 `
 
 export function initializeFile (initializeFileInput: InitializeFileMutationInput) {
-  const variables = { input: { initializeFileInput } }
+  const variables = { input: initializeFileInput }
 
   return new Promise<InitializeFileMutationResponse>((resolve, reject) => {
     commitMutation(Environment, {

@@ -1,5 +1,6 @@
 import { DIRECTION, getMovementDirection } from "./coordinate"
 import { getSnakeHead, makeContext, withinContext } from "./utils"
+import { pick } from "lodash";
 
 type Context = CanvasRenderingContext2D
 
@@ -43,7 +44,7 @@ export class BoardRenderer {
   private halfUnit = this.unit / 2
   private offset: number = this.unit / 2 * -1
 
-  private backgroundRendered: boolean = false
+  private redrawBackground: boolean = true
 
   private imageCache = new Map<string, HTMLImageElement>()
 
@@ -99,14 +100,24 @@ export class BoardRenderer {
     context.translate(this.padding / 2, this.padding / 2)
   }
 
-  updateBoardState (boardState: Partial<BoardState>) {
+  updateState (width: number, height: number, boardState: Partial<BoardState>) {
+    const isLooping = !!this.timer
+
+    this.stop()
+
+    this.width = width
+    this.height = height
+
     this.boardState = Object.assign(
       { food: [], gold: [], snakes: [], walls: [] },
-      boardState
+      pick(boardState, [ "food", "gold", "snakes", "walls" ])
     )
+
+    if (isLooping) this.start()
   }
 
-  start () {
+  start (redrawBackground: boolean = true) {
+    this.redrawBackground = redrawBackground
     this.renderLoop()
   }
 
@@ -114,9 +125,10 @@ export class BoardRenderer {
     clearTimeout(this.timer)
   }
 
-  drawGrid = (context: Context, force: boolean) => {
-    if (!force && this.backgroundRendered) return
-    if (force) this.clearLayer(context)
+  drawGrid = (context: Context) => {
+    if (!this.redrawBackground) return
+
+    this.clearLayer(context)
 
     context.fillStyle = this.colorPalette[ "tile" ] || DEFAULT_PALETTE.tile
 
@@ -126,7 +138,7 @@ export class BoardRenderer {
       }
     }
 
-    this.backgroundRendered = true
+    this.redrawBackground = false
   }
 
   drawImage = (context: Context, image: HTMLImageElement, x: number, y: number, width: number, height: number, beforeDraw: (context: Context) => void) => {
@@ -205,15 +217,10 @@ export class BoardRenderer {
     )
   }
 
-  render = (forceBackgroundRedraw: boolean = false) => {
+  render = () => {
     if (!this.boardState) return
 
-    withinContext(
-      this.bgContext,
-      this.drawGrid,
-      this.scaleLayer,
-      forceBackgroundRedraw
-    )
+    withinContext(this.bgContext, this.drawGrid, this.scaleLayer)
 
     this.clearLayer(this.fgContext)
 

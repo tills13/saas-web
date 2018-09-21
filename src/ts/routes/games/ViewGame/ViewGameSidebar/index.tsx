@@ -11,6 +11,7 @@ import Well from "components/well"
 import SnakeListItem from "./SnakeListItem"
 
 import { getIdFromGlobalId } from "utils/relay"
+import LinkButton from "components/button/link_button";
 
 interface ViewGameSidebarProps extends GameAPI.GameState {
   className?: string
@@ -51,6 +52,8 @@ function ViewGameSidebar ({ className, board, daemon, errors, game, turnNumber, 
       <div className="ViewGameSidebar__snakes">
         { mSnakes.map((snake) => <SnakeListItem key={ snake.id } snake={ snake } />) }
       </div>
+
+      <LinkButton to={ `/games/${ game.id }/edit` } block>Edit Game</LinkButton>
     </div>
   )
 }
@@ -59,6 +62,7 @@ export default createFragmentContainer(
   ViewGameSidebar,
   graphql`
     fragment ViewGameSidebar_game on Game {
+      id
       turnLimit
 
       daemon { id, name }

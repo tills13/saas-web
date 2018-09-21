@@ -22,28 +22,21 @@ const fields = [
   "headId", "isBountySnake", "name", "snakeId", "url", "visibility"
 ]
 
-const defaultObject = fields.reduce((carry, field) => {
-  carry[ field ] = ""
-  return carry
-}, {})
-
-function normalize<T extends object> (input: T & any): T {
-  return Object.assign(
-    defaultObject,
-    pick<T>(input, fields) as any
-  )
-}
-
 const mutation = graphql`
   mutation UpdateSnakeMutation ($input: UpdateSnakeMutationInput!) {
     updateSnakeMutation (input: $input) {
-      snake { id }
+      snake {
+        id, apiVersion, bountyDescription, defaultColor, devUrl,
+        isBountySnake, name, url, visibility
+
+        head { url }
+      }
     }
   }
 `
 
 export function updateSnake (updateSnakeInput: UpdateSnakeMutationInput) {
-  let mUpdateSnakeInput = normalize<UpdateSnakeMutationInput>(updateSnakeInput)
+  const mUpdateSnakeInput = pick(updateSnakeInput, fields)
   const variables = { input: { updateSnakeInput: mUpdateSnakeInput } }
 
   return new Promise<UpdateSnakeMutationResponse>((resolve, reject) => {
