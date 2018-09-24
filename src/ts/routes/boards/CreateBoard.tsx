@@ -1,7 +1,7 @@
 import React from "react"
 import { graphql } from "react-relay"
 
-import BoardEditor from "components/board/BoardEditor"
+import BoardEditor from "components/Board/BoardEditor"
 import Header from "components/header"
 
 interface CreateBoardProps extends React.AllHTMLAttributes<HTMLDivElement> {

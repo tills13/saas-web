@@ -5,7 +5,7 @@ import { map, merge } from "lodash"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import Alert, { AlertType } from "components/alert"
+import Alert, { AlertType } from "components/Alert"
 import Icon from "components/icon"
 import Well from "components/well"
 import SnakeListItem from "./SnakeListItem"

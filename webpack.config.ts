@@ -1,11 +1,8 @@
-const history = require("connect-history-api-fallback")
-const proxy = require("http-proxy-middleware")
-const convert = require("koa-connect")
-const path = require("path")
-const webpack = require("webpack")
+import path from "path"
+import webpack from "webpack"
 
-const HTMLWebpackPlugin = require("html-webpack-plugin")
-const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+import HTMLWebpackPlugin from "html-webpack-plugin"
+import MiniCssExtractPlugin from "mini-css-extract-plugin"
 
 const environment = process.env.NODE_ENV || "production"
 const devMode = environment === "development"
@@ -16,7 +13,7 @@ const api = `${ environment === "production" ? "https://saas.sbstn.ca" : "http:/
 const htmlTemplate = `src/assets/index${ environment === "production" ? ".prod" : ".dev" }.html`
 const externals = environment === "production" ? { "lodash": "_", "react": "React", "react-dom": "ReactDOM" } : undefined
 
-module.exports = {
+const config: webpack.Configuration = {
   context: __dirname,
   target: "web",
   entry: [ "react-hot-loader/patch", "babel-polyfill", "./src/ts/index.tsx" ],
@@ -27,10 +24,7 @@ module.exports = {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        use: [
-          "babel-loader",
-          { loader: "ts-loader", options: { transpileOnly: true } }
-        ]
+        use: [ "babel-loader" ]
       },
       {
         test: /\.(sa|sc|c)ss$/,
@@ -78,15 +72,4 @@ module.exports = {
   }
 }
 
-module.exports.serve = {
-  content: [ __dirname ],
-  host: "0.0.0.0",
-  add (app) {
-    app.use(convert(proxy("/api", { target: "http://localhost:3000" })))
-    app.use(convert(proxy("/static", { target: "http://localhost:3000" })))
-    app.use(convert(proxy("/graphql", { target: "http://localhost:3000" })))
-    app.use(convert(proxy("/socket.io", { target: "http://localhost:3001" })))
-
-    app.use(convert(history()))
-  }
-}
+export default config

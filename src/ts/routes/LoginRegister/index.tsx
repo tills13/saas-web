@@ -4,8 +4,7 @@ import { RouteProps, withRouter, WithRouter } from "found"
 import React from "react"
 import { compose } from "recompose"
 
-import Alert, { AlertType } from "components/alert"
-import Container from "components/container/route_container"
+import Alert, { AlertType } from "components/Alert"
 import Button from "components/form/button"
 import TextInput from "components/form/text_input"
 import Header from "components/header"
@@ -40,7 +39,7 @@ class LoginRegister extends React.Component<LoginRegisterProps, {}> {
     const { error, field, handleSubmit, params: { mode } } = this.props
 
     return (
-      <Container className="LoginRegister">
+      <div className="LoginRegister">
         <Header>
           <div>
             <h2 className="Header__title">
@@ -64,7 +63,7 @@ class LoginRegister extends React.Component<LoginRegisterProps, {}> {
           { mode === Mode.Register && <TextInput label="Confirm Password" type="password" { ...field("confirmPassword") } /> }
           <Button type="submit" color={ Color.Green }>{ mode === Mode.Register ? "Register" : "Login" }</Button>
         </form>
-      </Container>
+      </div>
     )
   }
 }

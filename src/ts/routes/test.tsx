@@ -3,10 +3,9 @@ import R from "ramda"
 import React from "react"
 import Relay, { createRefetchContainer, graphql } from "react-relay"
 
-import Select, { SelectOption } from "components/form/select"
+import Select from "components/form/select"
 
 
-import createRelayContainer from "components/create_relay_container"
 import { showNotification } from "components/notification"
 
 interface TestProps {

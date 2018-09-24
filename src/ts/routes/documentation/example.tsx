@@ -5,7 +5,7 @@ import fetch from "isomorphic-fetch"
 import React from "react"
 import { compose, mapProps, SetStateCallback, withState } from "recompose"
 
-import Code from "components/code"
+import Code from "components/Code"
 import Button from "components/form/button"
 
 interface ExampleInnerProps extends React.Props<any>, ExampleOuterProps {
@@ -73,10 +73,12 @@ const Example = ({
 
   return (
     <div className={ mClassName }>
-      { requestExampleText && [
-        <h5 key="0" className="Example__title">Request</h5>,
-        <Code key="1" className="Example__code">{ requestExampleText }</Code>
-      ] }
+      { requestExampleText && (
+        <>
+          <h5 className="Example__title">Request</h5>
+          <Code className="Example__code">{ requestExampleText }</Code>
+        </>
+      ) }
 
       <h5 className="Example__title">Response</h5>
       <Code className="Example__code">

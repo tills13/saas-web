@@ -1,13 +1,12 @@
 import "./option.scss"
 
 import classnames from "classnames"
+import { isFunction } from "lodash"
 import React from "react"
 
-import { SelectOption } from "."
+import { Option } from "."
 
-import { isFunction } from "lodash"
-
-interface SelectOptionProps extends SelectOption {
+interface SelectOptionProps extends Option {
   className?: string
   disabled?: boolean
   onClick: (value: any) => void
@@ -15,7 +14,7 @@ interface SelectOptionProps extends SelectOption {
   showValue?: boolean
 }
 
-const SelectOption = ({ className, disabled, label, onClick, selected, showValue, value }: SelectOptionProps) => {
+export default function SelectOption ({ className, disabled, label, onClick, selected, showValue, value }: SelectOptionProps) {
   const mClassName = classnames("SelectOption", className, {
     "--disabled": disabled,
     "--selected": selected
@@ -28,11 +27,9 @@ const SelectOption = ({ className, disabled, label, onClick, selected, showValue
   const mLabel = isFunction(label) ? label(value) : label
 
   return (
-    <div className={mClassName} onClick={mOnClick}>
-      <div className="SelectOption__label">{mLabel}</div>
-      {showValue && <div className="SelectOption__value">({value})</div>}
+    <div className={ mClassName } onClick={ mOnClick }>
+      <div className="SelectOption__label">{ mLabel }</div>
+      { showValue && <div className="SelectOption__value">({ value })</div> }
     </div>
   )
 }
-
-export default SelectOption

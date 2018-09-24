@@ -8,8 +8,8 @@ import { compose, withProps } from "recompose"
 
 import { FormProps, withForm } from "utils/hocs"
 
-import Alert, { AlertType } from "../alert"
-import Board from "../board"
+import Alert, { AlertType } from "../Alert"
+import Board from "../Board"
 import ButtonGroup from "../button/button_group"
 import Button from "../form/button"
 import Checkbox from "../form/checkbox"

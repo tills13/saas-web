@@ -5,7 +5,7 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { compose, withProps } from "recompose"
 
-import Alert, { AlertType } from "../../alert"
+import Alert, { AlertType } from "../../Alert"
 import ButtonGroup from "../../button/button_group"
 import Button from "../../form/button"
 import Checkbox from "../../form/checkbox"

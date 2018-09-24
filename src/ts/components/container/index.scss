@@ -5,13 +5,6 @@
   margin: 0px auto;
 }
 
-.Container.RouteContainer {
-  padding-top: 30px;
-  padding-bottom: 30px;
-
-  height: 100%;
-}
-
 @media screen and (max-width: $screen-size-md) {
   .Container {
     padding: 0px 20px;

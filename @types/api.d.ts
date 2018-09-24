@@ -25,9 +25,15 @@ declare namespace GameAPI {
     defaultColor?: string
   }
 
+  type BoardPosition = Position & Colorable
+  type Food = BoardPosition
+  type Gold = BoardPosition
+  type Teleporter = BoardPosition & { channel: number }
+  type Wall = BoardPosition
+
   interface Snake extends Colorable {
-    coords: (Position & Colorable)[]
-    death: { turn: number, reason: string, killer: Snake[ "id" ] }
+    coords: SnakeCoord[]
+    death?: { turn: number, reason?: string, killer?: Snake[ "id" ] }
     error: string,
     goldCount: number
     head: { url: string }
@@ -38,14 +44,6 @@ declare namespace GameAPI {
     taunt: string
     score: number
   }
-
-  interface Food extends Position, Colorable { }
-  interface Gold extends Position, Colorable { }
-  interface Teleporter extends Position, Colorable {
-    channel: number
-  }
-
-  interface Wall extends Position, Colorable { }
 
   interface Daemon {
     id: string

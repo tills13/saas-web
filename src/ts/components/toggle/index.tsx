@@ -1,7 +1,6 @@
 import "./index.scss"
 
 import classnames from "classnames"
-import { capitalize } from "lodash"
 import React from "react"
 
 import Icon from "../icon"
@@ -32,7 +31,7 @@ function Toggle ({ className, onSelectOption, options, selectedOption }: ToggleP
             onClick={ (event) => onSelectOption(option.key) }
           >
             { option.icon && (typeof option.icon === "string" ? <Icon icon={ option.icon } /> : option.icon) }
-            { option.label || capitalize(option.key) }
+            { option.label }
           </div>
         )
       }) }

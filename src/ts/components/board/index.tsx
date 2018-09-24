@@ -6,35 +6,47 @@ import React from "react"
 import { forEach, partial } from "lodash"
 import { compose, mapProps } from "recompose"
 
-import { BoardRenderer as Renderer } from "./renderer"
+import { BoardRenderer as Renderer, BoardRendererOptions } from "./renderer"
 
 export enum BoardRenderer { Canvas, Dom }
 export enum CellType { Food, Gold, Snake, Teleporter, Wall }
 
+export type BoardOptions = {
+  deathTimeout?: number
+}
+
+export const defaultOptions = {
+
+}
+
 interface BoardProps {
-  width?: number
-  height?: number
   className?: string
   configuration?: Models.Board
-  renderer?: BoardRenderer
-
+  fillWidth?: boolean
   food?: GameAPI.Food[]
   gold?: GameAPI.Gold[]
+  height?: number
+  isPreview?: boolean
+  onClickCell?: (x: number, y: number) => void
+  onHoverCell?: (x: number, y: number) => void
+  renderBackground?: boolean
+  renderer?: BoardRenderer
+  rendererOptions?: Partial<Exclude<BoardRendererOptions, "dimensions">>
   snakes?: GameAPI.Snake[]
   teleporters?: GameAPI.Teleporter[]
-  walls?: GameAPI.Wall[]
-
-  overlayContents?: JSX.Element | React.ReactElement<any> | HTMLElement
-  onClickCell?: (x: number, y: number) => void
-  onClickCloseOverlay?: () => void
-  onHoverCell?: (x: number, y: number) => void
-
-  isPreview?: boolean
+  turnNumber?: number
   updateOnPropsChanged?: boolean
+  walls?: GameAPI.Wall[]
+  width?: number
 }
 
 class Board extends React.Component<BoardProps, {}> {
-  static defaultProps = { renderer: BoardRenderer.Canvas, updateOnPropsChanged: false }
+  static defaultProps = {
+    fillWidth: false,
+    renderer: BoardRenderer.Canvas,
+    renderBackground: true,
+    updateOnPropsChanged: false
+  }
 
   boardRef: HTMLDivElement
   renderer: Renderer
@@ -44,16 +56,14 @@ class Board extends React.Component<BoardProps, {}> {
   fgCanvasRef: HTMLCanvasElement
 
   componentDidMount () {
-    const { height, renderer, width } = this.props
+    const { height, renderer, width, renderBackground, rendererOptions } = this.props
 
     if (renderer === BoardRenderer.Canvas) {
-      this.renderer = new Renderer({
-        dimensions: { width, height },
-        bgCanvas: this.bgCanvasRef,
-        fgCanvas: this.fgCanvasRef
-      })
+      const dimensions = { width, height }
+      const options: BoardRendererOptions = Object.assign(rendererOptions, { dimensions, renderBackground })
 
-      this.renderer.updateState(width, height, this.props)
+      this.renderer = new Renderer(this.bgCanvasRef, this.fgCanvasRef, options)
+      this.renderer.updateState(null, this.props)
 
       window.onresize = this.onResize
       this.onResize()
@@ -61,12 +71,12 @@ class Board extends React.Component<BoardProps, {}> {
     }
   }
 
-  componentDidUpdate (_: BoardProps) {
+  componentDidUpdate () {
     const { height, renderer, width } = this.props
 
     if (renderer === BoardRenderer.Canvas) {
       this.onResize()
-      this.renderer.updateState(width, height, this.props)
+      this.renderer.updateState({ dimensions: { width, height } }, this.props)
     }
   }
 
@@ -107,10 +117,12 @@ class Board extends React.Component<BoardProps, {}> {
   }
 
   onResize = () => {
+    const { fillWidth } = this.props
+
     const width = this.container.clientWidth
     const height = this.container.clientHeight
-    const parent = this.container.parentElement
 
+    const parent = this.container.parentElement
     const parentHeight = parent ? parent.clientHeight : Infinity
 
     if (this.container.clientHeight === 0) {
@@ -118,7 +130,9 @@ class Board extends React.Component<BoardProps, {}> {
     }
 
     const ratio = this.props.width / this.props.height
-    const dimension = Math.min(Math.max(width, height), Math.max(parentHeight, document.body.clientHeight))
+    const dimension = fillWidth
+      ? width
+      : Math.min(Math.max(width, height), Math.max(parentHeight, document.body.clientHeight))
 
     forEach([ this.bgCanvasRef, this.fgCanvasRef ], layer => {
       layer.height = (height > width) ? dimension : dimension / ratio

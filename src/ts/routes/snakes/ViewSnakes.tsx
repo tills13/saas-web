@@ -7,7 +7,7 @@ import { compose } from "recompose"
 
 import LinkButton from "components/button/link_button"
 import Header from "components/header"
-import Pagination from "components/pagination"
+import Pagination from "components/Pagination"
 import SnakeDetails from "components/snake/SnakeDetails"
 import SnakeList from "components/snake/SnakeList"
 

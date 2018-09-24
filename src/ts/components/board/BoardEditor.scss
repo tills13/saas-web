@@ -2,15 +2,9 @@
   display: flex;
   flex-direction: row;
 
-  > * { flex: 1; }
-}
+  .Board { }
 
-.BoardEditor__board {
-  flex-shrink: 1;
-  flex-basis: auto;
-  padding-right: 20px;
-}
-
-.BoardEditor__sidebarContainer {
-  flex: 0 0 300px;
+  .BoardEditor__sidebarContainer {
+    flex: 0 0 300px;
+  }
 }

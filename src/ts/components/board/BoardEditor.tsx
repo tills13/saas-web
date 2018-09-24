@@ -159,15 +159,22 @@ class BoardEditor extends React.Component<BoardEditorProps, BoardEditorState> {
 
   render () {
     const { configuration } = this.state
+    const { boardColumns: width, boardRows: height } = configuration
 
     return (
       <Container className="BoardEditor" containerRef={ ref => this.containerRef = ref }>
-        <div className="BoardEditor__board">
-          <Board { ...configuration } onClickCell={ this.onClickCell } renderer={ BoardRenderer.Dom } />
-        </div>
+
+        <Board
+          { ...configuration }
+          width={ width }
+          height={ height }
+          onClickCell={ this.onClickCell }
+          renderer={ BoardRenderer.Dom }
+        />
+
         <div className="BoardEditor__sidebarContainer">
           { this.renderSidebar() }
-          { JSON.stringify(configuration) }
+          <code>{ JSON.stringify(configuration) }</code>
         </div>
       </Container>
     )

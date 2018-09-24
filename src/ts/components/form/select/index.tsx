@@ -1,29 +1,27 @@
 import "./index.scss"
 
 import classnames from "classnames"
+import { find, isArray, isEqual, isFunction } from "lodash"
 import React from "react"
 import clickOutside from "react-click-outside"
-
-import { find, isArray, isFunction, map, isEqual } from "lodash"
+import { compose, mapProps, SetStateCallback, withState } from "recompose"
 
 import Icon from "../../icon"
 import Option from "./option"
 import SelectedValue from "./selected_value"
 
-import { compose, defaultProps, mapProps, SetStateCallback, withState } from "recompose"
-
 export type SelectValueCallback = {
   (value: any): string
 }
 
-export type SelectOption = {
+export type Option = {
   value: any,
   label: string | SelectValueCallback
 }
 
 interface SelectInnerProps extends React.Props<any>, SelectOuterProps {
   isOpen: boolean,
-  options: SelectOption[],
+  options: Option[],
   searchTerm: string
   setSearchTerm: SetStateCallback<string>
   setIsOpen: SetStateCallback<boolean>
@@ -44,7 +42,7 @@ interface SelectOuterProps {
   name: string,
   onChange?: (newValue: any) => void
   onSearch?: (term: string) => void
-  options: (SelectOption | string)[],
+  options: (Option | string)[],
   placeholder?: string
   searchable?: boolean
   showValue?: boolean
@@ -54,7 +52,7 @@ interface SelectOuterProps {
 }
 
 interface SelectState {
-  options: SelectOption[]
+  options: Option[]
   searchTerm?: string
 }
 

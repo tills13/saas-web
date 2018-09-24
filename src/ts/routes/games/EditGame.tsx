@@ -3,7 +3,7 @@ import "./EditGame.scss"
 import React from "react"
 import { graphql } from "react-relay"
 
-import Board from "components/board"
+import Board from "components/Board"
 import CreateEditGameForm from "components/game/CreateEditGameForm"
 import Header from "components/header"
 

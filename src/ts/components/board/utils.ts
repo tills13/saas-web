@@ -19,7 +19,7 @@ export function getSnakeHead (snake: GameAPI.Snake): Promise<HTMLImageElement> {
         return
       }
 
-      resolve(svgToImage(<SVGSVGElement> xml.children[ 0 ], snake.color))
+      resolve()
     })
 
     request.send()
@@ -55,7 +55,9 @@ export function svgToImage (svg: SVGElement, color) {
   })
 }
 
-export function withinContext (context: Context, fn: Function, prepareContext?: PrepareContextCallback, ...args) {
+type WithinContextCallback = (context: Context, ...args: any[]) => void
+
+export function withinContext (context: Context, fn: WithinContextCallback, prepareContext?: PrepareContextCallback, ...args) {
   context.save()
   prepareContext && prepareContext(context, ...args)
   const result = fn(context, ...args)

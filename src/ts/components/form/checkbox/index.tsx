@@ -7,7 +7,8 @@ import { compose, mapProps } from "recompose"
 
 import Icon from "../../icon"
 
-interface CheckboxProps extends React.AllHTMLAttributes<HTMLInputElement> {
+// interface CheckboxProps extends Exclude<React.AllHTMLAttributes<any>, "onChange"> {
+interface CheckboxProps {
   check?: string
   className?: string
   containerClassName?: string

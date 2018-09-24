@@ -1,17 +1,32 @@
+import { pick } from "lodash"
+
 import { DIRECTION, getMovementDirection } from "./coordinate"
 import { getSnakeHead, makeContext, withinContext } from "./utils"
-import { pick } from "lodash";
+
+import bendr from "../../../static/image/snake/head/bendr.svg"
+import dead from "../../../static/image/snake/head/dead.svg"
+import fang from "../../../static/image/snake/head/fang.svg"
+import pixel from "../../../static/image/snake/head/pixel.svg"
+import regular from "../../../static/image/snake/head/regular.svg"
+import safe from "../../../static/image/snake/head/safe.svg"
+import sand from "../../../static/image/snake/head/sand-worm.svg"
+import shades from "../../../static/image/snake/head/shades.svg"
+import smile from "../../../static/image/snake/head/smile.svg"
+import tongue from "../../../static/image/snake/head/tongue.svg"
+import { CreateBoardQueryResponse } from "../../../__artifacts__/CreateBoardQuery.graphql";
+
+const heads = { bendr, dead, fang, pixel, regular, safe, sand, shades, smile, tongue }
 
 type Context = CanvasRenderingContext2D
 
-interface BoardRendererOptions {
-  bgCanvas: HTMLCanvasElement
-  colorPallet?: { [ name: string ]: string }
+export type BoardRendererOptions = {
+  colorPalette: { [ name: string ]: string }
+  deathTimeout: number
   dimensions: { width: number, height: number }
-  fgCanvas: HTMLCanvasElement
+  renderBackground: boolean
 }
 
-interface BoardState {
+export type BoardState = {
   food: GameAPI.Food[]
   gold: GameAPI.Gold[]
   snakes: GameAPI.Snake[]
@@ -27,16 +42,15 @@ const DEFAULT_PALETTE = {
   tile: "#114B5F"
 }
 
+const defaultOpts: Partial<BoardRendererOptions> = {
+  colorPalette: {},
+  deathTimeout: 30,
+  renderBackground: true
+}
+
 export class BoardRenderer {
-  private height: number
-  private width: number
-
-  private bgCanvas: HTMLCanvasElement
   private bgContext: CanvasRenderingContext2D
-  private fgCanvas: HTMLCanvasElement
   private fgContext: CanvasRenderingContext2D
-
-  private colorPalette: { [ name: string ]: string } = {}
 
   private margin: number = 0.05
   private padding: number = 0
@@ -46,26 +60,18 @@ export class BoardRenderer {
 
   private redrawBackground: boolean = true
 
-  private imageCache = new Map<string, HTMLImageElement>()
-
   private boardState: Partial<BoardState>
-  private timer: any
+  private animationFrame: number
 
-  constructor (opts: BoardRendererOptions) {
-    this.colorPalette = opts.colorPallet || DEFAULT_PALETTE
+  private opts: BoardRendererOptions
 
-    this.width = opts.dimensions.width
-    this.height = opts.dimensions.height
-
-    this.bgCanvas = opts.bgCanvas
-    this.fgCanvas = opts.fgCanvas
-
+  constructor (
+    private bgCanvas: HTMLCanvasElement,
+    private fgCanvas: HTMLCanvasElement,
+    initialOpts: BoardRendererOptions
+  ) {
+    this.opts = Object.assign(defaultOpts, initialOpts)
     this.initializeCanvases()
-  }
-
-  clearLayer = (context: Context) => {
-    const { height, width } = context.canvas
-    context.clearRect(0, 0, width, height)
   }
 
   initializeCanvases () {
@@ -76,6 +82,11 @@ export class BoardRenderer {
     this.fgCanvas.style.zIndex = "1"
   }
 
+  clearLayer = (context: Context) => {
+    const { height, width } = context.canvas
+    context.clearRect(0, 0, width, height)
+  }
+
   normalizeLayer = (context: Context) => {
     this.scaleLayer(context)
     context.translate(0.5, 0.5)
@@ -84,8 +95,8 @@ export class BoardRenderer {
   scaleLayer = (context: Context) => {
     const clientWidth = context.canvas.width
     const clientHeight = context.canvas.height
-    const width = this.width + this.padding * 2
-    const height = this.height + this.padding * 2
+    const width = this.opts.dimensions.width + this.padding * 2
+    const height = this.opts.dimensions.height + this.padding * 2
 
     const h = clientHeight / height
     const w = clientWidth / width
@@ -100,20 +111,12 @@ export class BoardRenderer {
     context.translate(this.padding / 2, this.padding / 2)
   }
 
-  updateState (width: number, height: number, boardState: Partial<BoardState>) {
-    const isLooping = !!this.timer
-
-    this.stop()
-
-    this.width = width
-    this.height = height
-
+  updateState (newOptions: Partial<BoardRendererOptions>, boardState: Partial<BoardState>) {
+    this.opts = Object.assign(this.opts, newOptions)
     this.boardState = Object.assign(
       { food: [], gold: [], snakes: [], walls: [] },
-      pick(boardState, [ "food", "gold", "snakes", "walls" ])
+      pick(boardState, [ "food", "gold", "snakes", "turnNumber", "walls" ])
     )
-
-    if (isLooping) this.start()
   }
 
   start (redrawBackground: boolean = true) {
@@ -122,7 +125,7 @@ export class BoardRenderer {
   }
 
   stop () {
-    clearTimeout(this.timer)
+    cancelAnimationFrame(this.animationFrame)
   }
 
   drawGrid = (context: Context) => {
@@ -130,14 +133,15 @@ export class BoardRenderer {
 
     this.clearLayer(context)
 
-    context.fillStyle = this.colorPalette[ "tile" ] || DEFAULT_PALETTE.tile
+    context.fillStyle = this.opts.colorPalette[ "tile" ] || DEFAULT_PALETTE.tile
 
-    for (let x = 0; x < this.width; x++) {
-      for (let y = 0; y < this.height; y++) {
+    for (let x = 0; x < this.opts.dimensions.width; x++) {
+      for (let y = 0; y < this.opts.dimensions.height; y++) {
         context.fillRect(x + this.margin, y + this.margin, this.unit, this.unit)
       }
     }
 
+    context.scale(2, 2)
     this.redrawBackground = false
   }
 
@@ -151,7 +155,7 @@ export class BoardRenderer {
   }
 
   drawItem = (context: Context, type: "food" | "gold" | "teleporter" | "wall", thing: GameAPI.Cell) => {
-    context.fillStyle = this.colorPalette[ type ] || DEFAULT_PALETTE[ type ] || "black"
+    context.fillStyle = this.opts.colorPalette[ type ] || "black"
 
     context.beginPath()
     context.arc(thing.x, thing.y, this.halfUnit, 0, 2 * Math.PI)
@@ -163,20 +167,20 @@ export class BoardRenderer {
     const { death, coords } = snake
 
     if (snake.health <= 0 && death) {
-      const turnsSinceDeath = turnNumber - death.turn
+      const turnsSinceDeath = Math.max(1, Math.min(this.opts.deathTimeout, turnNumber - death.turn))
 
-      if ((turnsSinceDeath * 2) > 100) return
-
-      context.globalAlpha = 100 - (turnsSinceDeath * 2) / 10
-      if ((context as any).filter) (context as any).filter = `grayscale(${ 100 - turnsSinceDeath * 2 }%)`
+      if ((context as any).filter) {
+        const opacity = (1 - (turnsSinceDeath / this.opts.deathTimeout)) * 100;
+        (context as any).filter = `opacity(${ opacity }%)`
+      }
     }
 
     if (coords.length === 0) {
       return
     }
 
-    context.translate(0.5, 0.5)
-    context.strokeStyle = snake.color
+    // context.translate(0.5, 0.5)
+    context.strokeStyle = snake.color || "black"
     context.lineWidth = this.unit
     context.lineJoin = "round"
 
@@ -187,40 +191,33 @@ export class BoardRenderer {
 
     context.stroke()
 
-    return this.drawSnakeHead(context, snake)
+    // return this.drawSnakeHead(context, snake)
   }
 
   drawSnakeHead = async (context: Context, snake: GameAPI.Snake) => {
-    const headImage = await Promise.resolve().then(() => {
-      return this.imageCache.has(snake.id)
-        ? this.imageCache.get(snake.id)
-        : getSnakeHead(snake)
-    }).catch(() => null)
-
-    this.imageCache.set(snake.id, headImage)
-
-    if (!headImage) return
+    // const headImage = svgToImage(<SVGSVGElement> heads[ "bendr" ], snake.color)
 
     const headLoc = snake.coords[ 0 ]
     const direction = getMovementDirection(snake)
 
-    return this.drawImage(context, headImage, headLoc.x, headLoc.y, this.unit, this.unit, (mContext) => {
-      if (direction === DIRECTION.UP) mContext.rotate(Math.PI / 2)
-      else if (direction === DIRECTION.LEFT) mContext.scale(-1, 1)
-      else if (direction === DIRECTION.DOWN) mContext.rotate(-Math.PI / 2)
-    })
+    // return this.drawImage(context, headImage, headLoc.x, headLoc.y, this.unit, this.unit, (mContext) => {
+    //   if (direction === DIRECTION.UP) mContext.rotate(Math.PI / 2)
+    //   else if (direction === DIRECTION.LEFT) mContext.scale(-1, 1)
+    //   else if (direction === DIRECTION.DOWN) mContext.rotate(-Math.PI / 2)
+    // })
   }
 
   renderLoop = () => {
-    this.render().then(
-      () => this.timer = setTimeout(this.renderLoop, 1000 / 60)
-    )
+    this.render()
+    this.animationFrame = requestAnimationFrame(this.renderLoop)
   }
 
   render = () => {
     if (!this.boardState) return
 
-    withinContext(this.bgContext, this.drawGrid, this.scaleLayer)
+    if (this.opts.renderBackground) {
+      withinContext(this.bgContext, this.drawGrid, this.scaleLayer)
+    }
 
     this.clearLayer(this.fgContext)
 
@@ -230,6 +227,8 @@ export class BoardRenderer {
     gold.forEach(makeContext(this.fgContext, this.drawItem, this.normalizeLayer, "gold"))
     walls.forEach(makeContext(this.fgContext, this.drawItem, this.normalizeLayer, "wall"))
 
-    return Promise.all(snakes.map(makeContext(this.fgContext, this.drawSnake, this.scaleLayer)))
+    snakes.forEach(makeContext(this.fgContext, this.drawSnake, this.normalizeLayer))
+
+    // this.bgContext.scale(3, 3)
   }
 }

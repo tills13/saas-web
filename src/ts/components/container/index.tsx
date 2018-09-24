@@ -3,22 +3,16 @@ import "./index.scss"
 import classnames from "classnames"
 import React from "react"
 
-interface ContainerProps {
+interface ContainerProps extends React.AllHTMLAttributes<HTMLDivElement> {
   className?: string
-  containerRef?: React.Ref<any>
 }
 
-class Container extends React.Component<ContainerProps> {
-  render() {
-    const { children, className, containerRef } = this.props
-    const mClassName = classnames("Container", className)
+export default React.forwardRef<HTMLDivElement, ContainerProps>(function (props, ref) {
+  const mClassName = classnames("Container", props.className)
 
-    return (
-      <div className={ mClassName } ref={ containerRef }>
-        { children }
-      </div>
-    )
-  }
-}
-
-export default Container
+  return (
+    <div className={ mClassName } ref={ ref }>
+      { props.children }
+    </div>
+  )
+})

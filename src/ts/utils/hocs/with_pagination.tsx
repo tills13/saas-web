@@ -12,7 +12,7 @@ interface PaginationOptions {
   count: number
 }
 
-type PaginationPropOptions = (props: any, { onChangeAfter, onChangeLimit }) => Partial<PaginationOptions>
+type PaginationPropOptions = (props: any, options: { onChangeAfter, onChangeLimit }) => Partial<PaginationOptions>
 
 export interface PaginationProps { pagination: PaginationOptions }
 

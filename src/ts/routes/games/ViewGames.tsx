@@ -4,7 +4,7 @@ import Relay, { createRefetchContainer, graphql } from "react-relay"
 import LinkButton from "components/button/link_button"
 import GameList from "components/game/GameList"
 import Header from "components/header"
-import Pagination from "components/pagination"
+import Pagination from "components/Pagination"
 
 import { PaginationProps, withPagination } from "utils/hocs/with_pagination"
 

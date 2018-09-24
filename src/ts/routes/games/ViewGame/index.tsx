@@ -6,7 +6,7 @@ import { chunk } from "lodash"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import Board, { BoardRenderer } from "components/board"
+import Board, { BoardRenderer } from "components/Board"
 import Button from "components/form/button"
 import FieldGroup from "components/form/field_group"
 import SnakeAvatar from "components/snake/SnakeAvatar"

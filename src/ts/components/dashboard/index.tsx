@@ -4,9 +4,8 @@ import classnames from "classnames"
 import React from "react"
 import { graphql } from "react-relay"
 
-import RouteContainer from "../container/route_container"
 import ErrorBoundary from "../error_boundary"
-import Navigation from "../navigation"
+import Navigation from "../Navigation"
 
 interface DashboardProps {
   className?: string
@@ -31,7 +30,16 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
 
   state: DashboardState = { compactNav: false }
 
-  node: HTMLElement
+  containerRef: React.RefObject<HTMLDivElement>
+
+  constructor (props) {
+    super(props)
+    this.containerRef = React.createRef()
+  }
+
+  onNavItemClick = () => {
+    this.containerRef.current.scrollTop = 0
+  }
 
   onScroll = (event: React.UIEvent<HTMLElement>) => {
     const { compactNav } = this.state
@@ -51,15 +59,15 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
 
     return (
       <ErrorBoundary>
-        <div ref={ node => this.node = node } className={ mClassName } onScroll={ this.onScroll }>
+        <div ref={ this.containerRef } className={ mClassName } onScroll={ this.onScroll }>
           <Navigation
             compact={ compactNav }
             simple={ simpleNavigation }
             viewer={ viewer }
-            onItemClick={ (event) => this.node.scrollTop = 0 }
+            onItemClick={ this.onNavItemClick }
           />
           <div className="Dashboard__content">
-            <RouteContainer>{ children }</RouteContainer>
+            { children }
           </div>
         </div>
       </ErrorBoundary>

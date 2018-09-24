@@ -182,8 +182,8 @@ class BoardEditorSidebar extends React.Component<BoardEditorSidebarProps, BoardE
   }
 }
 
-export default createFragmentContainer(
-  withForm()(BoardEditorSidebar),
+export default createFragmentContainer<BoardEditorSidebarProps>(
+  withForm()(BoardEditorSidebar) as any,
   graphql`
     fragment BoardEditorSidebar_application on Application {
       snakes (limit: 100) {

@@ -3,7 +3,7 @@ import "./index.scss"
 import classnames from "classnames"
 import React from "react"
 
-import Container from "."
+import Container from "../Container"
 
 interface RouteContainerProps extends React.AllHTMLAttributes<HTMLDivElement> {
   className?: string

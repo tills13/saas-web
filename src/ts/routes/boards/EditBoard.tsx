@@ -3,7 +3,7 @@ import "./index.scss"
 import React from "react"
 import { graphql } from "react-relay"
 
-import BoardEditor from "components/board/BoardEditor"
+import BoardEditor from "components/Board/BoardEditor"
 import Header from "components/header"
 
 interface EditDaemonProps extends React.Props<any> {
@@ -18,7 +18,7 @@ export const EditBoardQuery = graphql`
   }
 `
 
-const EditBoard = ({ application, board }: EditDaemonProps) => {
+function EditBoard ({ application, board }: EditDaemonProps) {
   return (
     <div className="EditDaemon">
       <Header className="Daemons__header">

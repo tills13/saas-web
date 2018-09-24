@@ -1,20 +1,21 @@
 .Code__container {
   position: relative;
-}
 
-.Code__toggleExpand {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  margin: 10px;
-}
+  .Code__toggleExpand {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    margin: 10px;
+    z-index: 10;
+  }
 
-.Code {
-  max-height: 300px;
-  font-size: 14px;
-  border-radius: $border-radius-base;
-}
+  .Code {
+    max-height: 300px;
+    font-size: 14px;
+    border-radius: $border-radius-base;
 
-.Code--full {
-  max-height: auto;
+    &.--expanded {
+      max-height: unset;
+    }
+  }
 }

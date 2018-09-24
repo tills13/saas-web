@@ -3,11 +3,11 @@ import "./index.scss"
 import classnames from "classnames"
 import React from "react"
 
-interface WellProps extends React.Props<any> {
+interface WellProps extends React.AllHTMLAttributes<HTMLDivElement> {
   className?: string
 }
 
-const Well = ({ children, className }: WellProps) => {
+export default function Well ({ children, className }: WellProps) {
   const mClassName = classnames("Well", className)
 
   return (
@@ -16,5 +16,3 @@ const Well = ({ children, className }: WellProps) => {
     </div>
   )
 }
-
-export default Well

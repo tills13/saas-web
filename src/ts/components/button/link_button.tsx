@@ -10,8 +10,8 @@ export interface LinkButtonProps extends ButtonProps {
   to: string
 }
 
-const LinkButton = ({ children, className, to, ...props }: LinkButtonProps) => {
-  const mClassName = classnames("LinkButton", className)
+const LinkButton = ({ block, children, className, to, ...props }: LinkButtonProps) => {
+  const mClassName = classnames("LinkButton", className, { "--block": block })
 
   return (
     <Link to={ to } className={ mClassName }>

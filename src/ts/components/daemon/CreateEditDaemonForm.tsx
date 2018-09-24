@@ -6,7 +6,7 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { compose, withProps } from "recompose"
 
-import Alert, { AlertType } from "../alert"
+import Alert, { AlertType } from "../Alert"
 import ButtonGroup from "../button/button_group"
 import Button from "../form/button"
 import Select from "../form/select"
@@ -14,12 +14,12 @@ import TextInput from "../form/text_input"
 
 import { FormProps, withForm } from "utils/hocs"
 
-import { enumToSelect, VISIBILITY_PRIVATE, VisibilityEnum, VISIBILITY_PUBLIC } from "relay/enums"
+import { enumToSelect, VISIBILITY_PUBLIC, VisibilityEnum } from "relay/enums"
 import { createDaemon, deleteDaemon, updateDaemon } from "relay/mutations"
 
+import { Color } from "enums/Color"
 import { CreateDaemonMutationResponse } from "../../../__artifacts__/CreateDaemonMutation.graphql"
 import { UpdateDaemonMutationResponse } from "../../../__artifacts__/UpdateDaemonMutation.graphql"
-import { Color } from "enums/Color";
 
 interface CreateEditDaemonFormProps extends WithRouter {
   className?: string
@@ -99,7 +99,7 @@ export default createFragmentContainer<CreateEditDaemonFormProps>(
         visibility: daemon ? daemon.visibility : VISIBILITY_PUBLIC
       }
     })),
-    withForm(),
+    withForm()
   )(CreateEditDaemonForm),
   graphql`
     fragment CreateEditDaemonForm_daemon on Daemon {

@@ -11,74 +11,65 @@ import Button from "../form/button"
 import SyntaxHighlighter from "react-syntax-highlighter/dist/light"
 import github from "react-syntax-highlighter/dist/styles/github"
 
-interface CodeInnerProps extends React.Props<any>, CodeOuterProps {
-  isExpanded: boolean
-  setIsExpanded: SetStateCallback<boolean>
-}
-
-interface CodeOuterProps {
+interface CodeProps extends React.AllHTMLAttributes<HTMLDivElement> {
   className?: string
   format?: boolean
   language?: string
   showExpand?: boolean
-  style?: any
   wrapLines?: boolean
 }
 
-const Code = ({
-  children,
-  className,
-  format,
-  isExpanded,
-  language,
-  setIsExpanded,
-  showExpand,
-  style,
-  wrapLines
-}: CodeInnerProps) => {
-  const mClassName = classnames("Code", className, {
-    "Code--expanded": isExpanded
-  })
-
-  const styles = { github }
-
-  const text = typeof children === "string" && format
-    ? utils.trimLeadingWhitespace(children)
-    : children
-
-  const lineCount = typeof children === "string" && format
-    ? children.split(/\n|\\n|<br\/>/).length
-    : React.Children.count(children)
-
-  return (
-    <div className="Code__container">
-      { showExpand && lineCount > 1 && (
-        <Button
-          className="Code__toggleExpand"
-          onClick={ () => setIsExpanded(!isExpanded) }
-        >
-          { isExpanded ? "Collapse" : "Expand" }
-        </Button>
-      ) }
-      <SyntaxHighlighter
-        className={ mClassName }
-        language={ language }
-        style={ styles[ style ] }
-        wrapLines={ wrapLines }
-      >
-        { text }
-      </SyntaxHighlighter>
-    </div>
-  )
+interface CodeState {
+  isExpanded: boolean
 }
 
-export default compose<CodeInnerProps, CodeOuterProps>(
-  defaultProps({
-    language: "javascript",
-    format: false,
-    showExpand: true,
-    style: "github",
-    wrapLines: false
-  }),
-  withState("isExpanded", "setIsExpanded", false)
-)(Code)
+class Code extends React.Component<CodeProps, CodeState> {
+  static defaultProps = { format: false, language: "javascript", showExpand: true, wrapLines: false }
+  state = { isExpanded: false }
+
+  onClickExpand = () => {
+    this.setState(({ isExpanded }) => ({ isExpanded: !isExpanded }))
+  }
+
+  render () {
+    const { children, className, format, language, showExpand, wrapLines } = this.props
+    const { isExpanded } = this.state
+
+    const mClassName = classnames("Code", className, {
+      "--expanded": isExpanded
+    })
+
+    const text = (typeof children === "string" && format)
+      ? utils.trimLeadingWhitespace(children)
+      : children
+
+    const lineCount = typeof children === "string"
+      ? children.split(/\n|\\n|<br\/>/ig).length
+      : React.Children.count(children)
+
+    console.log(children, lineCount)
+
+    return (
+      <div className="Code__container">
+        { showExpand && lineCount > 1 && (
+          <Button
+            className="Code__toggleExpand"
+            onClick={ this.onClickExpand }
+          >
+            { isExpanded ? "Collapse" : "Expand" }
+          </Button>
+        ) }
+        <SyntaxHighlighter
+          className={ mClassName }
+          language={ language }
+          style={ github }
+          wrapLines={ wrapLines }
+        >
+          { text }
+        </SyntaxHighlighter>
+      </div>
+    )
+  }
+}
+
+export default Code

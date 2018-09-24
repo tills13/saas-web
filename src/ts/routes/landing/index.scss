@@ -1,10 +1,37 @@
 .Index {
-  padding-top: 20px;
-}
+  position: relative;
+  height: 100%;
 
-.Index__title {
-  display: none;
-  font-size: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .Index__cta {
+    position: relative;
+    padding: 20px;
+
+    background-color: $brand-primary;
+    border-radius: 2px;
+
+    z-index: 1;
+
+    h2 {
+      padding-bottom: 20px;
+      font-size: 42px;
+      color: white;
+    }
+
+    .LinkButton {
+      font-size: 24px;
+      line-height: 40px;
+    }
+  }
+
+  .Board {
+    position: fixed;
+    top: 0; bottom: 0; right: 0; left: 0;
+    z-index: 0;
+  }
 }
 
 .Index__footer {
