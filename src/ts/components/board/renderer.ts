@@ -13,17 +13,16 @@ import sand from "../../../static/image/snake/head/sand-worm.svg"
 import shades from "../../../static/image/snake/head/shades.svg"
 import smile from "../../../static/image/snake/head/smile.svg"
 import tongue from "../../../static/image/snake/head/tongue.svg"
-import { CreateBoardQueryResponse } from "../../../__artifacts__/CreateBoardQuery.graphql";
 
 const heads = { bendr, dead, fang, pixel, regular, safe, sand, shades, smile, tongue }
 
 type Context = CanvasRenderingContext2D
 
 export type BoardRendererOptions = {
-  colorPalette: { [ name: string ]: string }
-  deathTimeout: number
+  colorPalette?: { [ name: string ]: string }
+  deathTimeout?: number
   dimensions: { width: number, height: number }
-  renderBackground: boolean
+  renderBackground?: boolean
 }
 
 export type BoardState = {

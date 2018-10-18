@@ -1,5 +1,3 @@
-import "./ViewSnakes.scss"
-
 import { withRouter, WithRouter } from "found"
 import React from "react"
 import Relay, { createRefetchContainer, graphql } from "react-relay"

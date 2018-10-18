@@ -3,7 +3,7 @@
   query: {
     files: [
       {
-        match: "./src/**/*.tsx?",
+        match: "./src/**/*.tsx",
         parser: [ "EmbeddedQueryParser", { startTag: "graphql`", endTag: "`" } ]
       }
     ]

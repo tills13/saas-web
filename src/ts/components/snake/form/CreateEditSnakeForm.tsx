@@ -26,7 +26,7 @@ import { CreateSnakeMutationResponse } from "../../../../__artifacts__/CreateSna
 import { UpdateSnakeMutationResponse } from "../../../../__artifacts__/UpdateSnakeMutation.graphql"
 
 import Color from "enums/Color"
-import Modal from "../../Modal";
+import Modal from "../../Modal"
 
 interface CreateEditSnakeFormProps extends FormProps, WithRouter {
   formValues: { [ field: string ]: any }
@@ -166,12 +166,11 @@ class CreateEditSnakeForm extends React.Component<CreateEditSnakeFormProps, Crea
   }
 }
 
-export default createFragmentContainer<any>(
-  compose(
+export default createFragmentContainer<CreateEditSnakeFormProps>(
+  compose<any, any>(
     withRouter,
     withProps((props: CreateEditSnakeFormProps) => ({
       initialFormData: {
-        apiVersion: "VERSION_2018",
         defaultColor: "#BADA55",
         visibility: VISIBILITY_PUBLIC,
         ...props.snake

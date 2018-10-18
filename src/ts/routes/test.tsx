@@ -20,7 +20,7 @@ export const TestQuery = graphql`
 `
 
 function Test ({ application: { snakes: { items: snakes } }, relay }: TestProps) {
-  const options = s(snakes)
+  // const options = s(snakes)
   // const options = snakes.map(snake => ({ label: snake.name, value: snake.id }))
 
   const onSearch = debounce((searchTerm) => {

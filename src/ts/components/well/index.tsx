@@ -7,7 +7,7 @@ interface WellProps extends React.AllHTMLAttributes<HTMLDivElement> {
   className?: string
 }
 
-export default function Well ({ children, className }: WellProps) {
+function Well ({ children, className }: WellProps) {
   const mClassName = classnames("Well", className)
 
   return (
@@ -16,3 +16,5 @@ export default function Well ({ children, className }: WellProps) {
     </div>
   )
 }
+
+export default Well

@@ -2,7 +2,6 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import ButtonGroup from "../button/button_group"
-import Code from "../code"
 import Button from "../form/button"
 import ColorPicker from "../form/color_picker"
 import FieldGroup from "../form/field_group"

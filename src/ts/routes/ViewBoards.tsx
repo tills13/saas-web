@@ -1,5 +1,3 @@
-import "./ViewBoards.scss"
-
 import { Link } from "found"
 import React from "react"
 import { graphql } from "react-relay"

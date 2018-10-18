@@ -1,12 +1,10 @@
-import "./index.scss"
-
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import Anchor from "components/Anchor"
 import ButtonGroup from "components/button/button_group"
 import LinkButton from "components/button/link_button"
-import Code from "components/code"
+import Code from "components/Code"
 import Container from "components/Container"
 import Checkbox from "components/form/checkbox"
 import FieldGroup from "components/form/field_group"
@@ -14,10 +12,10 @@ import Select from "components/form/select"
 import TextInput from "components/form/text_input"
 import Table from "components/table"
 import Well from "components/well"
-import Example from "./example"
-import Section from "./section"
+import Example from "components/DocumentationExample"
+import Section from "./Documentation/section"
 
-import { getExampleJson } from "./utils"
+import { getExampleJson } from "./Documentation/utils"
 
 interface DocumentationProps {
   viewer: GraphQL.Schema.Viewer
@@ -140,7 +138,7 @@ export class Documentation extends React.Component<DocumentationProps, Documenat
         </Table>
 
         <h4 className="Documentation__title">Example</h4>
-        <Example endpoint="bounty/check" data={ getExampleJson(isLegacy) } url={ exampleUrl } />
+        <Example data={ getExampleJson(isLegacy) } path="/bounty/check" url={ exampleUrl } />
       </Section>
     )
   }
@@ -252,7 +250,7 @@ export class Documentation extends React.Component<DocumentationProps, Documenat
         </Table>
 
         <h4 className="Documentation__title">Example</h4>
-        <Example endpoint="move" data={ getExampleJson(isLegacy) } url={ exampleUrl } />
+        <Example data={ getExampleJson(isLegacy) } path="/move" url={ exampleUrl } />
       </Section>
     )
   }
@@ -323,7 +321,7 @@ export class Documentation extends React.Component<DocumentationProps, Documenat
         </Table>
 
         <h4 className="Documentation__title">Example</h4>
-        <Example endpoint="start" data={ requestJson } url={ exampleUrl } />
+        <Example path="/start" data={ requestJson } url={ exampleUrl } />
       </Section>
     )
   }

@@ -4,7 +4,7 @@ import classnames from "classnames"
 import React from "react"
 import { graphql } from "react-relay"
 
-import ErrorBoundary from "../error_boundary"
+import ErrorBoundary from "../ErrorBoundary"
 import Navigation from "../Navigation"
 
 interface DashboardProps {

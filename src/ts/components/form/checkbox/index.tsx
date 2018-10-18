@@ -3,13 +3,14 @@ import "./index.scss"
 import classnames from "classnames"
 import React from "react"
 
-import { compose, mapProps } from "recompose"
+import { mapProps } from "recompose"
 
 import Icon from "../../icon"
 
 // interface CheckboxProps extends Exclude<React.AllHTMLAttributes<any>, "onChange"> {
 interface CheckboxProps {
   check?: string
+  checked?: boolean
   className?: string
   containerClassName?: string
   input?: any

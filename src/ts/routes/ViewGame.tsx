@@ -1,16 +1,11 @@
-import "./index.scss"
-
 import classnames from "classnames"
-import { List } from "immutable"
-import { chunk } from "lodash"
 import React from "react"
-import { createFragmentContainer, graphql } from "react-relay"
+import { graphql } from "react-relay"
 
 import Board, { BoardRenderer } from "components/Board"
 import Button from "components/form/button"
 import FieldGroup from "components/form/field_group"
-import SnakeAvatar from "components/snake/SnakeAvatar"
-import Sidebar from "./ViewGameSidebar"
+import Sidebar from "./games/ViewGame/ViewGameSidebar"
 
 import { gameService, GameServiceInjectedProps } from "components/game/service"
 

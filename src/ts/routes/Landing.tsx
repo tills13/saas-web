@@ -1,18 +1,18 @@
-import "./index.scss"
+import "./Landing.scss"
 
 import React from "react"
 
 import Board from "components/Board"
+import LinkButton from "components/button/link_button"
 
 import { Direction } from "enums/Direction"
 import * as gUtils from "utils/game"
-import LinkButton from "components/button/link_button";
 
 type Snake = Pick<GameAPI.Snake, "color" | "coords" | "health" | "death"> & { direction: Direction }
 
 const deathTimeout = 10
 
-interface IndexComponentState {
+interface LandingState {
   snakes: Snake[]
   tick: number
 }
@@ -84,8 +84,8 @@ function moveSnake (snake: Snake) {
   return mSnake
 }
 
-class IndexComponent extends React.Component<{}, IndexComponentState> {
-  state: IndexComponentState = { snakes: [], tick: 0 }
+class Landing extends React.Component<{}, LandingState> {
+  state: LandingState = { snakes: [], tick: 0 }
 
   height = 20
   width = 30
@@ -149,4 +149,4 @@ class IndexComponent extends React.Component<{}, IndexComponentState> {
   }
 }
 
-export default IndexComponent
+export default Landing

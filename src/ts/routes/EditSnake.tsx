@@ -1,5 +1,3 @@
-import "./EditSnake.scss"
-
 import React from "react"
 import { graphql } from "react-relay"
 
@@ -7,10 +5,9 @@ import LinkButton from "components/button/link_button"
 import Header from "components/header"
 import CreateEditSnakeForm from "components/snake/form/CreateEditSnakeForm"
 import Avatar from "components/snake/SnakeAvatar"
-import SnakeDetails from "components/snake/SnakeDetails";
+import SnakeDetails from "components/snake/SnakeDetails"
 
-interface EditSnakeInnerProps extends EditSnakeOuterProps { }
-interface EditSnakeOuterProps extends React.Props<any> {
+interface EditSnakeProps extends React.AllHTMLAttributes<HTMLDivElement> {
   snake: GraphQL.Schema.Node<Models.Snake>
 }
 
@@ -24,7 +21,7 @@ export const EditSnakeQuery = graphql`
   }
 `
 
-export function EditSnake ({ snake }: EditSnakeInnerProps) {
+export function EditSnake ({ snake }: EditSnakeProps) {
   return (
     <div className="CreateEditSnake">
       <Header>

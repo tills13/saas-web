@@ -3,30 +3,31 @@ import { createFarceRouter, createRender, makeRouteConfig, Route } from "found"
 import React from "react"
 
 import Dashboard, { DashboardQuery } from "components/Dashboard"
+import RouteContainer from "components/RouteContainer"
+
 import Documentation, { DocumenationQuery } from "routes/Documentation"
 import Index from "routes/landing"
 import LoginRegister from "routes/LoginRegister"
 
-import CreateBoard, { CreateBoardQuery } from "routes/boards/CreateBoard"
-import ViewBoards, { ViewBoardsQuery } from "routes/boards/ViewBoards"
+import CreateBoard, { CreateBoardQuery } from "routes/CreateBoard"
+import ViewBoards, { ViewBoardsQuery } from "routes/ViewBoards"
 
-import CreateDaemon from "routes/daemons/CreateDaemon"
-import EditDaemon, { EditDaemonQuery } from "routes/daemons/EditDaemon"
-import ViewDaemons, { ViewDaemonsQuery } from "routes/daemons/ViewDaemons"
+import CreateDaemon from "routes/CreateDaemon"
+import EditDaemon, { EditDaemonQuery } from "routes/EditDaemon"
+import ViewDaemons, { ViewDaemonsQuery } from "routes/ViewDaemons"
 
-import CreateGame, { CreateGameQuery } from "routes/games/CreateGame"
-import EditGame, { EditGameQuery } from "routes/games/EditGame"
-import ViewGame, { ViewGameQuery } from "routes/games/ViewGame"
-import ViewGames, { ViewGamesQuery } from "routes/games/ViewGames"
+import CreateGame, { CreateGameQuery } from "routes/CreateGame"
+import EditGame, { EditGameQuery } from "routes/EditGame"
+import ViewGame, { ViewGameQuery } from "routes/ViewGame"
+import ViewGames, { ViewGamesQuery } from "routes/ViewGames"
 
-import CreateSnake from "routes/snakes/CreateSnake"
-import EditSnake, { EditSnakeQuery } from "routes/snakes/EditSnake"
-import ViewSnakes, { viewSnakesPrepareVariables, ViewSnakesQuery } from "routes/snakes/ViewSnakes"
+import CreateSnake from "routes/CreateSnake"
+import EditSnake, { EditSnakeQuery } from "routes/EditSnake"
+import ViewSnakes, { viewSnakesPrepareVariables, ViewSnakesQuery } from "routes/ViewSnakes"
 
 import Test, { TestQuery } from "routes/Test"
 
 import { renderLoading } from "./utils"
-import RouteContainer from "components/RouteContainer"
 
 export default createFarceRouter({
   historyProtocol: new BrowserProtocol(),

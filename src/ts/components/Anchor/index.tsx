@@ -1,9 +1,9 @@
-import "./Anchor.scss"
+import "./index.scss"
 
 import classnames from "classnames"
 import React from "react"
 
-import Container from "./container"
+import Container from "../Container"
 
 interface AnchorProps extends React.Props<any> {
   anchor: string
@@ -14,7 +14,7 @@ interface AnchorProps extends React.Props<any> {
   onClick?: React.EventHandler<any>
 }
 
-const Anchor = ({ anchor, children, className, endpoint, method, onClick, title }: AnchorProps) => {
+function Anchor ({ anchor, children, className, endpoint, method, onClick, title }: AnchorProps) {
   const mClassName = classnames("Anchor", className)
 
   return (

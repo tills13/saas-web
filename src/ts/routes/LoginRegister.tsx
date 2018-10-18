@@ -1,5 +1,3 @@
-import "./index.scss"
-
 import { RouteProps, withRouter, WithRouter } from "found"
 import React from "react"
 import { compose } from "recompose"

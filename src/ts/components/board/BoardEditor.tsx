@@ -4,7 +4,7 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import Board, { BoardRenderer, CellType } from "."
-import Container from "../container"
+import Container from "../Container"
 import Sidebar from "./BoardEditorSidebar"
 
 export enum CellOption { Color, SnakeId, TeleporterChannel }

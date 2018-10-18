@@ -5,7 +5,7 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { CSSTransition, TransitionGroup } from "react-transition-group"
 
-import Container from "../container"
+import Container from "../Container"
 import NavItem from "./NavItem"
 
 import { logout } from "utils/auth"
