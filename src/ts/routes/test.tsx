@@ -1,12 +1,8 @@
 import { debounce } from "lodash"
-import R from "ramda"
 import React from "react"
 import Relay, { createRefetchContainer, graphql } from "react-relay"
 
 import Select from "components/form/select"
-
-
-import { showNotification } from "components/notification"
 
 interface TestProps {
   application: GraphQL.Schema.Application
@@ -20,6 +16,7 @@ export const TestQuery = graphql`
 `
 
 function Test ({ application: { snakes: { items: snakes } }, relay }: TestProps) {
+  const options = []
   // const options = s(snakes)
   // const options = snakes.map(snake => ({ label: snake.name, value: snake.id }))
 

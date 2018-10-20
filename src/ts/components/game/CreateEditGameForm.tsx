@@ -33,12 +33,14 @@ import { createGame, updateGame } from "relay/mutations"
 import { CreateGameMutationResponse } from "../../../__artifacts__/CreateGameMutation.graphql"
 import { UpdateGameMutationResponse } from "../../../__artifacts__/UpdateGameMutation.graphql"
 
-interface CreateEditGameFormProps extends WithRouter {
+interface CreateEditGameFormProps {
   application: GraphQL.Schema.Application
   game?: GraphQL.Schema.Node<Models.Game>
 }
 
-class CreateEditGameForm extends React.Component<CreateEditGameFormProps & FormProps> {
+type Props = CreateEditGameFormProps & FormProps & WithRouter
+
+class CreateEditGameForm extends React.Component<Props> {
   handleSubmit = (_: any, data: any) => {
     const { game, router } = this.props
 

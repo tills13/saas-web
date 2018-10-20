@@ -6,7 +6,7 @@ import Dashboard, { DashboardQuery } from "components/Dashboard"
 import RouteContainer from "components/RouteContainer"
 
 import Documentation, { DocumenationQuery } from "routes/Documentation"
-import Index from "routes/landing"
+import Index from "routes/Landing"
 import LoginRegister from "routes/LoginRegister"
 
 import CreateBoard, { CreateBoardQuery } from "routes/CreateBoard"

@@ -1,7 +1,7 @@
 import classnames from "classnames"
 import React from "react"
 
-import Toggle from "../toggle"
+import Toggle from "../Toggle"
 
 export enum ViewMode { List, Quilt }
 

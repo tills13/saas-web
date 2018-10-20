@@ -11,9 +11,7 @@ export interface IconProps extends React.Props<any> {
   style?: React.CSSProperties
 }
 
-const ICONS_FA_PREFIX = "fa"
 const ICONS_FA_MDI = "mdi"
-
 const ICON_PREFIX = ICONS_FA_MDI
 
 const Icon = ({ className, children, containerClassName, icon, onClick, style }: IconProps) => {

@@ -34,7 +34,7 @@ export function getSnakeTail (snakeOrTailType: string | GameAPI.Snake) {
   return fetch(uri).then(response => response.blob())
 }
 
-export function makeContext<T> (context: Context, callback: Function, prepareContext?: PrepareContextCallback, ...mArgs) {
+export function makeContext<T> (context: Context, callback: WithinContextCallback, prepareContext?: PrepareContextCallback, ...mArgs) {
   return function (...args) {
     return withinContext(context, callback, prepareContext, ...mArgs, ...args)
   }

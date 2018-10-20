@@ -1,4 +1,4 @@
-import "./example.scss"
+import "./index.scss"
 
 import classnames from "classnames"
 import fetch from "isomorphic-fetch"
@@ -29,10 +29,10 @@ function getExampleResponse (url: string | URL, data = {}) {
 class DocumentationExample extends React.Component<ExampleProps, ExampleState> {
   onClickShowExample () {
     const { data, url, onClickShowExample, path } = this.props
-    const url = new URL(url + path);
+    const mUrl = new URL(url + path);
 
     (onClickShowExample || Promise.resolve)()
-      .then(() => getExampleResponse(url, data))
+      .then(() => getExampleResponse(mUrl, data))
       .then(res => res.json())
       .then(response => this.setState({ loading: false, response }))
       .catch((err: Error) => {
@@ -48,8 +48,8 @@ class DocumentationExample extends React.Component<ExampleProps, ExampleState> {
     const { loading, response } = this.state
 
     const mClassName = classnames("Example", className)
-    const url = new URL(url)
-    url.pathname = path
+    const mUrl = new URL(url)
+    mUrl.pathname = path
 
     return (
       <div className={ mClassName }>
@@ -64,7 +64,7 @@ class DocumentationExample extends React.Component<ExampleProps, ExampleState> {
         </Code>
 
         <div className="Example__footer">
-          <code>{ url }{ url }</code>
+          <code>{ mUrl }</code>
           <Button onClick={ this.onClickShowExample } disabled={ !!loading }>
             Show Example Response
           </Button>

@@ -47,7 +47,7 @@ const defaultOpts: Partial<BoardRendererOptions> = {
   renderBackground: true
 }
 
-export class BoardRenderer {
+class BoardRenderer {
   private bgContext: CanvasRenderingContext2D
   private fgContext: CanvasRenderingContext2D
 
@@ -231,3 +231,5 @@ export class BoardRenderer {
     // this.bgContext.scale(3, 3)
   }
 }
+
+export default BoardRenderer

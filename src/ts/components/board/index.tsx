@@ -1,22 +1,21 @@
 import "./index.scss"
 
 import classnames from "classnames"
+import { forEach, partial } from "lodash"
 import React from "react"
 
-import { forEach, partial } from "lodash"
-import { compose, mapProps } from "recompose"
+import Renderer, { BoardRendererOptions } from "./renderer"
 
-import { BoardRenderer as Renderer, BoardRendererOptions } from "./renderer"
-
-export enum BoardRenderer { Canvas, Dom }
 export enum CellType { Food, Gold, Snake, Teleporter, Wall }
+export enum RenderMethod { Canvas, Dom }
 
 export type BoardOptions = {
+  /* in seconds */
   deathTimeout?: number
 }
 
 export const defaultOptions = {
-
+  deathTimeout: 30
 }
 
 interface BoardProps {
@@ -30,7 +29,7 @@ interface BoardProps {
   onClickCell?: (x: number, y: number) => void
   onHoverCell?: (x: number, y: number) => void
   renderBackground?: boolean
-  renderer?: BoardRenderer
+  renderer?: RenderMethod
   rendererOptions?: Partial<Exclude<BoardRendererOptions, "dimensions">>
   snakes?: GameAPI.Snake[]
   teleporters?: GameAPI.Teleporter[]
@@ -43,7 +42,7 @@ interface BoardProps {
 class Board extends React.Component<BoardProps, {}> {
   static defaultProps = {
     fillWidth: false,
-    renderer: BoardRenderer.Canvas,
+    renderer: RenderMethod.Canvas,
     renderBackground: true,
     updateOnPropsChanged: false
   }
@@ -58,7 +57,7 @@ class Board extends React.Component<BoardProps, {}> {
   componentDidMount () {
     const { height, renderer, width, renderBackground, rendererOptions } = this.props
 
-    if (renderer === BoardRenderer.Canvas) {
+    if (renderer === RenderMethod.Canvas) {
       const dimensions = { width, height }
       const options: BoardRendererOptions = Object.assign(rendererOptions, { dimensions, renderBackground })
 
@@ -74,7 +73,7 @@ class Board extends React.Component<BoardProps, {}> {
   componentDidUpdate () {
     const { height, renderer, width } = this.props
 
-    if (renderer === BoardRenderer.Canvas) {
+    if (renderer === RenderMethod.Canvas) {
       this.onResize()
       this.renderer.updateState({ dimensions: { width, height } }, this.props)
     }
@@ -141,7 +140,7 @@ class Board extends React.Component<BoardProps, {}> {
   }
 
   renderBoard () {
-    return this.props.renderer === BoardRenderer.Dom
+    return this.props.renderer === RenderMethod.Dom
       ? this.renderBoardDom()
       : this.renderBoardCanvas()
   }
@@ -194,7 +193,7 @@ class Board extends React.Component<BoardProps, {}> {
     const { renderer } = this.props
     const boardClassName = classnames(
       "Board",
-      renderer === BoardRenderer.Dom ? "--dom" : "--canvas",
+      renderer === RenderMethod.Dom ? "--dom" : "--canvas",
       { "--preview": this.props.isPreview }
     )
 

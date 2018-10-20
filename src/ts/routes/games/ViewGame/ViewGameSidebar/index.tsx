@@ -6,12 +6,12 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import Alert, { AlertType } from "components/Alert"
+import LinkButton from "components/button/link_button"
 import Icon from "components/icon"
-import Well from "components/well"
+import Well from "components/Well"
 import SnakeListItem from "./SnakeListItem"
 
 import { getIdFromGlobalId } from "utils/relay"
-import LinkButton from "components/button/link_button";
 
 interface ViewGameSidebarProps extends GameAPI.GameState {
   className?: string

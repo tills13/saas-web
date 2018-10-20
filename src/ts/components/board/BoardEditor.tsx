@@ -3,7 +3,7 @@ import "./BoardEditor.scss"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import Board, { BoardRenderer, CellType } from "."
+import Board, { CellType, RenderMethod } from "."
 import Container from "../Container"
 import Sidebar from "./BoardEditorSidebar"
 
@@ -58,8 +58,6 @@ interface BoardEditorState {
 }
 
 class BoardEditor extends React.Component<BoardEditorProps, BoardEditorState> {
-  containerRef: HTMLDivElement
-
   constructor (props) {
     super(props)
 
@@ -162,14 +160,13 @@ class BoardEditor extends React.Component<BoardEditorProps, BoardEditorState> {
     const { boardColumns: width, boardRows: height } = configuration
 
     return (
-      <Container className="BoardEditor" containerRef={ ref => this.containerRef = ref }>
-
+      <Container className="BoardEditor">
         <Board
           { ...configuration }
           width={ width }
           height={ height }
           onClickCell={ this.onClickCell }
-          renderer={ BoardRenderer.Dom }
+          renderer={ RenderMethod.Dom }
         />
 
         <div className="BoardEditor__sidebarContainer">
