@@ -20,7 +20,6 @@ import { enumToSelect, VISIBILITY_PUBLIC, VisibilityEnum } from "relay/enums"
 import { createSnake, CreateSnakeMutationInput, deleteSnake, updateSnake } from "relay/mutations"
 
 import { FormProps, withForm } from "utils/hocs"
-import { showNotification } from "../../notification"
 
 import { CreateSnakeMutationResponse } from "../../../../__artifacts__/CreateSnakeMutation.graphql"
 import { UpdateSnakeMutationResponse } from "../../../../__artifacts__/UpdateSnakeMutation.graphql"
@@ -28,8 +27,7 @@ import { UpdateSnakeMutationResponse } from "../../../../__artifacts__/UpdateSna
 import Color from "enums/Color"
 import Modal from "../../Modal"
 
-interface CreateEditSnakeFormProps extends FormProps, WithRouter {
-  formValues: { [ field: string ]: any }
+interface CreateEditSnakeFormProps {
   snake?: Models.Snake
 }
 
@@ -37,7 +35,14 @@ interface CreateEditSnakeFormState {
   showDeleteModal: boolean
 }
 
-class CreateEditSnakeForm extends React.Component<CreateEditSnakeFormProps, CreateEditSnakeFormState> {
+type Props = CreateEditSnakeFormProps & FormProps & WithRouter
+
+const apiVersionOptions = [
+  { label: "2017", value: "VERSION_2017" },
+  { label: "2018", value: "VERSION_2018" }
+]
+
+class CreateEditSnakeForm extends React.Component<Props, CreateEditSnakeFormState> {
   state: CreateEditSnakeFormState = { showDeleteModal: false }
 
   handleDelete = () => {
@@ -73,10 +78,6 @@ class CreateEditSnakeForm extends React.Component<CreateEditSnakeFormProps, Crea
     const { error, field, formData, handleSubmit, snake } = this.props
     const { showDeleteModal } = this.state
     const { apiVersion, isBountySnake } = formData
-    const apiVersionOptions = [
-      { label: "2017", value: "VERSION_2017" },
-      { label: "2018", value: "VERSION_2018" }
-    ]
 
     return (
       <form className="CreateEditSnakeForm" onSubmit={ handleSubmit(this.onSubmit) }>

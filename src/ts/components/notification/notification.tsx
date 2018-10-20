@@ -3,19 +3,19 @@ import "./notification.scss"
 import classnames from "classnames"
 import React from "react"
 
-import { NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_NORMAL } from "."
-
 interface NotificationProps {
   className?: string
   clear?: () => void
   icon?: React.ReactNode
   message: string
   show: boolean
-  type: typeof NOTIFICATION_TYPE_ERROR | typeof NOTIFICATION_TYPE_NORMAL
+  type: NotificationType
 }
 
+enum NotificationType { Error, Success }
+
 class Notification extends React.Component<NotificationProps, any> {
-  renderIcon() {
+  renderIcon () {
     const { icon } = this.props
 
     if (!icon) return null
@@ -30,7 +30,7 @@ class Notification extends React.Component<NotificationProps, any> {
     )
   }
 
-  renderMessage() {
+  renderMessage () {
     const { message } = this.props
 
     return (
@@ -40,10 +40,12 @@ class Notification extends React.Component<NotificationProps, any> {
     )
   }
 
-  render() {
-    const { className, clear, show, type } = this.props
+  render () {
+    const { className, clear, type } = this.props
+
     const mClassName = classnames("Notification", className, {
-      "Notification--error": type === NOTIFICATION_TYPE_ERROR
+      "--error": type === NotificationType.Error,
+      "--success": type === NotificationType.Success
     })
 
     return (

@@ -6,7 +6,7 @@ import Alert, { AlertType } from "components/Alert"
 import Button from "components/form/button"
 import TextInput from "components/form/text_input"
 import Header from "components/header"
-import Toggle, { Option as ToggleOption } from "components/toggle"
+import Toggle, { Option as ToggleOption } from "components/Toggle"
 import Color from "enums/Color"
 
 import { login, refreshViewer, register } from "utils/auth"

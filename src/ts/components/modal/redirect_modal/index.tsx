@@ -2,11 +2,11 @@ import "./index.scss"
 
 import React from "react"
 
-import { BaseModal, BaseModalProps } from "modals/base"
 import ButtonGroup from "../../button/button_group"
 import LinkButton from "../../button/link_button"
 import Button from "../../form/button"
 import Icon from "../../icon"
+import BaseModal, { BaseModalProps } from "../BaseModal"
 
 import Color from "enums/Color"
 

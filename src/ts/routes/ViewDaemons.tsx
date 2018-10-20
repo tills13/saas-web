@@ -8,7 +8,6 @@ import Grid from "components/grid"
 import Header from "components/header"
 import Icon from "components/icon/offset_icon"
 import List from "components/list"
-import Toggle from "components/toggle"
 import ViewModeToggle, { ViewMode } from "components/ViewModeToggle"
 
 interface ViewDaemonsProps {

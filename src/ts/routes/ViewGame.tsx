@@ -2,7 +2,7 @@ import classnames from "classnames"
 import React from "react"
 import { graphql } from "react-relay"
 
-import Board, { BoardRenderer } from "components/Board"
+import Board, { RenderMethod } from "components/Board"
 import Button from "components/form/button"
 import FieldGroup from "components/form/field_group"
 import Sidebar from "./games/ViewGame/ViewGameSidebar"
@@ -76,7 +76,7 @@ class ViewGame extends React.Component<ViewGameProps & GameServiceInjectedProps>
             width={ game.boardColumns }
             height={ game.boardRows }
             { ...(gameState || { board: null }).board }
-            renderer={ BoardRenderer.Canvas }
+            renderer={ RenderMethod.Canvas }
           />
 
           { this.renderControls() }

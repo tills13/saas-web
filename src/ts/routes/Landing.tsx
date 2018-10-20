@@ -3,6 +3,7 @@ import "./Landing.scss"
 import React from "react"
 
 import Board from "components/Board"
+import BoardRenderer from "components/Board/renderer"
 import LinkButton from "components/button/link_button"
 
 import { Direction } from "enums/Direction"
@@ -92,6 +93,12 @@ class Landing extends React.Component<{}, LandingState> {
   timeout: any
 
   renderer: BoardRenderer
+
+  constructor (props) {
+    super(props)
+
+    // this.renderer = new BoardRenderer()
+  }
 
   componentDidMount () {
     this.tickBoard()

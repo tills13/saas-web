@@ -21,12 +21,14 @@ import { Color } from "enums/Color"
 import { CreateDaemonMutationResponse } from "../../../__artifacts__/CreateDaemonMutation.graphql"
 import { UpdateDaemonMutationResponse } from "../../../__artifacts__/UpdateDaemonMutation.graphql"
 
-interface CreateEditDaemonFormProps extends WithRouter {
+interface CreateEditDaemonFormProps {
   className?: string
   daemon?: Models.Daemon
 }
 
-class CreateEditDaemonForm extends React.Component<CreateEditDaemonFormProps & FormProps> {
+type Props = CreateEditDaemonFormProps & FormProps & WithRouter
+
+class CreateEditDaemonForm extends React.Component<Props> {
   onClickDelete = () => {
     const { daemon, router } = this.props
 

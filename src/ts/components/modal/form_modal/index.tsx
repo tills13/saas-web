@@ -1,16 +1,13 @@
 import React from "react"
 
-import { compose, withState } from "recompose"
-import { BaseModal, BaseModalProps } from "modals/base"
+import BaseModal, { BaseModalProps } from "../BaseModal"
 
 interface FormModalComponentProps extends BaseModalProps {
   form: React.ComponentClass<any>
   formProps: any
 }
 
-export const FormModal = (props: FormModalComponentProps) => {
-  const { form, formProps, ...rest } = props
-
+function FormModal ({ form, formProps, ...rest }: FormModalComponentProps) {
   const mForm = React.createElement(form, {
     ...formProps
   })

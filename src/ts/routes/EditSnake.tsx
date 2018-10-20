@@ -21,7 +21,7 @@ export const EditSnakeQuery = graphql`
   }
 `
 
-export function EditSnake ({ snake }: EditSnakeProps) {
+function EditSnake ({ snake }: EditSnakeProps) {
   return (
     <div className="CreateEditSnake">
       <Header>
