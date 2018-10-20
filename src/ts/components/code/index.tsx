@@ -8,15 +8,10 @@ import { compose, defaultProps, SetStateCallback, withState } from "recompose"
 
 import Button from "../form/button"
 
-import SyntaxHighlighter from "react-syntax-highlighter/dist/light"
-import github from "react-syntax-highlighter/dist/styles/github"
-
 interface CodeProps extends React.AllHTMLAttributes<HTMLDivElement> {
   className?: string
   format?: boolean
-  language?: string
   showExpand?: boolean
-  wrapLines?: boolean
 }
 
 interface CodeState {
@@ -32,7 +27,7 @@ class Code extends React.Component<CodeProps, CodeState> {
   }
 
   render () {
-    const { children, className, format, language, showExpand, wrapLines } = this.props
+    const { children, className, format, showExpand } = this.props
     const { isExpanded } = this.state
 
     const mClassName = classnames("Code", className, {
@@ -47,8 +42,6 @@ class Code extends React.Component<CodeProps, CodeState> {
       ? children.split(/\n|\\n|<br\/>/ig).length
       : React.Children.count(children)
 
-    console.log(children, lineCount)
-
     return (
       <div className="Code__container">
         { showExpand && lineCount > 1 && (
@@ -59,14 +52,7 @@ class Code extends React.Component<CodeProps, CodeState> {
             { isExpanded ? "Collapse" : "Expand" }
           </Button>
         ) }
-        <SyntaxHighlighter
-          className={ mClassName }
-          language={ language }
-          style={ github }
-          wrapLines={ wrapLines }
-        >
-          { text }
-        </SyntaxHighlighter>
+        <pre className={ mClassName }>{ text }</pre>
       </div>
     )
   }
