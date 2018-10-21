@@ -70,7 +70,6 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
   }
 
   renderRightNav () {
-    const { viewer } = this.props
     const { mobileMenuExpanded } = this.state
 
     return (

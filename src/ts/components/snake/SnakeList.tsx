@@ -7,15 +7,14 @@ import SnakeAvatar from "./SnakeAvatar"
 interface SnakeListProps {
   className?: string
   onClickSnake?: (snake: Models.Snake) => void
-  selectedSnake: Models.Snake
+  selectedSnake?: Models.Snake
   snakes: Models.Snake[]
 }
 
 class SnakeList extends React.Component<SnakeListProps> {
-  static defaultProps = { snakes: [] }
-
   renderSnake = (snake: Models.Snake, index?: number) => {
     const { onClickSnake, selectedSnake } = this.props
+
     const mClassName = classnames("SnakeList__item", {
       "SnakeList__item--selected": selectedSnake && snake.id === selectedSnake.id
     })
@@ -24,7 +23,7 @@ class SnakeList extends React.Component<SnakeListProps> {
       <div
         key={ snake.id }
         className={ mClassName }
-        onClick={ () => onClickSnake(snake) }
+        onClick={ onClickSnake ? _ => onClickSnake(snake) : undefined }
       >
         <SnakeAvatar snake={ snake } small />
         <div className="SnakeList__itemInfo">

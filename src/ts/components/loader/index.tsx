@@ -4,10 +4,7 @@ import classnames from "classnames"
 import { chunk, range } from "lodash"
 import React from "react"
 
-export const LOADER_SPEED_SLOW = 100
-export const LOADER_SPEED_FAST = 50
-
-interface LoaderProps {
+interface LoaderProps extends React.AllHTMLAttributes<HTMLDivElement> {
   className?: string
   sideLength?: number
   speed?: number
@@ -17,12 +14,14 @@ interface LoaderState {
   tickCount: number
 }
 
+export const LOADER_SPEED_SLOW = 100
+export const LOADER_SPEED_FAST = 50
+
 class Loader extends React.Component<LoaderProps, LoaderState> {
   static defaultProps = { sideLength: 4, speed: LOADER_SPEED_SLOW }
-
-  timer: number
-
   state: LoaderState = { tickCount: 0 }
+
+  timer?: number
 
   componentDidMount () {
     const { speed } = this.props
@@ -47,14 +46,14 @@ class Loader extends React.Component<LoaderProps, LoaderState> {
   activeForTickAndPosition (tick: number, rowNumber: number, cellNumber: number) {
     const { sideLength } = this.props
 
-    if (tick < sideLength) {
+    if (tick < sideLength!) {
       return tick === cellNumber && rowNumber === 0
-    } else if (tick >= sideLength && tick < (2 * sideLength - 2)) {
-      return tick - (sideLength - 1) === rowNumber && cellNumber === sideLength - 1
-    } else if (tick >= (2 * sideLength - 2) && tick <= (3 * sideLength - 3)) {
-      return rowNumber === (sideLength - 1) && (sideLength - 1) - Math.abs((2 * sideLength - 2) - tick) === cellNumber
+    } else if (tick >= sideLength! && tick < (2 * sideLength! - 2)) {
+      return tick - (sideLength! - 1) === rowNumber && cellNumber === sideLength! - 1
+    } else if (tick >= (2 * sideLength! - 2) && tick <= (3 * sideLength! - 3)) {
+      return rowNumber === (sideLength! - 1) && (sideLength! - 1) - Math.abs((2 * sideLength! - 2) - tick) === cellNumber
     } else {
-      return rowNumber === (sideLength - 1) - Math.abs((3 * sideLength - 3) - tick) && cellNumber === 0
+      return rowNumber === (sideLength! - 1) - Math.abs((3 * sideLength! - 3) - tick) && cellNumber === 0
     }
   }
 
@@ -62,7 +61,7 @@ class Loader extends React.Component<LoaderProps, LoaderState> {
     const { sideLength } = this.props
     const { tickCount } = this.state
 
-    const perimeter = 2 * sideLength + 2 * (sideLength - 2)
+    const perimeter = 2 * sideLength! + 2 * (sideLength! - 2)
     const modTick = tickCount % perimeter
     const prevTick = tickCount === 0 ? 0 : (tickCount - 1) % perimeter
 
@@ -92,7 +91,6 @@ class Loader extends React.Component<LoaderProps, LoaderState> {
     const { className, sideLength = 3 } = this.props
 
     const mClassName = classnames("Loader", className)
-
     const chunks = chunk(range(0, sideLength ** 2), sideLength)
 
     return (

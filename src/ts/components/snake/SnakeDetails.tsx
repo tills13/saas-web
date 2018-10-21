@@ -8,8 +8,7 @@ import SnakeAvatar from "components/snake/SnakeAvatar"
 import IconLinkButton from "../button/icon_link_button"
 import SnakeGameList from "./SnakeGameList"
 
-interface SnakeDetailsProps {
-  className?: string
+interface SnakeDetailsProps extends React.AllHTMLAttributes<HTMLDivElement> {
   hideEdit?: boolean
   snake: Models.Snake
 }

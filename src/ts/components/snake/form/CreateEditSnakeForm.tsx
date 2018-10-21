@@ -17,7 +17,7 @@ import TextInput from "../../form/text_input"
 import MessageModal from "../../Modal/MessageModal"
 
 import { enumToSelect, VISIBILITY_PUBLIC, VisibilityEnum } from "relay/enums"
-import { createSnake, CreateSnakeMutationInput, deleteSnake, updateSnake } from "relay/mutations"
+import { createSnake, deleteSnake, updateSnake } from "relay/mutations"
 
 import { FormProps, withForm } from "utils/hocs"
 
@@ -47,6 +47,8 @@ class CreateEditSnakeForm extends React.Component<Props, CreateEditSnakeFormStat
 
   handleDelete = () => {
     const { router, snake } = this.props
+
+    if (!snake) return
 
     return deleteSnake({ snakeId: snake.id })
       .then(() => router.push("/snakes"))

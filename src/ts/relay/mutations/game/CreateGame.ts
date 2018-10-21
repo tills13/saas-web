@@ -1,28 +1,8 @@
 import { commitMutation, graphql } from "react-relay"
+
 import Environment from "../../environment"
 
-import { CreateGameMutationResponse } from "../../../../__artifacts__/CreateGameMutation.graphql"
-
-export interface CreateGameMutationInput {
-  boardColumns: Models.Game[ "boardColumns" ]
-  boardConfiguration: Models.Game[ "boardConfiguration" ]
-  boardFoodCount: Models.Game[ "boardFoodCount" ]
-  boardFoodStrategy: Models.Game[ "boardFoodStrategy" ]
-  boardGoldCount: Models.Game[ "boardGoldCount" ]
-  boardGoldStrategy: Models.Game[ "boardGoldStrategy" ]
-  boardGoldRespawnTimeout: Models.Game[ "boardGoldRespawnTimeout" ]
-  boardGoldWinningThreshold: Models.Game[ "boardGoldWinningThreshold" ]
-  boardHasGold: Models.Game[ "boardHasGold" ]
-  boardRows: Models.Game[ "boardRows" ]
-  boardTeleporterCount: Models.Game[ "boardTeleporterCount" ]
-  daemon: Models.Game[ "daemon" ]
-  devMode: Models.Game[ "devMode" ]
-  responseTime: Models.Game[ "responseTime" ]
-  snakes: string[]
-  tickRate: Models.Game[ "tickRate" ]
-  turnLimit: Models.Game[ "turnLimit" ]
-  visibility: Models.Game[ "visibility" ]
-}
+import { CreateGameMutationInput, CreateGameMutationResponse } from "../../../../__artifacts__/CreateGameMutation.graphql"
 
 const mutation = graphql`
   mutation CreateGameMutation ($input: CreateGameMutationInput!) {

@@ -6,10 +6,9 @@ import React from "react"
 import IconButton from "../button/icon_button"
 import Select from "../form/select"
 
-interface PaginationProps {
+interface PaginationProps extends React.AllHTMLAttributes<HTMLDivElement> {
   adjustableItemsPerPage?: boolean
   after: number
-  className?: string
   count: number
   limit: number
   limitOptions: number[]

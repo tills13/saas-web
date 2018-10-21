@@ -4,8 +4,6 @@ import classnames from "classnames"
 import React from "react"
 import * as utils from "utils"
 
-import { compose, defaultProps, SetStateCallback, withState } from "recompose"
-
 import Button from "../form/button"
 
 interface CodeProps extends React.AllHTMLAttributes<HTMLDivElement> {
@@ -20,7 +18,7 @@ interface CodeState {
 
 class Code extends React.Component<CodeProps, CodeState> {
   static defaultProps = { format: false, language: "javascript", showExpand: true, wrapLines: false }
-  state = { isExpanded: false }
+  state: CodeState = { isExpanded: false }
 
   onClickExpand = () => {
     this.setState(({ isExpanded }) => ({ isExpanded: !isExpanded }))

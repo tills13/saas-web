@@ -11,11 +11,11 @@ export const UpdateViewerQuery = graphql`
   }
 `
 
-type LoginData = { username: string, password: string }
-type RegisterData = LoginData & { email: string }
+export type LoginData = { username: string, password: string }
+export type RegisterData = LoginData & { email: string }
 
 export function refreshViewer () {
-  return Relay.fetchQuery(Environment, UpdateViewerQuery, null, { force: true })
+  return Relay.fetchQuery(Environment, UpdateViewerQuery, {}, { force: true })
 }
 
 export async function handleResponse<T = any> (response: Response): Promise<T> {
@@ -32,7 +32,7 @@ export async function handleResponse<T = any> (response: Response): Promise<T> {
   }
 }
 
-export function login (data) {
+export function login (data: LoginData) {
   const mData = pick(data, [ "username", "password" ])
 
   const options: RequestInit = {

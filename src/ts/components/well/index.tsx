@@ -3,11 +3,7 @@ import "./index.scss"
 import classnames from "classnames"
 import React from "react"
 
-interface WellProps extends React.AllHTMLAttributes<HTMLDivElement> {
-  className?: string
-}
-
-function Well ({ children, className }: WellProps) {
+function Well ({ children, className }: React.AllHTMLAttributes<HTMLDivElement>) {
   const mClassName = classnames("Well", className)
 
   return (

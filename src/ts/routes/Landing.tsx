@@ -71,7 +71,7 @@ function moveSnake (snake: Snake) {
   if (snake.death) return snake
 
   const mSnake = { ...snake }
-  const coords = mSnake.coords
+  const coords = [ ...mSnake.coords ]
   const currentHead = coords[ 0 ]
 
   coords.pop()
@@ -85,20 +85,15 @@ function moveSnake (snake: Snake) {
   return mSnake
 }
 
+const LANDING_BOARD_HEIGHT: number = 20
+const LANDING_BOARD_WIDTH: number = 30
+
 class Landing extends React.Component<{}, LandingState> {
   state: LandingState = { snakes: [], tick: 0 }
 
-  height = 20
-  width = 30
   timeout: any
 
-  renderer: BoardRenderer
-
-  constructor (props) {
-    super(props)
-
-    // this.renderer = new BoardRenderer()
-  }
+  // renderer: BoardRenderer
 
   componentDidMount () {
     this.tickBoard()
@@ -115,12 +110,12 @@ class Landing extends React.Component<{}, LandingState> {
     this.setState(({ tick }) => ({ tick: tick + 1 }))
 
     let mSnakes = snakes.map(moveSnake)
-    mSnakes = mSnakes.filter(filterOffBoard.bind(null, this.width, this.height))
+    mSnakes = mSnakes.filter(filterOffBoard.bind(null, LANDING_BOARD_WIDTH, LANDING_BOARD_HEIGHT))
     mSnakes = mSnakes.filter(filterDeadAndGone.bind(null, tick))
     mSnakes = resolveAlive(mSnakes, tick)
 
     if (mSnakes.length < 10 && Math.random() > 0.20) {
-      const newSnake = gUtils.generateRandomSnake(this.width, this.height)
+      const newSnake = gUtils.generateRandomSnake(LANDING_BOARD_WIDTH, LANDING_BOARD_HEIGHT)
 
       return this.setState(
         { snakes: [ ...mSnakes, newSnake ] },
@@ -143,8 +138,8 @@ class Landing extends React.Component<{}, LandingState> {
         </div>
 
         <Board
-          height={ this.height }
-          width={ this.width }
+          height={ LANDING_BOARD_HEIGHT }
+          width={ LANDING_BOARD_WIDTH }
           renderBackground={ true }
           rendererOptions={ { deathTimeout } }
           snakes={ [ ...snakes ] as any[] }

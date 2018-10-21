@@ -13,11 +13,11 @@ interface ProgressBarProps {
 
 function ProgressBar ({ className, containerClassName, progress, small, total }: ProgressBarProps) {
   const mContainerClassName = classnames("ProgressBar__container", containerClassName, {
-    "ProgressBar__container--small": small
+    "--small": small
   })
 
   const mClassName = classnames("ProgressBar", className)
-  const mProgress = total != null ? (progress / total) * 100 : progress
+  const mProgress = total != null ? (progress || 0 / total) * 100 : progress
 
   return (
     <div className={ mContainerClassName }>

@@ -1,15 +1,8 @@
 import { commitMutation, graphql } from "react-relay"
+
 import Environment from "../../environment"
 
-import { UpdateDaemonMutationResponse } from "../../../../__artifacts__/UpdateDaemonMutation.graphql"
-
-export interface UpdateDaemonMutationInput {
-  daemonId: Models.Daemon[ "id" ]
-  description: Models.Daemon[ "description" ]
-  name: Models.Daemon[ "name" ]
-  url: Models.Daemon[ "url" ]
-  visibility: Models.Daemon[ "visibility" ]
-}
+import { UpdateDaemonMutationInput, UpdateDaemonMutationResponse } from "../../../../__artifacts__/UpdateDaemonMutation.graphql"
 
 const mutation = graphql`
   mutation UpdateDaemonMutation ($input: UpdateDaemonMutationInput!) {

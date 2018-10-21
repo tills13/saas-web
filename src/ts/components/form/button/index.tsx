@@ -19,14 +19,14 @@ export interface ButtonProps extends React.AllHTMLAttributes<HTMLButtonElement> 
 
 function Button ({ block, children, className, color, disabled, fill, onClick, small, tall, type }: ButtonProps) {
   const mClassName = classnames("Button", color ? `Button--${ color }` : "Button--default", className, {
-    "Button--block": block,
-    "Button--disabled": disabled,
-    "Button--fill": fill,
-    "Button--small": small,
-    "Button--tall": tall
+    "--block": block,
+    "--disabled": disabled,
+    "--fill": fill,
+    "--small": small,
+    "--tall": tall
   })
 
-  const mOnClick = !disabled ? onClick : null
+  const mOnClick = !disabled ? onClick : undefined
 
   return (
     <button

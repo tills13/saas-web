@@ -3,17 +3,14 @@ import "./index.scss"
 import classnames from "classnames"
 import React from "react"
 
-import { compose, defaultProps } from "recompose"
-
-interface FieldGroupProps extends React.Props<any> {
-  className?: string
+interface FieldGroupProps extends React.AllHTMLAttributes<HTMLDivElement> {
   equalWidth?: boolean
   label?: string
   labelFor?: string
   vertical?: boolean
 }
 
-const FieldGroup = ({ children, className, equalWidth, label, labelFor, vertical }: FieldGroupProps) => {
+function FieldGroup ({ children, className, equalWidth = true, label, labelFor, vertical }: FieldGroupProps) {
   const mClassName = classnames("FieldGroup", className, {
     "FieldGroup--equalWidth": equalWidth,
     "FieldGroup--vertical": vertical
@@ -29,6 +26,4 @@ const FieldGroup = ({ children, className, equalWidth, label, labelFor, vertical
   )
 }
 
-export default compose<FieldGroupProps, FieldGroupProps>(
-  defaultProps({ equalWidth: true })
-)(FieldGroup)
+export default FieldGroup

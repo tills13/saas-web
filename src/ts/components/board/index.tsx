@@ -5,6 +5,7 @@ import { forEach, partial } from "lodash"
 import React from "react"
 
 import Renderer, { BoardRendererOptions } from "./renderer"
+import BoardRenderer from "./renderer"
 
 export enum CellType { Food, Gold, Snake, Teleporter, Wall }
 export enum RenderMethod { Canvas, Dom }
@@ -24,7 +25,7 @@ interface BoardProps {
   fillWidth?: boolean
   food?: GameAPI.Food[]
   gold?: GameAPI.Gold[]
-  height?: number
+  height: number
   isPreview?: boolean
   onClickCell?: (x: number, y: number) => void
   onHoverCell?: (x: number, y: number) => void
@@ -36,7 +37,7 @@ interface BoardProps {
   turnNumber?: number
   updateOnPropsChanged?: boolean
   walls?: GameAPI.Wall[]
-  width?: number
+  width: number
 }
 
 class Board extends React.Component<BoardProps, {}> {
@@ -47,12 +48,19 @@ class Board extends React.Component<BoardProps, {}> {
     updateOnPropsChanged: false
   }
 
-  boardRef: HTMLDivElement
-  renderer: Renderer
-  container: HTMLDivElement
+  private renderer?: BoardRenderer = undefined
 
-  bgCanvasRef: HTMLCanvasElement
-  fgCanvasRef: HTMLCanvasElement
+  private bgCanvasRef: React.RefObject<HTMLCanvasElement>
+  private containerRef: React.RefObject<HTMLDivElement>
+  private fgCanvasRef: React.RefObject<HTMLCanvasElement>
+
+  constructor (props: BoardProps) {
+    super(props)
+
+    this.bgCanvasRef = React.createRef()
+    this.containerRef = React.createRef()
+    this.fgCanvasRef = React.createRef()
+  }
 
   componentDidMount () {
     const { height, renderer, width, renderBackground, rendererOptions } = this.props
@@ -61,8 +69,8 @@ class Board extends React.Component<BoardProps, {}> {
       const dimensions = { width, height }
       const options: BoardRendererOptions = Object.assign(rendererOptions, { dimensions, renderBackground })
 
-      this.renderer = new Renderer(this.bgCanvasRef, this.fgCanvasRef, options)
-      this.renderer.updateState(null, this.props)
+      this.renderer = new Renderer(this.bgCanvasRef.current!, this.fgCanvasRef.current!, options)
+      this.renderer.updateState({}, this.props)
 
       window.onresize = this.onResize
       this.onResize()
@@ -73,7 +81,7 @@ class Board extends React.Component<BoardProps, {}> {
   componentDidUpdate () {
     const { height, renderer, width } = this.props
 
-    if (renderer === RenderMethod.Canvas) {
+    if (renderer === RenderMethod.Canvas && this.renderer) {
       this.onResize()
       this.renderer.updateState({ dimensions: { width, height } }, this.props)
     }
@@ -117,15 +125,16 @@ class Board extends React.Component<BoardProps, {}> {
 
   onResize = () => {
     const { fillWidth } = this.props
+    const container = this.containerRef.current!
 
-    const width = this.container.clientWidth
-    const height = this.container.clientHeight
+    const width = container.clientWidth
+    const height = container.clientHeight
 
-    const parent = this.container.parentElement
+    const parent = container.parentElement
     const parentHeight = parent ? parent.clientHeight : Infinity
 
-    if (this.container.clientHeight === 0) {
-      this.container.style.height = `${ Math.max(parentHeight, document.body.clientHeight) }px`
+    if (container.clientHeight === 0) {
+      container.style.height = `${ Math.max(parentHeight, document.body.clientHeight) }px`
     }
 
     const ratio = this.props.width / this.props.height
@@ -134,8 +143,10 @@ class Board extends React.Component<BoardProps, {}> {
       : Math.min(Math.max(width, height), Math.max(parentHeight, document.body.clientHeight))
 
     forEach([ this.bgCanvasRef, this.fgCanvasRef ], layer => {
-      layer.height = (height > width) ? dimension : dimension / ratio
-      layer.width = (width > height) ? dimension : dimension * ratio
+      const mLayer = layer.current!
+
+      mLayer.height = (height > width) ? dimension : dimension / ratio
+      mLayer.width = (width > height) ? dimension : dimension * ratio
     })
   }
 
@@ -148,8 +159,8 @@ class Board extends React.Component<BoardProps, {}> {
   renderBoardCanvas () {
     return (
       <div className="Board__container">
-        <canvas ref={ e => this.fgCanvasRef = e } />
-        <canvas ref={ e => this.bgCanvasRef = e } />
+        <canvas ref={ this.fgCanvasRef } />
+        <canvas ref={ this.bgCanvasRef } />
       </div>
     )
   }
@@ -198,7 +209,7 @@ class Board extends React.Component<BoardProps, {}> {
     )
 
     return (
-      <div className={ boardClassName } ref={ e => this.container = e }>
+      <div className={ boardClassName } ref={ this.containerRef }>
         { this.renderBoard() }
       </div>
     )

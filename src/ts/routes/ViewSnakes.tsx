@@ -27,12 +27,13 @@ export const ViewSnakesQuery = graphql`
   }
 `
 
-export function viewSnakesPrepareVariables (params) {
+export function viewSnakesPrepareVariables (params: any) {
   return { ...params, snakeId: params.snakeId || "", hasSnakeId: !!params.snakeId }
 }
 
 function ViewSnakes ({ application, pagination, router, selectedSnake }: ViewSnakesProps) {
-  const { snakes: { items: snakes } } = application
+  const { snakes: mSnakes } = application
+  const { items: snakes } = mSnakes!
 
   return (
     <div>
@@ -46,7 +47,7 @@ function ViewSnakes ({ application, pagination, router, selectedSnake }: ViewSna
         <div className="SnakeList__list">
           <SnakeList
             onClickSnake={ snake => router.push(`/snakes/${ snake.id }`) }
-            selectedSnake={ null }
+            selectedSnake={ undefined }
             snakes={ snakes }
           />
           <Pagination { ...pagination } />
@@ -61,7 +62,8 @@ export default createRefetchContainer(
   compose<ViewSnakesProps, ViewSnakesProps>(
     withRouter,
     withPagination((props: ViewSnakesProps, { onChangeAfter, onChangeLimit }) => {
-      const { application: { snakes: { pageInfo: { count } } }, relay } = props
+      const { application: { snakes }, relay } = props
+      const { pageInfo: { count } } = snakes!
 
       return {
         count,

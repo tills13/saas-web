@@ -5,11 +5,7 @@ import React from "react"
 
 import Container from "../Container"
 
-interface RouteContainerProps extends React.AllHTMLAttributes<HTMLDivElement> {
-  className?: string
-}
-
-function RouteContainer ({ children, className }: RouteContainerProps) {
+function RouteContainer ({ children, className }: React.AllHTMLAttributes<HTMLDivElement>) {
   const mClassName = classnames("RouteContainer", className)
   return <Container className={ mClassName }>{ children }</Container>
 }

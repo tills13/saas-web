@@ -30,7 +30,7 @@ function ViewGames ({ application, pagination }: ViewGamesProps) {
           <LinkButton to="/games/create" fill small>Create Game</LinkButton>
         </div>
       </Header>
-      <GameList games={ games.items } />
+      <GameList games={ games!.items } />
       <Pagination { ...pagination } />
     </div>
   )
@@ -38,7 +38,8 @@ function ViewGames ({ application, pagination }: ViewGamesProps) {
 
 export default createRefetchContainer(
   withPagination((props: ViewGamesProps, { onChangeAfter, onChangeLimit }) => {
-    const { application: { games: { pageInfo: { count } } }, relay } = props
+    const { application: { games }, relay } = props
+    const { pageInfo: { count } } = games!
 
     return {
       count,

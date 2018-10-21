@@ -5,7 +5,7 @@ import Board from "components/Board"
 import CreateEditGameForm from "components/game/CreateEditGameForm"
 import Header from "components/header"
 
-import gameService from "components/game/service"
+// import gameService from "components/game/service"
 
 interface EditGameProps {
   application: GraphQL.Schema.Application

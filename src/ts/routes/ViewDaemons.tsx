@@ -41,8 +41,8 @@ class ViewDaemons extends React.Component<ViewDaemonsProps, ViewDaemonState> {
     const { application } = this.props
 
     return (
-      <Grid className="Daemons__grid" itemsPerRow={ 4 }>
-        { application.daemons.items.map((daemon) => {
+      <Grid className="Daemons__grid">
+        { application.daemons!.items.map((daemon) => {
           return (
             <div key={ daemon.id } className="Daemon__gridItem">
               <h2>{ daemon.name }</h2>
@@ -77,7 +77,7 @@ class ViewDaemons extends React.Component<ViewDaemonsProps, ViewDaemonState> {
 
     return (
       <List className="Daemons__list">
-        { application.daemons.items.map((daemon) => {
+        { application.daemons!.items.map((daemon) => {
           return (
             <Link
               key={ daemon.id }

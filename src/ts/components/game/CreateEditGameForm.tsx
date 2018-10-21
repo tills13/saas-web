@@ -35,7 +35,7 @@ import { UpdateGameMutationResponse } from "../../../__artifacts__/UpdateGameMut
 
 interface CreateEditGameFormProps {
   application: GraphQL.Schema.Application
-  game?: GraphQL.Schema.Node<Models.Game>
+  game?: GraphQL.Schema.Node<Models.Game> | null
 }
 
 type Props = CreateEditGameFormProps & FormProps & WithRouter
@@ -51,8 +51,8 @@ class CreateEditGameForm extends React.Component<Props> {
       const mutationData = (response as UpdateGameMutationResponse).updateGameMutation ||
         (response as CreateGameMutationResponse).createGameMutation
 
-      router.push(`/games/${ mutationData.game.id }/edit`)
-    }).catch(console.log)
+      router.push(`/games/${ mutationData!.game!.id }/edit`)
+    }, console.log)
   }
 
   showDevModeHelpModal = () => {

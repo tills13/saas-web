@@ -1,11 +1,8 @@
 import { commitMutation, graphql } from "react-relay"
+
 import Environment from "../../environment"
 
-// import { CreateDaemonMutationResponse } from "../../../../__artifacts__/CreateDaemonMutation.graphql"
-
-export interface DeleteDaemonMutationInput {
-  daemonId: Models.Daemon[ "id" ]
-}
+import { DeleteDaemonMutationInput, DeleteDaemonMutationResponse } from "../../../../__artifacts__/DeleteDaemonMutation.graphql"
 
 const mutation = graphql`
   mutation DeleteDaemonMutation ($input: DeleteDaemonMutationInput!) {
@@ -18,7 +15,7 @@ const mutation = graphql`
 export function deleteDaemon (deleteDaemonInput: DeleteDaemonMutationInput) {
   const variables = { input: { deleteDaemonInput } }
 
-  return new Promise<any>((resolve, reject) => {
+  return new Promise<DeleteDaemonMutationResponse>((resolve, reject) => {
     commitMutation(Environment, {
       mutation,
       onCompleted (response, errors) {

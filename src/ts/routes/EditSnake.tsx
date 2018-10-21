@@ -4,7 +4,7 @@ import { graphql } from "react-relay"
 import LinkButton from "components/button/link_button"
 import Header from "components/header"
 import CreateEditSnakeForm from "components/snake/form/CreateEditSnakeForm"
-import Avatar from "components/snake/SnakeAvatar"
+// import Avatar from "components/snake/SnakeAvatar"
 import SnakeDetails from "components/snake/SnakeDetails"
 
 interface EditSnakeProps extends React.AllHTMLAttributes<HTMLDivElement> {
