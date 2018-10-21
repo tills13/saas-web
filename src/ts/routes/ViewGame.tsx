@@ -51,8 +51,6 @@ class ViewGame extends React.Component<ViewGameProps & GameServiceInjectedProps>
   }
 
   renderControls () {
-    const { game, viewer } = this.props
-
     return (
       <FieldGroup>
         <Button onClick={ this.simulateKeyPress.bind(null, "q") }>Restart Game (q)</Button>

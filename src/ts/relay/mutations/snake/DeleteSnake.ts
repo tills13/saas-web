@@ -1,11 +1,8 @@
 import { commitMutation, graphql } from "react-relay"
+
 import Environment from "../../environment"
 
-import { DeleteSnakeMutationResponse } from "../../../../__artifacts__/DeleteSnakeMutation.graphql"
-
-export interface DeleteSnakeMutationInput {
-  snakeId: Models.Snake[ "id" ]
-}
+import { DeleteSnakeMutationInput, DeleteSnakeMutationResponse } from "../../../../__artifacts__/DeleteSnakeMutation.graphql"
 
 const mutation = graphql`
   mutation DeleteSnakeMutation ($input: DeleteSnakeMutationInput!) {

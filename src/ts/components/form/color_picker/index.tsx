@@ -8,21 +8,17 @@ import { compose, defaultProps, mapProps, SetStateCallback, withState } from "re
 
 import TextInput from "../text_input"
 
-interface ColorPickerInnerProps extends React.Props<any>, ColorPickerOuterProps {
+interface ColorPickerInnerProps extends React.AllHTMLAttributes<any>, ColorPickerOuterProps {
   setShowColorPicker: SetStateCallback<boolean>
   showColorPicker: boolean
 }
 
 interface ColorPickerOuterProps {
-  className?: string
-  id?: string
   input?: any
   inputClassName?: string
   label?: string
   name?: string
-  onChange?: React.ChangeEventHandler<HTMLInputElement>
   placeholder?: string
-  value?: any
 }
 
 class ColorPicker extends React.Component<ColorPickerInnerProps> {
@@ -30,7 +26,8 @@ class ColorPicker extends React.Component<ColorPickerInnerProps> {
     this.props.setShowColorPicker(false)
   }
 
-  onChangeColorPicker = ({ hex }) => {
+  onChangeColorPicker = ({ hex }: any) => {
+    if (!this.props.onChange) return
     this.props.onChange(hex)
   }
 
@@ -42,7 +39,10 @@ class ColorPicker extends React.Component<ColorPickerInnerProps> {
 
     const mClassName = classnames("ColorPicker", className)
     const mInputClassName = classnames("ColorPicker__input", inputClassName)
-    const swatchStyle = { background: value, backgroundColor: value }
+    const swatchStyle: React.CSSProperties = {
+      background: value as string,
+      backgroundColor: value as string
+    }
 
     return (
       <div className="ColorPicker__container">

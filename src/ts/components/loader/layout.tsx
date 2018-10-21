@@ -4,9 +4,7 @@ import React from "react"
 
 import Loader from "."
 
-interface LoaderLayoutProps extends React.AllHTMLAttributes<HTMLDivElement> { }
-
-function LoaderLayout (props: LoaderLayoutProps) {
+function LoaderLayout () {
   return (
     <div className="LoaderLayout">
       <Loader />

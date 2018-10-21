@@ -22,7 +22,7 @@ const CELL_TYPES = [
   CellType.Wall
 ]
 
-const CELL_TYPE_MAP = {
+const CELL_TYPE_MAP: { [ type: number ]: string } = {
   [ CellType.Food ]: "food",
   [ CellType.Gold ]: "gold",
   [ CellType.Snake ]: "snakes",
@@ -48,7 +48,7 @@ const defaultExtraOptions: CellExtraOptions = {
 
 interface BoardEditorProps {
   application: GraphQL.Schema.Application
-  board?: Models.Board
+  board?: Models.Board | null
 }
 
 interface BoardEditorState {
@@ -58,11 +58,12 @@ interface BoardEditorState {
 }
 
 class BoardEditor extends React.Component<BoardEditorProps, BoardEditorState> {
-  constructor (props) {
+  constructor (props: BoardEditorProps) {
     super(props)
 
     this.state = {
-      configuration: props.configuration ? props.configuration : defaultConfiguration,
+      // configuration: props.configuration ? props.configuration : defaultConfiguration,
+      configuration: defaultConfiguration,
       extraOptions: defaultExtraOptions,
       placementType: CellType.Food
     }

@@ -32,7 +32,7 @@ const transitionClassNames = {
 class NavItem extends React.Component<NavItemProps, NatItemState> {
   state = { overflowShown: false }
 
-  constructor (props) {
+  constructor (props: NavItemProps) {
     super(props)
 
     if (props.overflow && props.overflow.length === 0 && !(props.to !== "" || props.onClick)) {

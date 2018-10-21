@@ -34,13 +34,18 @@ export function getSnakeTail (snakeOrTailType: string | GameAPI.Snake) {
   return fetch(uri).then(response => response.blob())
 }
 
-export function makeContext<T> (context: Context, callback: WithinContextCallback, prepareContext?: PrepareContextCallback, ...mArgs) {
-  return function (...args) {
+export function makeContext<T> (
+  context: Context,
+  callback: WithinContextCallback,
+  prepareContext?: PrepareContextCallback,
+  ...mArgs: any[]
+) {
+  return function (...args: any[]) {
     return withinContext(context, callback, prepareContext, ...mArgs, ...args)
   }
 }
 
-export function svgToImage (svg: SVGElement, color) {
+export function svgToImage (svg: SVGElement, color: string) {
   svg.setAttribute("fill", color)
 
   const blob = new Blob([ svg.outerHTML ], { type: "image/svg+xml" })
@@ -57,10 +62,15 @@ export function svgToImage (svg: SVGElement, color) {
 
 type WithinContextCallback = (context: Context, ...args: any[]) => void
 
-export function withinContext (context: Context, fn: WithinContextCallback, prepareContext?: PrepareContextCallback, ...args) {
+export function withinContext (
+  context: Context,
+  callback: WithinContextCallback,
+  prepareContext?: PrepareContextCallback,
+  ...args: any[]
+) {
   context.save()
   prepareContext && prepareContext(context, ...args)
-  const result = fn(context, ...args)
+  const result = callback(context, ...args)
   context.restore()
   return result
 }

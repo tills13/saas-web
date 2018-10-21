@@ -23,25 +23,27 @@ import { UpdateDaemonMutationResponse } from "../../../__artifacts__/UpdateDaemo
 
 interface CreateEditDaemonFormProps {
   className?: string
-  daemon?: Models.Daemon
+  daemon?: Models.Daemon | null
 }
 
+type MutationResponse = UpdateDaemonMutationResponse | CreateDaemonMutationResponse
 type Props = CreateEditDaemonFormProps & FormProps & WithRouter
 
 class CreateEditDaemonForm extends React.Component<Props> {
   onClickDelete = () => {
     const { daemon, router } = this.props
 
-    return deleteDaemon({ daemonId: daemon.id }).then(_ => {
+    return deleteDaemon({ daemonId: daemon!.id }).then(_ => {
       router.push("/daemons")
     })
   }
 
-  onSubmit = (_: any, data: any) => {
+  onSubmit = (_event: any, data: any) => {
     const { daemon } = this.props
 
-    const mutation: Promise<UpdateDaemonMutationResponse | CreateDaemonMutationResponse> = daemon
-      ? updateDaemon({ daemonId: daemon.id, ...data }) : createDaemon(data)
+    const mutation: Promise<MutationResponse> = daemon
+      ? updateDaemon({ daemonId: daemon.id, ...data })
+      : createDaemon(data)
 
     return mutation
   }

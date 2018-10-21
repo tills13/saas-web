@@ -8,8 +8,8 @@ import LinkButton from "components/button/link_button"
 import Grid from "components/grid"
 import Header from "components/header"
 import List from "components/list"
-import Pagination from "components/Pagination"
-import ViewModeToggle, { defaultViewOptions, ViewMode } from "components/ViewModeToggle"
+// import Pagination from "components/Pagination"
+import ViewModeToggle, { ViewMode } from "components/ViewModeToggle"
 
 // import { paginate, PaginationProps } from "utils/hocs/with_pagination"
 
@@ -62,7 +62,7 @@ class ViewBoards extends React.Component<ViewBoardsProps, ViewBoardsState> {
 
     return (
       <List className="Boards__list">
-        { application.boards.items.map((board) => {
+        { application.boards!.items.map((board) => {
           return (
             <Link
               key={ board.id }
@@ -86,8 +86,8 @@ class ViewBoards extends React.Component<ViewBoardsProps, ViewBoardsState> {
     const { application } = this.props
 
     return (
-      <Grid itemsPerRow={ 4 }>
-        { application.boards.items.map((board) => (
+      <Grid>
+        { application.boards!.items.map((board) => (
           <div key={ board.id }>
             <div className="Board__container">
               <Board { ...board.configuration } isPreview={ true } />

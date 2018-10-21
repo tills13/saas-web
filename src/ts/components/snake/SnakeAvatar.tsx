@@ -10,8 +10,8 @@ interface SnakeAvatarProps extends React.AllHTMLAttributes<HTMLImageElement> {
   snake: Models.Snake
 }
 
-function SnakeAvatar ({ small = false, snake }: SnakeAvatarProps) {
-  const mClassName = classnames("SnakeAvatar", {
+function SnakeAvatar ({ className, small = false, snake }: SnakeAvatarProps) {
+  const mClassName = classnames("SnakeAvatar", className, {
     "SnakeAvatar--small": small
   })
 

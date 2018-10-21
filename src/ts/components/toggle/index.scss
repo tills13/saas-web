@@ -23,11 +23,11 @@
     margin-right: 2px;
   }
 
-  &:hover:not(.Toggle__option--active) {
+  &:hover:not(.--active) {
     background: $color-light-blue;
   }
 
-  &.Toggle__option--active {
+  &.--active {
     color: $color-blue;
     background: white;
   }

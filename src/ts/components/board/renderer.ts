@@ -48,8 +48,8 @@ const defaultOpts: Partial<BoardRendererOptions> = {
 }
 
 class BoardRenderer {
-  private bgContext: CanvasRenderingContext2D
-  private fgContext: CanvasRenderingContext2D
+  private bgContext?: CanvasRenderingContext2D
+  private fgContext?: CanvasRenderingContext2D
 
   private margin: number = 0.05
   private padding: number = 0
@@ -59,8 +59,8 @@ class BoardRenderer {
 
   private redrawBackground: boolean = true
 
-  private boardState: Partial<BoardState>
-  private animationFrame: number
+  private boardState?: Partial<BoardState>
+  private animationFrame?: number
 
   private opts: BoardRendererOptions
 
@@ -124,7 +124,9 @@ class BoardRenderer {
   }
 
   stop () {
-    cancelAnimationFrame(this.animationFrame)
+    if (this.animationFrame != null) {
+      cancelAnimationFrame(this.animationFrame)
+    }
   }
 
   drawGrid = (context: Context) => {

@@ -1,22 +1,19 @@
 import React from "react"
 
 interface ErrorBoundaryState {
-  error: Error
-  hasError: boolean
+  error?: Error
 }
 
 class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
-  state: ErrorBoundaryState = { error: null, hasError: false }
-
   componentDidCatch (error: Error, info: React.ErrorInfo) {
-    this.setState({ error, hasError: true })
+    this.setState({ error })
   }
 
   render () {
-    const { error, hasError } = this.state
+    const { error } = this.state
     const { children } = this.props
 
-    if (hasError) {
+    if (error) {
       return (
         <pre>
           { error.stack }

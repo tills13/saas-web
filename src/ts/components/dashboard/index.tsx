@@ -32,13 +32,14 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
 
   containerRef: React.RefObject<HTMLDivElement>
 
-  constructor (props) {
+  constructor (props: DashboardProps) {
     super(props)
+
     this.containerRef = React.createRef()
   }
 
   onNavItemClick = () => {
-    this.containerRef.current.scrollTop = 0
+    this.containerRef.current!.scrollTop = 0
   }
 
   onScroll = (event: React.UIEvent<HTMLElement>) => {

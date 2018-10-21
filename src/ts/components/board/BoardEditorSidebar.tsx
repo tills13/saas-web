@@ -35,22 +35,25 @@ class BoardEditorSidebar extends React.Component<BoardEditorSidebarProps, BoardE
     this.props.onChangeOption({ [ name ]: value })
   }
 
+  onChange = (eventOrValue: React.ChangeEvent<HTMLInputElement> | string) => {
+    const { onChangeExtraOptions } = this.props
+
+    return onChangeExtraOptions({
+      [ CellOption.Color ]: typeof eventOrValue === "string"
+        ? eventOrValue
+        : eventOrValue.target.value
+    })
+  }
+
   renderColorOptions () {
-    const { extraOptions, onChangeExtraOptions } = this.props
-    const onChange = (eventOrValue) => {
-      return onChangeExtraOptions({
-        [ CellOption.Color ]: typeof eventOrValue === "string"
-          ? eventOrValue
-          : eventOrValue.target.value
-      })
-    }
+    const { extraOptions } = this.props
 
     return (
       <ColorPicker
         label="Color"
         name="channel"
         placeholder="Color"
-        onChange={ onChange }
+        onChange={ this.onChange }
         value={ extraOptions[ CellOption.Color ] || "#000000" }
       />
     )
@@ -72,6 +75,9 @@ class BoardEditorSidebar extends React.Component<BoardEditorSidebarProps, BoardE
 
   renderSnakeOptions () {
     const { application, extraOptions, onChangeExtraOptions } = this.props
+    const { snakes: mSnakes } = application
+    const { items: snakes } = mSnakes!
+
     const onChange = (eventOrValue: React.ChangeEvent<HTMLInputElement> | string) => {
       return onChangeExtraOptions({
         [ CellOption.SnakeId ]: typeof eventOrValue === "string"
@@ -80,9 +86,7 @@ class BoardEditorSidebar extends React.Component<BoardEditorSidebarProps, BoardE
       })
     }
 
-    const options = application.snakes.items.map((snake) => {
-      return { label: snake.name, value: snake.id }
-    })
+    const options = snakes.map(snake => ({ label: snake.name, value: snake.id }))
 
     return (
       <FieldGroup label="Snake" vertical>
@@ -147,12 +151,12 @@ class BoardEditorSidebar extends React.Component<BoardEditorSidebarProps, BoardE
           <FieldGroup label="Dimensions">
             <TextInput
               type="number"
-              onChange={ this.onInputChanged.bind(null, "boardRows", (value) => parseInt(value, 10)) }
+              onChange={ this.onInputChanged.bind(null, "boardRows", (value: string) => parseInt(value, 10)) }
               value={ configuration.boardRows }
             />
             <TextInput
               type="number"
-              onChange={ this.onInputChanged.bind(null, "boardColumns", (value) => parseInt(value, 10)) }
+              onChange={ this.onInputChanged.bind(null, "boardColumns", (value: string) => parseInt(value, 10)) }
               value={ configuration.boardColumns }
             />
           </FieldGroup>

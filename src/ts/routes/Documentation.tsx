@@ -1,5 +1,5 @@
 import React from "react"
-import { createFragmentContainer, graphql } from "react-relay"
+import { graphql } from "react-relay"
 
 import Anchor from "components/Anchor"
 import ButtonGroup from "components/button/button_group"
@@ -24,7 +24,7 @@ interface DocumentationProps {
 interface DocumenationState {
   exampleUrl: string
   isLegacy: boolean
-  selectedSnake: Models.Snake[ "id" ]
+  selectedSnake?: Models.Snake[ "id" ]
 }
 
 export const DocumenationQuery = graphql`
@@ -40,7 +40,11 @@ export const DocumenationQuery = graphql`
 `
 
 export class Documentation extends React.Component<DocumentationProps, DocumenationState> {
-  state: DocumenationState = { exampleUrl: "https://battlesnake.sbstn.ca/", isLegacy: false, selectedSnake: null }
+  state: DocumenationState = {
+    exampleUrl: "https://battlesnake.sbstn.ca/",
+    isLegacy: false,
+    selectedSnake: undefined
+  }
 
   renderDaemons () {
     const { viewer } = this.props
@@ -417,17 +421,17 @@ export class Documentation extends React.Component<DocumentationProps, Documenat
 
     const onSnakeChanged = (snakeId: string) => {
       const snake = snakeId
-        ? viewer.snakes.edges.find(({ node: { id } }) => id === snakeId).node
+        ? viewer!.snakes!.edges.find(({ node: { id } }) => id === snakeId)!.node
         : null
 
       this.setState({
         exampleUrl: snake ? snake.url : "https://battlesnake.sbstn.ca/",
-        isLegacy: snake && !!snake.apiVersion,
-        selectedSnake: snake.id
+        isLegacy: snake && !!snake.apiVersion || false,
+        selectedSnake: snake ? snake.id : undefined
       })
     }
 
-    const snakes = viewer ? viewer.snakes.edges : []
+    const snakes = viewer ? viewer.snakes!.edges : []
 
     return (
       <div className="Documentation">

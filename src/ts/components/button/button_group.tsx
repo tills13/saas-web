@@ -3,12 +3,11 @@ import "./button_group.scss"
 import classnames from "classnames"
 import React from "react"
 
-interface ButtonGroupProps extends React.Props<any> {
+interface ButtonGroupProps extends React.AllHTMLAttributes<HTMLDivElement> {
   block?: boolean
-  className?: string
 }
 
-const ButtonGroup = ({ block, children, className }: ButtonGroupProps) => {
+function ButtonGroup ({ block, children, className }: ButtonGroupProps) {
   const mClassName = classnames("ButtonGroup", className, {
     "ButtonGroup--block": block
   })

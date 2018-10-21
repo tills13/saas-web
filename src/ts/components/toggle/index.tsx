@@ -7,8 +7,7 @@ import Icon from "../icon"
 
 export type Option<T = any> = { icon?: string | React.ReactElement<any>, key: T, label?: string }
 
-interface ToggleProps<T = any> extends React.Props<any> {
-  className?: string
+interface ToggleProps<T = any> extends React.AllHTMLAttributes<HTMLDivElement> {
   onSelectOption: (key: T) => void
   options: Option<T>[]
   selectedOption: T
@@ -21,7 +20,7 @@ function Toggle ({ className, onSelectOption, options, selectedOption }: ToggleP
     <div className={ mClassName }>
       { options.map((option) => {
         const oClassName = classnames("Toggle__option", {
-          "Toggle__option--active": option.key === selectedOption
+          "--active": option.key === selectedOption
         })
 
         return (

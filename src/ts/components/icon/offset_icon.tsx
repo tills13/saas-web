@@ -8,7 +8,7 @@ const OFFSET_FIXES: IconOffsetType = {
   "av-timer": { position: "relative", top: "1.5px" }
 }
 
-export const OffsetIcon = ({ icon, ...rest }: IconProps) => {
+function OffsetIcon ({ icon, ...rest }: IconProps) {
   return <Icon icon={ icon } { ...rest } style={ OFFSET_FIXES[ icon ] } />
 }
 

@@ -5,16 +5,15 @@ import React from "react"
 
 import Container from "../Container"
 
-interface AnchorProps extends React.Props<any> {
+interface AnchorProps extends React.AllHTMLAttributes<any> {
   anchor: string
   className?: string
   endpoint?: string
   method?: string
   title: string
-  onClick?: React.EventHandler<any>
 }
 
-function Anchor ({ anchor, children, className, endpoint, method, onClick, title }: AnchorProps) {
+function Anchor ({ anchor, className, endpoint, method, onClick, title }: AnchorProps) {
   const mClassName = classnames("Anchor", className)
 
   return (

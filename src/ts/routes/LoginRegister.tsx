@@ -9,26 +9,28 @@ import Header from "components/header"
 import Toggle, { Option as ToggleOption } from "components/Toggle"
 import Color from "enums/Color"
 
-import { login, refreshViewer, register } from "utils/auth"
+import { login, LoginData, refreshViewer, register, RegisterData } from "utils/auth"
 import { FormProps, withForm } from "utils/hocs"
 
 export enum Mode { Login = "login", Register = "register" }
-
-interface LoginRegisterProps extends FormProps, WithRouter, RouteProps { }
+interface LoginRegisterProps { }
+type Props = LoginRegisterProps & FormProps & WithRouter & RouteProps
 
 const toggleOptions: ToggleOption[] = [
   { key: Mode.Login },
   { key: Mode.Register }
 ]
 
-class LoginRegister extends React.Component<LoginRegisterProps, {}> {
+class LoginRegister extends React.Component<Props, {}> {
   onChangeMode = (newMode: Mode) => {
     this.props.router.push(`/${ newMode }`)
   }
 
-  onSubmit = (_: React.FormEvent<any>, data) => {
+  onSubmit = (_event: React.FormEvent<any>, data: LoginData | RegisterData) => {
     const { params: { mode }, router } = this.props
-    const action = mode === Mode.Login ? login(data) : register(data)
+    const action = mode === Mode.Login
+      ? login(data as LoginData)
+      : register(data as RegisterData)
 
     return action.then(_ => refreshViewer().then(_ => router.push("/")))
   }
@@ -66,7 +68,7 @@ class LoginRegister extends React.Component<LoginRegisterProps, {}> {
   }
 }
 
-export default compose(
+export default compose<any>(
   withForm(),
   withRouter
 )(LoginRegister)

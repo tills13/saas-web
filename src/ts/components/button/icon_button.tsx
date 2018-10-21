@@ -15,7 +15,7 @@ export const OFFSET_FIXES: IconOffsetType = {
   // "chevron-left": { position: "relative", left: "-2px" }
 }
 
-export const IconButton = ({ children, className, icon, ...rest }: IconButtonProps) => {
+function IconButton ({ children, className, icon, ...rest }: IconButtonProps) {
   const mClassName = classnames("IconButton", className)
 
   return (

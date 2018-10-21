@@ -1,11 +1,8 @@
 import { commitMutation, graphql } from "react-relay"
+
 import Environment from "../../environment"
 
-import { PublishFileMutationResponse } from "../../../../__artifacts__/PublishFileMutation.graphql"
-
-interface PublishFileMutationInput {
-  fileId: Models.File[ "id" ]
-}
+import { PublishFileMutationInput, PublishFileMutationResponse } from "../../../../__artifacts__/PublishFileMutation.graphql"
 
 const mutation = graphql`
   mutation PublishFileMutation ($input: PublishFileMutationInput!) {

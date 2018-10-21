@@ -1,13 +1,8 @@
 import { commitMutation, graphql } from "react-relay"
+
 import Environment from "../../environment"
 
-import { InitializeFileMutationResponse } from "../../../../__artifacts__/InitializeFileMutation.graphql"
-
-interface InitializeFileMutationInput {
-  contentType: string
-  fileName: string
-  uploadType?: string
-}
+import { InitializeFileMutationInput, InitializeFileMutationResponse } from "../../../../__artifacts__/InitializeFileMutation.graphql"
 
 const mutation = graphql`
   mutation InitializeFileMutation ($input: InitializeFileMutationInput!) {

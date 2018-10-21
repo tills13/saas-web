@@ -1,10 +1,17 @@
 .Table {
   width: 100%;
+
+  &.--striped {
+    tbody {
+      .Table__row{
+        &:nth-child(odd) {
+          background: $color-light-grey;
+        }
+      }
+    }
+  }
 }
 
-.Table--striped tbody .Table__row:nth-child(odd) {
-  background: $color-light-grey;
-}
 
 .Table__row {
   td, th {
@@ -16,10 +23,12 @@
   }
 }
 
-.Table__thead .Table__row {
-  border-bottom: 1px solid $color-lighter-grey;
+.Table__thead {
+  .Table__row {
+    border-bottom: 1px solid $color-lighter-grey;
 
-  th {
-    text-align: left;
+    th {
+      text-align: left;
+    }
   }
 }

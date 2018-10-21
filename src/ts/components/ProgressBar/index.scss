@@ -4,10 +4,8 @@
   height: 20px;
   background: $color-lighter-grey;
   border-radius: $border-radius-base;
-}
 
-.ProgressBar__container--small {
-  height: 10px;
+  &.--small { height: 10px; }
 }
 
 .ProgressBar {

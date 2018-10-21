@@ -1,19 +1,32 @@
 import React from "react"
 
-export type ImageProps = {
+interface ImageProps {
   height: number
   src: string
   width: number
 }
 
-class Image extends React.Component<ImageProps> {
-  image: HTMLImageElement
+interface ImageState {
+  errored: boolean
+  loading: boolean
+}
 
+class Image extends React.Component<ImageProps, ImageState> {
   state = { loading: true, errored: false }
 
+  imageRef: React.RefObject<HTMLImageElement>
+
+  constructor (props: ImageProps) {
+    super(props)
+
+    this.imageRef = React.createRef()
+  }
+
   componentDidMount () {
-    this.image.onload = _ => this.setState({ loading: false })
-    this.image.onerror = _ => this.setState({ errored: true })
+    const image = this.imageRef.current!
+
+    image.onload = _ => this.setState({ loading: false })
+    image.onerror = _ => this.setState({ errored: true })
   }
 
   render () {
@@ -24,7 +37,7 @@ class Image extends React.Component<ImageProps> {
       <div>
         { loading && <div className="Image --loading" style={ { height, width } } /> }
         { errored && <div className="Image --errored" style={ { height, width } } /> }
-        <img ref={ image => this.image = image } { ...this.props } />
+        <img ref={ this.imageRef } { ...this.props } />
       </div>
     )
   }
