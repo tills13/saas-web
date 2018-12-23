@@ -7,7 +7,7 @@
     "build": "NODE_ENV=production webpack --config webpack.config.ts",
     "build-dev": "NODE_ENV=development webpack --config webpack.config.ts",
     "relay": "relay-compiler --src ./src/ --schema ./src/graphql/schema.graphql --language typescript --artifactDirectory ./src/__artifacts__",
-    "start": "NODE_ENV=development ts-node serve.ts",
+    "start": "NODE_ENV=development ts-node -T serve.ts",
     "sync-schema": "get-graphql-schema http://localhost:3000/graphql > src/graphql/schema.graphql"
   },
   "author": "tills13",

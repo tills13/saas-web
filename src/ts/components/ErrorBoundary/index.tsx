@@ -5,6 +5,8 @@ interface ErrorBoundaryState {
 }
 
 class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
+  state: ErrorBoundaryState = { error: undefined }
+
   componentDidCatch (error: Error, info: React.ErrorInfo) {
     this.setState({ error })
   }
