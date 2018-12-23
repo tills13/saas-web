@@ -5,7 +5,7 @@ import React from "react"
 import Dashboard, { DashboardQuery } from "components/Dashboard"
 import RouteContainer from "components/RouteContainer"
 
-import Documentation, { DocumenationQuery } from "routes/Documentation"
+// import Documentation, { DocumenationQuery } from "routes/Documentation"
 import Index from "routes/Landing"
 import LoginRegister from "routes/LoginRegister"
 
@@ -34,7 +34,7 @@ export default createFarceRouter({
   routeConfig: makeRouteConfig(
     <Route Component={ Dashboard } path="/" query={ DashboardQuery }>
       <Route Component={ Index } />
-      <Route Component={ Documentation } path="documentation" query={ DocumenationQuery } />
+      {/* <Route Component={ Documentation } path="documentation" query={ DocumenationQuery } /> */ }
       <Route Component={ LoginRegister } path=":mode(login|register)" />
 
       <Route Component={ RouteContainer }>
