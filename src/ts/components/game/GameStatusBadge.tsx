@@ -11,7 +11,7 @@ interface GameStatusBadgeProps {
 
 function GameStatusBadge ({ game }: GameStatusBadgeProps) {
   const mStatus = game.status.toLowerCase()
-  const mClassName = classnames("GameStatusBadge", `GameStatusBadge--${ camelCase(mStatus) }`)
+  const mClassName = classnames("GameStatusBadge", `--${ camelCase(mStatus) }`)
 
   return (
     <div className={ mClassName }>

@@ -1,24 +1,14 @@
 .GameListItem {
   display: flex;
-  padding: 10px;
 
   color: $font-color-blue;
   line-height: 25px;
   text-decoration: none;
   border-radius: $border-radius-base;
 
-  &:not(:last-child) {
-    // border-bottom: 1px solid $color-lighter-grey;
-  }
-
   > * {
     flex: 1 1 auto;
     align-items: center;
-  }
-
-  &:hover {
-    color: white;
-    background: $color-blue;
   }
 }
 
@@ -35,7 +25,6 @@
 
 .GameListItem__snakes {
   display: flex;
-  padding: 0px 10px;
   align-items: center;
 
   .SnakeAvatar {

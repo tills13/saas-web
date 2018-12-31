@@ -2,8 +2,8 @@ import React from "react"
 import { graphql } from "react-relay"
 
 import Board from "components/Board"
-import CreateEditGameForm from "components/game/CreateEditGameForm"
-import Header from "components/header"
+import Header from "components/Header"
+import CreateEditGameForm from "form/CreateEditGameForm"
 
 // import gameService from "components/game/service"
 

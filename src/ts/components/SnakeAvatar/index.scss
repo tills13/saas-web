@@ -1,0 +1,10 @@
+.SnakeAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: $border-radius-base;
+
+  &.--small {
+    width: 30px;
+    height: 30px;
+  }
+}

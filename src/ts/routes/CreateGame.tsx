@@ -1,8 +1,8 @@
 import React from "react"
 import { graphql } from "react-relay"
 
-import CreateEditGameForm from "components/game/CreateEditGameForm"
-import Header from "components/header"
+import Header from "components/Header"
+import CreateEditGameForm from "form/CreateEditGameForm"
 
 interface CreateGameProps {
   application: GraphQL.Schema.Application

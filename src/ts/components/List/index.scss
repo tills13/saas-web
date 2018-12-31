@@ -1,0 +1,18 @@
+.List {
+  margin-bottom: 12px;
+
+  > * {
+    margin-left: -12px;
+    margin-right: -12px;
+
+    padding: 12px;
+
+    &.--withOnClick {
+      cursor: pointer;
+    }
+
+    &:nth-child(even) {
+      background: #fafafa;
+    }
+  }
+}

@@ -1,8 +1,8 @@
 import React from "react"
 import { graphql } from "react-relay"
 
-import BoardEditor from "components/Board/BoardEditor"
-import Header from "components/header"
+import BoardEditor from "components/BoardEditor"
+import Header from "components/Header"
 
 interface CreateBoardProps extends React.AllHTMLAttributes<HTMLDivElement> {
   application: GraphQL.Schema.Application

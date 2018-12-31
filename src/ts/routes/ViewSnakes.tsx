@@ -3,11 +3,10 @@ import React from "react"
 import Relay, { createRefetchContainer, graphql } from "react-relay"
 import { compose } from "recompose"
 
-import LinkButton from "components/button/link_button"
-import Header from "components/header"
+import LinkButton from "components/LinkButton"
+import Header from "components/Header"
 import Pagination from "components/Pagination"
-import SnakeDetails from "components/snake/SnakeDetails"
-import SnakeList from "components/snake/SnakeList"
+import SnakeList from "components/SnakeList"
 
 import { PaginationProps, withPagination } from "utils/hocs/with_pagination"
 
@@ -36,7 +35,7 @@ function ViewSnakes ({ application, pagination, router, selectedSnake }: ViewSna
   const { items: snakes } = mSnakes!
 
   return (
-    <div>
+    <div className="ViewSnakes">
       <Header>
         <div><h2 className="Header__title">Snakes</h2></div>
         <div>
@@ -47,12 +46,10 @@ function ViewSnakes ({ application, pagination, router, selectedSnake }: ViewSna
         <div className="SnakeList__list">
           <SnakeList
             onClickSnake={ snake => router.push(`/snakes/${ snake.id }`) }
-            selectedSnake={ undefined }
             snakes={ snakes }
           />
           <Pagination { ...pagination } />
         </div>
-        { selectedSnake && <SnakeDetails snake={ selectedSnake } /> }
       </div>
     </div>
   )

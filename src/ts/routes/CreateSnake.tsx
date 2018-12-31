@@ -1,7 +1,7 @@
 import React from "react"
 
-import Header from "components/header"
-import CreateEditSnakeForm from "components/snake/form/CreateEditSnakeForm"
+import Header from "components/Header"
+import CreateEditSnakeForm from "form/CreateEditSnakeForm"
 
 function CreateSnake () {
   return (

@@ -10,7 +10,7 @@ enum APIVersionEnum {
 }
 
 type Application implements Node {
-  # The ID of an object
+  """The ID of an object"""
   id: ID!
   debug(timeout: Int): Int
   boards(limit: Int, after: Int): PaginatedListType_BoardConfiguration
@@ -24,7 +24,7 @@ type Application implements Node {
 }
 
 type BoardConfiguration implements Node {
-  # The ID of an object
+  """The ID of an object"""
   id: ID!
   name: String
   configuration: JSON
@@ -91,7 +91,7 @@ type CreateUserMutationPayload {
 }
 
 type Daemon implements Node {
-  # The ID of an object
+  """The ID of an object"""
   id: ID!
   description: String
   name: String
@@ -138,7 +138,7 @@ type DeleteSnakeMutationPayload {
 }
 
 type File implements Node {
-  # The ID of an object
+  """The ID of an object"""
   id: ID!
   bucket: String
   name: String
@@ -147,27 +147,27 @@ type File implements Node {
   published: Boolean
 }
 
-# A connection to a list of items.
+"""A connection to a list of items."""
 type FileConnection {
-  # Information to aid in pagination.
+  """Information to aid in pagination."""
   pageInfo: PageInfo!
 
-  # A list of edges.
+  """A list of edges."""
   edges: [FileEdge]
   count: Int
 }
 
-# An edge in a connection.
+"""An edge in a connection."""
 type FileEdge {
-  # The item at the end of the edge
+  """The item at the end of the edge"""
   node: File
 
-  # A cursor for use in pagination
+  """A cursor for use in pagination"""
   cursor: String!
 }
 
 type Game implements Node {
-  # The ID of an object
+  """The ID of an object"""
   id: ID!
   realId: String
   boardConfiguration: BoardConfiguration
@@ -202,22 +202,22 @@ type Game implements Node {
   winner: Snake
 }
 
-# A connection to a list of items.
+"""A connection to a list of items."""
 type GameConnection {
-  # Information to aid in pagination.
+  """Information to aid in pagination."""
   pageInfo: PageInfo!
 
-  # A list of edges.
+  """A list of edges."""
   edges: [GameEdge]
   count: Int
 }
 
-# An edge in a connection.
+"""An edge in a connection."""
 type GameEdge {
-  # The item at the end of the edge
+  """The item at the end of the edge"""
   node: Game
 
-  # A cursor for use in pagination
+  """A cursor for use in pagination"""
   cursor: String!
 }
 
@@ -245,22 +245,22 @@ input GameInput {
   visibility: VisibilityEnum!
 }
 
-# A connection to a list of items.
+"""A connection to a list of items."""
 type GameSnakeConnection {
-  # Information to aid in pagination.
+  """Information to aid in pagination."""
   pageInfo: PageInfo!
 
-  # A list of edges.
+  """A list of edges."""
   edges: [GameSnakeEdge]
   count: Int
 }
 
-# An edge in a connection.
+"""An edge in a connection."""
 type GameSnakeEdge {
-  # The item at the end of the edge
+  """The item at the end of the edge"""
   node: Snake
 
-  # A cursor for use in pagination
+  """A cursor for use in pagination"""
   cursor: String!
   place: Int
 }
@@ -317,11 +317,13 @@ type InitializeFileMutationPayload {
   clientMutationId: String
 }
 
-# The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
 scalar JSON
 
 type Medal implements Node {
-  # The ID of an object
+  """The ID of an object"""
   id: ID!
   name: String
   description: String
@@ -329,22 +331,22 @@ type Medal implements Node {
   value: Int
 }
 
-# A connection to a list of items.
+"""A connection to a list of items."""
 type MedalConnection {
-  # Information to aid in pagination.
+  """Information to aid in pagination."""
   pageInfo: PageInfo!
 
-  # A list of edges.
+  """A list of edges."""
   edges: [MedalEdge]
   count: Int
 }
 
-# An edge in a connection.
+"""An edge in a connection."""
 type MedalEdge {
-  # The item at the end of the edge
+  """The item at the end of the edge"""
   node: Medal
 
-  # A cursor for use in pagination
+  """A cursor for use in pagination"""
   cursor: String!
 }
 
@@ -363,16 +365,16 @@ type MutationRootType {
   deleteDaemonMutation(input: DeleteDaemonMutationInput!): DeleteDaemonMutationPayload
   updateDaemonMutation(input: UpdateDaemonMutationInput!): UpdateDaemonMutationPayload
 
-  # Initialize a file - returning a signed URL for uploading to
+  """Initialize a file - returning a signed URL for uploading to"""
   initializeFileMutation(input: InitializeFileMutationInput!): InitializeFileMutationPayload
 
-  # Publish a file
+  """Publish a file"""
   publishFileMutation(input: PublishFileMutationInput!): PublishFileMutationPayload
 
-  # Creates a game
+  """Creates a game"""
   createGameMutation(input: CreateGameMutationInput!): CreateGameMutationPayload
 
-  # Updates a game
+  """Updates a game"""
   updateGameMutation(input: UpdateGameMutationInput!): UpdateGameMutationPayload
   createSnakeMutation(input: CreateSnakeMutationInput!): CreateSnakeMutationPayload
   deleteSnakeMutation(input: DeleteSnakeMutationInput!): DeleteSnakeMutationPayload
@@ -381,24 +383,24 @@ type MutationRootType {
   createUserMutation(input: CreateUserMutationInput!): CreateUserMutationPayload
 }
 
-# An object with an ID
+"""An object with an ID"""
 interface Node {
-  # The id of the object.
+  """The id of the object."""
   id: ID!
 }
 
-# Information about pagination in a connection.
+"""Information about pagination in a connection."""
 type PageInfo {
-  # When paginating forwards, are there more items?
+  """When paginating forwards, are there more items?"""
   hasNextPage: Boolean!
 
-  # When paginating backwards, are there more items?
+  """When paginating backwards, are there more items?"""
   hasPreviousPage: Boolean!
 
-  # When paginating backwards, the cursor to continue.
+  """When paginating backwards, the cursor to continue."""
   startCursor: String
 
-  # When paginating forwards, the cursor to continue.
+  """When paginating forwards, the cursor to continue."""
   endCursor: String
 }
 
@@ -418,25 +420,25 @@ type PaginatedListPageInfo_Snake {
   count: Int
 }
 
-# Paginated list
+"""Paginated list"""
 type PaginatedListType_BoardConfiguration {
   pageInfo: PaginatedListPageInfo_BoardConfiguration
   items: [BoardConfiguration]
 }
 
-# Paginated list
+"""Paginated list"""
 type PaginatedListType_Daemon {
   pageInfo: PaginatedListPageInfo_Daemon
   items: [Daemon]
 }
 
-# Paginated list
+"""Paginated list"""
 type PaginatedListType_Game {
   pageInfo: PaginatedListPageInfo_Game
   items: [Game]
 }
 
-# Paginated list
+"""Paginated list"""
 type PaginatedListType_Snake {
   pageInfo: PaginatedListPageInfo_Snake
   items: [Snake]
@@ -453,9 +455,9 @@ type PublishFileMutationPayload {
 }
 
 type QueryRootType {
-  # Fetches an object given its ID
+  """Fetches an object given its ID"""
   node(
-    # The ID of an object
+    """The ID of an object"""
     id: ID!
   ): Node
   application: Application
@@ -463,12 +465,12 @@ type QueryRootType {
 }
 
 type Snake implements Node {
-  # The ID of an object
+  """The ID of an object"""
   id: ID!
   bountyDescription: String
   defaultColor: String
   devUrl: String
-  games(after: String, first: Int, before: String, last: Int): SnakeGameConnection
+  games(after: String, first: Int, before: String, last: Int, placement: Int): SnakeGameConnection
   head: File
   isBountySnake: Boolean
   apiVersion: APIVersionEnum
@@ -480,41 +482,41 @@ type Snake implements Node {
   visibility: VisibilityEnum
 }
 
-# A connection to a list of items.
+"""A connection to a list of items."""
 type SnakeConnection {
-  # Information to aid in pagination.
+  """Information to aid in pagination."""
   pageInfo: PageInfo!
 
-  # A list of edges.
+  """A list of edges."""
   edges: [SnakeEdge]
   count: Int
 }
 
-# An edge in a connection.
+"""An edge in a connection."""
 type SnakeEdge {
-  # The item at the end of the edge
+  """The item at the end of the edge"""
   node: Snake
 
-  # A cursor for use in pagination
+  """A cursor for use in pagination"""
   cursor: String!
 }
 
-# A connection to a list of items.
+"""A connection to a list of items."""
 type SnakeGameConnection {
-  # Information to aid in pagination.
+  """Information to aid in pagination."""
   pageInfo: PageInfo!
 
-  # A list of edges.
+  """A list of edges."""
   edges: [SnakeGameEdge]
   count: Int
 }
 
-# An edge in a connection.
+"""An edge in a connection."""
 type SnakeGameEdge {
-  # The item at the end of the edge
+  """The item at the end of the edge"""
   node: Game
 
-  # A cursor for use in pagination
+  """A cursor for use in pagination"""
   cursor: String!
   place: Int
 }
@@ -615,7 +617,7 @@ type UpdateSnakeMutationPayload {
 }
 
 type User implements Node {
-  # The ID of an object
+  """The ID of an object"""
   id: ID!
   username: String
   snakes(after: String, first: Int, before: String, last: Int): SnakeConnection
@@ -623,22 +625,22 @@ type User implements Node {
   medals(after: String, first: Int, before: String, last: Int): MedalConnection
 }
 
-# A connection to a list of items.
+"""A connection to a list of items."""
 type UserConnection {
-  # Information to aid in pagination.
+  """Information to aid in pagination."""
   pageInfo: PageInfo!
 
-  # A list of edges.
+  """A list of edges."""
   edges: [UserEdge]
   count: Int
 }
 
-# An edge in a connection.
+"""An edge in a connection."""
 type UserEdge {
-  # The item at the end of the edge
+  """The item at the end of the edge"""
   node: User
 
-  # A cursor for use in pagination
+  """A cursor for use in pagination"""
   cursor: String!
 }
 

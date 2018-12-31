@@ -19,7 +19,7 @@ export function generateRandomSnake (
     coords.push(move(initialPosition, opposite(direction), i))
   }
 
-  return { coords, color, direction, health: 100 }
+  return { id: Math.round(Math.random() * 1000), coords, color, direction, health: 100 }
 }
 
 export function kill (snake: Pick<GameAPI.Snake, "health" | "death">, turn?: number): void {

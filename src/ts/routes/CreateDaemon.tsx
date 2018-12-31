@@ -1,7 +1,7 @@
 import React from "react"
 
-import CreateEditDaemonForm from "components/daemon/CreateEditDaemonForm"
-import Header from "components/header"
+import Header from "components/Header"
+import CreateEditDaemonForm from "form/CreateEditDaemonForm"
 
 function CreateDaemon () {
   return (

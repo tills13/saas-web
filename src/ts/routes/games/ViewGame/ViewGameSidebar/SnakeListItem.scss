@@ -1,8 +1,4 @@
 .SnakeListItem {
-  &:not(:last-child) {
-    margin-bottom: 10px;
-  }
-
   &.--dead {
     img { filter: "transparency(50%)" }
   }
@@ -25,8 +21,6 @@
     border-radius: $border-radius-base;
   }
 }
-
-
 
 .SnakeListItem__health {
   position: absolute;

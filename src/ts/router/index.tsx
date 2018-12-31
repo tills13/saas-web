@@ -23,6 +23,7 @@ import ViewGames, { ViewGamesQuery } from "routes/ViewGames"
 
 import CreateSnake from "routes/CreateSnake"
 import EditSnake, { EditSnakeQuery } from "routes/EditSnake"
+import ViewSnake, { ViewSnakeQuery } from "routes/ViewSnake"
 import ViewSnakes, { viewSnakesPrepareVariables, ViewSnakesQuery } from "routes/ViewSnakes"
 
 import { renderLoading } from "./utils"
@@ -64,10 +65,9 @@ export default createFarceRouter({
           />
           <Route Component={ CreateSnake } path="create" />
           <Route
-            Component={ ViewSnakes }
+            Component={ ViewSnake }
             path=":snakeId"
-            prepareVariables={ viewSnakesPrepareVariables }
-            query={ ViewSnakesQuery }
+            query={ ViewSnakeQuery }
           />
           <Route Component={ EditSnake } path=":snakeId/edit" query={ EditSnakeQuery } />
         </Route>

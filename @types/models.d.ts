@@ -2,6 +2,7 @@ declare namespace Models {
   export type Configuration = {
     boardColumns?: number
     boardRows?: number
+    name?: string
     // food: List<GameAPI.Food>
     // gold: List<GameAPI.Gold>
     // snakes: List<GameAPI.Snake>
@@ -45,7 +46,7 @@ declare namespace Models {
   }
 
   export interface Game {
-    id: GraphQL.Schema.GraphQLID
+    id: GraphQL.GraphQLID
     realId: string
     boardColumns: number
     boardConfiguration: Board
@@ -70,7 +71,7 @@ declare namespace Models {
     gameType: GameTypeEnum
     pinTail: boolean
     responseTime: number
-    snakes: GraphQL.Schema.GraphConnection<Snake>
+    snakes: GraphQL.GraphConnection<Snake>
     status: string
     startedAt: number
     tickRate: number
@@ -104,7 +105,7 @@ declare namespace Models {
     defaultColor: string
     deletedAt: number
     devUrl: string
-    games: GraphQL.Schema.GraphConnection<Game, { place: number }>
+    games: GraphQL.GraphConnection<Game, { place: number }>
     head: File
     isBountySnake: boolean
     lastCheckedAt: number

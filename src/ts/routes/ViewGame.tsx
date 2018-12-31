@@ -1,13 +1,13 @@
-import classnames from "classnames"
 import React from "react"
 import { graphql } from "react-relay"
 
-import Board, { RenderMethod } from "components/Board"
-import Button from "components/form/button"
-import FieldGroup from "components/form/field_group"
+import Board from "components/Board"
+import Button from "components/Button"
+import FieldGroup from "components/FieldGroup"
 import Sidebar from "./games/ViewGame/ViewGameSidebar"
 
-import { gameService, GameServiceInjectedProps } from "components/game/service"
+import withGameService, { GameServiceInjectedProps } from "hocs/withGameService"
+import BoardRenderer from "components/Board/renderer"
 
 interface ViewGameProps {
   game: GraphQL.Schema.Node<Models.Game>
@@ -43,6 +43,8 @@ export const ViewGameQuery = graphql`
 `
 
 class ViewGame extends React.Component<ViewGameProps & GameServiceInjectedProps> {
+  private renderer = new BoardRenderer()
+
   simulateKeyPress = (character: string) => {
     console.log(`simulating keypress: ${ character }`)
 
@@ -64,18 +66,20 @@ class ViewGame extends React.Component<ViewGameProps & GameServiceInjectedProps>
 
   render () {
     const { connecting, game, gameState } = this.props
-    const mClassName = classnames("ViewGame")
 
     return (
-      <div className={ mClassName }>
+      <div className="ViewGame">
         <div className="ViewGame__boardContainer">
           { connecting && <div className="Screen" /> }
-          <Board
-            width={ game.boardColumns }
-            height={ game.boardRows }
-            { ...(gameState || { board: null }).board }
-            renderer={ RenderMethod.Canvas }
-          />
+
+          { gameState && (
+            <Board
+              height={ game.boardRows }
+              renderer={ this.renderer }
+              width={ game.boardColumns }
+              { ...gameState.board }
+            />
+          ) }
 
           { this.renderControls() }
         </div>
@@ -87,4 +91,4 @@ class ViewGame extends React.Component<ViewGameProps & GameServiceInjectedProps>
   }
 }
 
-export default gameService()(ViewGame)
+export default withGameService()(ViewGame)

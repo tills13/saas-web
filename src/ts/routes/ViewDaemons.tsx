@@ -2,12 +2,12 @@ import { Link } from "found"
 import React from "react"
 import { graphql } from "react-relay"
 
-import ButtonGroup from "components/button/button_group"
-import LinkButton from "components/button/link_button"
-import Grid from "components/grid"
-import Header from "components/header"
-import Icon from "components/icon/offset_icon"
-import List from "components/list"
+import ButtonGroup from "components/ButtonGroup"
+import LinkButton from "components/LinkButton"
+import Grid from "components/Grid"
+import Header from "components/Header"
+import Icon from "components/Icon"
+import List from "components/List"
 import ViewModeToggle, { ViewMode } from "components/ViewModeToggle"
 
 interface ViewDaemonsProps {

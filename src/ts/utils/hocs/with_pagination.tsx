@@ -1,6 +1,7 @@
 import { merge } from "lodash"
 import React from "react"
 import Relay from "react-relay"
+import { Variables } from "relay-runtime";
 
 interface PaginationOptions {
   after: any
@@ -12,7 +13,10 @@ interface PaginationOptions {
   count: number
 }
 
-type PaginationPropOptions = (props: any, options: { onChangeAfter, onChangeLimit }) => Partial<PaginationOptions>
+type ChangeAfterHelper = (newAfter: number, relay: Relay.RelayRefetchProp) => void
+type ChangeLimitHelper = (newLimit: number, relay: Relay.RelayRefetchProp) => void
+type PaginationPropHelpers = { onChangeAfter: ChangeAfterHelper, onChangeLimit: ChangeLimitHelper }
+type GetPaginationProp = (props: any, helpers: PaginationPropHelpers) => Partial<PaginationOptions>
 
 export interface PaginationProps { pagination: PaginationOptions }
 
@@ -20,10 +24,19 @@ interface PaginationWrapperState {
   pVars: { after: number, limit: number }
 }
 
-export function withPagination (options?: PaginationOptions | PaginationPropOptions) {
-  return (Component) => {
+function refetch (relay: Relay.RelayRefetchProp, variables: Variables, renderVariables?: Variables) {
+  return new Promise((resolve, reject) => {
+    relay.refetch(variables, renderVariables, err => {
+      if (err) reject(err)
+      else resolve()
+    })
+  })
+}
+
+export function withPagination (options?: PaginationOptions | GetPaginationProp): (Component: React.ComponentType<any>) => React.ComponentClass<any> {
+  return (Component: React.ComponentType<any>) => {
     return class extends React.Component<any, PaginationWrapperState> {
-      state = { pVars: { after: 0, limit: 10 } }
+      state: PaginationWrapperState = { pVars: { after: 0, limit: 10 } }
 
       private defaultOptions: PaginationOptions = {
         after: 0,
@@ -36,17 +49,15 @@ export function withPagination (options?: PaginationOptions | PaginationPropOpti
       }
 
       onChangeLimit = (newLimit: number, relay: Relay.RelayRefetchProp) => {
-        relay.refetch({ ...this.state.pVars, limit: newLimit }, null, (err) => {
-          if (err) return
-          this.setState(({ pVars }) => ({ pVars: { ...pVars, limit: newLimit } }))
-        })
+        refetch(relay, { ...this.state.pVars, limit: newLimit }).then(
+          _ => this.setState(({ pVars }) => ({ pVars: { ...pVars, limit: newLimit } }))
+        )
       }
 
       onChangeAfter = (newAfter: number, relay: Relay.RelayRefetchProp) => {
-        relay.refetch({ ...this.state.pVars, after: newAfter }, null, (err) => {
-          if (err) return
-          this.setState(({ pVars }) => ({ pVars: { ...pVars, after: newAfter } }))
-        })
+        refetch(relay, { ...this.state.pVars, after: newAfter }).then(
+          _ => this.setState(({ pVars }) => ({ pVars: { ...pVars, after: newAfter } }))
+        )
       }
 
       render () {
@@ -56,9 +67,7 @@ export function withPagination (options?: PaginationOptions | PaginationPropOpti
 
         const pagination = merge(this.defaultOptions, this.state.pVars, mOptions)
 
-        return (
-          <Component { ...this.props } pagination={ pagination } />
-        )
+        return <Component { ...this.props } pagination={ pagination } />
       }
     }
   }

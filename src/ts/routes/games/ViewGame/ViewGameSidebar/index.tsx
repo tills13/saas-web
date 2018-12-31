@@ -5,11 +5,11 @@ import { map, merge } from "lodash"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import Alert, { AlertType } from "components/Alert"
-import LinkButton from "components/button/link_button"
-import Icon from "components/icon"
+import Alert from "components/Alert"
+import LinkButton from "components/LinkButton"
+import Icon from "components/Icon"
 import Well from "components/Well"
-import SnakeListItem from "./SnakeListItem"
+import GameSnakeListItem from "./GameSnakeListItem"
 
 import { getIdFromGlobalId } from "utils/relay"
 
@@ -47,10 +47,10 @@ function ViewGameSidebar ({ className, board, daemon, errors, game, turnNumber, 
         </Well>
       ) }
 
-      { errors && map(errors, error => <Alert alertType={ AlertType.Danger }>{ error }</Alert>) }
+      { errors && map(errors, error => <Alert alertType="danger">{ error }</Alert>) }
 
       <div className="ViewGameSidebar__snakes">
-        { mSnakes.map((snake) => <SnakeListItem key={ snake.id } snake={ snake } />) }
+        { mSnakes.map((snake) => <GameSnakeListItem key={ snake.id } snake={ snake } />) }
       </div>
 
       <LinkButton to={ `/games/${ game.id }/edit` } block>Edit Game</LinkButton>
@@ -68,7 +68,7 @@ export default createFragmentContainer(
       daemon { id, name }
       snakes (first: 12) {
         edges {
-          node { id, ...SnakeListItem_snake }
+          node { id, ...GameSnakeListItem_snake }
         }
       }
     }

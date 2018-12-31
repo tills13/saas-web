@@ -7,7 +7,7 @@ export enum ViewMode { List, Quilt }
 
 interface ViewModeToggleProps extends React.AllHTMLAttributes<HTMLDivElement> {
   onSelectView: (selectedView: any) => void
-  options: { icon: string, key: any }[]
+  options?: { icon: string, key: any }[]
   selectedView: any
 }
 

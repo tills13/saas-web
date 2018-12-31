@@ -3,20 +3,15 @@ import "./Landing.scss"
 import React from "react"
 
 import Board from "components/Board"
-import BoardRenderer from "components/Board/renderer"
-import LinkButton from "components/button/link_button"
+import LinkButton from "components/LinkButton"
 
 import { Direction } from "enums/Direction"
 import * as gUtils from "utils/game"
+import BoardRenderer from "components/Board/renderer";
 
 type Snake = Pick<GameAPI.Snake, "color" | "coords" | "health" | "death"> & { direction: Direction }
 
-const deathTimeout = 10
-
-interface LandingState {
-  snakes: Snake[]
-  tick: number
-}
+const DEATH_TIMEOUT = 10
 
 function resolveAlive (snakes: Snake[], turn: number) {
   const mSnakes = [ ...snakes ]
@@ -62,9 +57,9 @@ function filterOffBoard (width: number, height: number, snake: Snake): boolean {
   return false
 }
 
-function filterDeadAndGone (turn: number, snake: Snake) {
+function filterExpired (turn: number, snake: Snake) {
   if (!snake.death) return true
-  return (turn - snake.death.turn) < deathTimeout
+  return (turn - snake.death.turn) < DEATH_TIMEOUT
 }
 
 function moveSnake (snake: Snake) {
@@ -88,12 +83,16 @@ function moveSnake (snake: Snake) {
 const LANDING_BOARD_HEIGHT: number = 20
 const LANDING_BOARD_WIDTH: number = 30
 
-class Landing extends React.Component<{}, LandingState> {
-  state: LandingState = { snakes: [], tick: 0 }
-
+class Landing extends React.Component {
   timeout: any
 
-  // renderer: BoardRenderer
+  renderer = new BoardRenderer({
+    deathTimeout: DEATH_TIMEOUT,
+    renderBackground: false
+  })
+
+  snakes: Snake[] = []
+  tick: number = 0
 
   componentDidMount () {
     this.tickBoard()
@@ -104,32 +103,35 @@ class Landing extends React.Component<{}, LandingState> {
   }
 
   tickBoard = () => {
-    const { snakes, tick } = this.state
-    // console.log(JSON.stringify(snakes))
+    this.tick++
 
-    this.setState(({ tick }) => ({ tick: tick + 1 }))
-
-    let mSnakes = snakes.map(moveSnake)
+    let mSnakes = this.snakes.map(moveSnake)
     mSnakes = mSnakes.filter(filterOffBoard.bind(null, LANDING_BOARD_WIDTH, LANDING_BOARD_HEIGHT))
-    mSnakes = mSnakes.filter(filterDeadAndGone.bind(null, tick))
-    mSnakes = resolveAlive(mSnakes, tick)
+    mSnakes = mSnakes.filter(filterExpired.bind(null, this.tick))
+    mSnakes = resolveAlive(mSnakes, this.tick)
 
     if (mSnakes.length < 10 && Math.random() > 0.20) {
-      const newSnake = gUtils.generateRandomSnake(LANDING_BOARD_WIDTH, LANDING_BOARD_HEIGHT)
-
-      return this.setState(
-        { snakes: [ ...mSnakes, newSnake ] },
-        () => this.timeout = setTimeout(this.tickBoard, 100)
+      const newSnake = gUtils.generateRandomSnake(
+        LANDING_BOARD_WIDTH,
+        LANDING_BOARD_HEIGHT
       )
+
+      mSnakes.push(newSnake)
     }
 
-    this.setState({ snakes: mSnakes })
-    this.timeout = setTimeout(this.tickBoard, 100)
+    this.snakes = mSnakes
+
+    this.renderer
+      .updateState({ snakes: this.snakes as any, turnNumber: this.tick })
+      .tick().then(
+        () => { this.timeout = setTimeout(this.tickBoard, 100) }
+      )
+    // .tick()
+    // this.timeout = setTimeout(this.tickBoard, 100)
+
   }
 
   render () {
-    const { snakes, tick } = this.state
-
     return (
       <div className="Index">
         <div className="Index__cta">
@@ -140,10 +142,7 @@ class Landing extends React.Component<{}, LandingState> {
         <Board
           height={ LANDING_BOARD_HEIGHT }
           width={ LANDING_BOARD_WIDTH }
-          renderBackground={ true }
-          rendererOptions={ { deathTimeout } }
-          snakes={ [ ...snakes ] as any[] }
-          turnNumber={ tick }
+          renderer={ this.renderer }
           fillWidth
         />
       </div>

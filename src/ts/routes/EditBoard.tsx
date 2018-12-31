@@ -3,8 +3,8 @@ import "./index.scss"
 import React from "react"
 import { graphql } from "react-relay"
 
-import BoardEditor from "components/Board/BoardEditor"
-import Header from "components/header"
+import BoardEditor from "components/BoardEditor"
+import Header from "components/Header"
 
 interface EditDaemonProps extends React.Props<any> {
   application: GraphQL.Schema.Application

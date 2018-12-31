@@ -11,13 +11,14 @@ const compiler = webpack(webpackConfig)
 const wdmInstance = middleware(compiler)
 
 app.use(proxy("/api", { target: "http://localhost:3000" }))
-app.use(proxy("/static", { target: "http://localhost:3000" }))
 app.use(proxy("/graphql", { target: "http://localhost:3000" }))
 app.use(proxy("/socket.io", { target: "http://localhost:3001" }))
 
 app.use(history())
 
 app.use(wdmInstance)
+
+app.use("/static", express.static(__dirname + "/src/static"))
 
 app.listen(8080, "0.0.0.0", function () {
   // wdmInstance.waitUntilValid(function (stats) {

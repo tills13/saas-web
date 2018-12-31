@@ -1,8 +1,8 @@
 import React from "react"
 import { graphql } from "react-relay"
 
-import CreateEditDaemonForm from "components/daemon/CreateEditDaemonForm"
-import Header from "components/header"
+import Header from "components/Header"
+import CreateEditDaemonForm from "form/CreateEditDaemonForm"
 
 interface EditDaemonProps extends React.AllHTMLAttributes<HTMLDivElement> {
   daemon: Models.Daemon

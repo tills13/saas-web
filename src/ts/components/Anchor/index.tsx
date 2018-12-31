@@ -18,7 +18,11 @@ function Anchor ({ anchor, className, endpoint, method, onClick, title }: Anchor
 
   return (
     <div id={ anchor } className="Anchor__container" >
-      <a href={ `#${ anchor }` } className="Anchor__link" onClick={ onClick }>
+      <a
+        href={ `#${ anchor }` }
+        className="Anchor__link"
+        onClick={ onClick }
+      >
         <Container>
           <h3 className={ mClassName }>
             { method && <b className="Anchor__method">{ method }</b> }

@@ -29,5 +29,6 @@
         "markdown",
         "typescript"
     ],
-    "python.linting.enabled": false
+    "python.linting.enabled": false,
+    "typescript.surveys.enabled": false
 }
