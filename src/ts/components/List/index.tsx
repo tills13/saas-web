@@ -1,7 +1,5 @@
-import "./index.scss"
-
-import classnames from "classnames"
 import React, { ReactNode } from "react"
+import styled from "styled-components"
 
 interface ListProps<T = any> extends React.AllHTMLAttributes<HTMLDivElement> {
   cacheKey?: keyof T
@@ -10,6 +8,20 @@ interface ListProps<T = any> extends React.AllHTMLAttributes<HTMLDivElement> {
   onItemClick?: (item: T) => void
   renderItem: (item: T, onClick?: React.MouseEventHandler) => ReactNode
 }
+
+const StyledList = styled.div`
+  margin-bottom: 12px;
+
+  > * {
+    margin-left: -12px;
+    margin-right: -12px;
+    padding: 12px;
+
+    &:nth-child(even) {
+      background: #fafafa;
+    }
+  }
+`
 
 class List<T> extends React.Component<ListProps<T>> {
   static defaultProps = { cacheKey: "id" }
@@ -49,13 +61,11 @@ class List<T> extends React.Component<ListProps<T>> {
   render () {
     const { className, items, renderItem } = this.props
 
-    const mClassName = classnames("List", className)
-
     return (
-      <div className={ mClassName }>
+      <StyledList className={ className }>
         { this.renderEmpty() }
         { items.map(item => renderItem(item, this.getOnClick(item))) }
-      </div>
+      </StyledList>
     )
   }
 }

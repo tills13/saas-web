@@ -1,22 +1,33 @@
-import "./index.scss"
-
-import classnames from "classnames"
 import React from "react"
+import styled, { css } from "styled-components"
 
 interface ButtonGroupProps extends React.AllHTMLAttributes<HTMLDivElement> {
   block?: boolean
 }
 
-function ButtonGroup ({ block, children, className }: ButtonGroupProps) {
-  const mClassName = classnames("ButtonGroup", className, {
-    "--block": block
-  })
+const ButtonGroup = styled.div`
+  display: inline-flex;
 
-  return (
-    <div className={ mClassName }>
-      { children }
-    </div>
-  )
-}
+  > * {
+    flex: 1;
+    border-radius: 0;
+
+    :first-child {
+      border-top-left-radius: 2px;
+      border-bottom-left-radius: 2px;
+    }
+
+    :last-child {
+      border-top-right-radius: 2px;
+      border-bottom-right-radius: 2px;
+    }
+
+    :not(:first-child) {
+      border-left: 0;
+    }
+  }
+
+  ${ (props: ButtonGroupProps) => props.block && css`display: flex;` }
+`
 
 export default ButtonGroup

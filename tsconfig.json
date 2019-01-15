@@ -10,7 +10,11 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "lib": [ "dom", "es2015", "es2016" ],
+    "lib": [
+      "dom",
+      "es2015",
+      "es2016"
+    ],
     "moduleResolution": "node",
     "noEmit": true,
     "noImplicitAny": true,
@@ -18,18 +22,36 @@
     "noUnusedParameters": false,
     "outDir": "./build/",
     "paths": {
-      "components": [ "components" ],
-      "modals/*": [ "components/modal/*" ],
-      "relay": [ "relay" ],
-      "utils": [ "utils" ],
-      "__artifacts__": [ "/../__artifacts__" ]
+      "components": [
+        "components"
+      ],
+      "modals/*": [
+        "components/modal/*"
+      ],
+      "relay": [
+        "relay"
+      ],
+      "utils": [
+        "utils"
+      ],
+      "__artifacts__": [
+        "/../__artifacts__"
+      ]
     },
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin"
+      }
+    ],
     "preserveConstEnums": true,
     "removeComments": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
     "target": "esnext",
-    "typeRoots": ["./node_modules/@types", "./@types"]
+    "typeRoots": [
+      "./node_modules/@types",
+      "./@types"
+    ]
   }
 }

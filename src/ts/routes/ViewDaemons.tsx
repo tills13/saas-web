@@ -1,13 +1,12 @@
-import { Link } from "found"
+import { withRouter, WithRouter } from "found"
 import React from "react"
 import { graphql } from "react-relay"
 
 import ButtonGroup from "components/ButtonGroup"
+import DaemonList from "components/DaemonList"
 import LinkButton from "components/LinkButton"
 import Grid from "components/Grid"
 import Header from "components/Header"
-import Icon from "components/Icon"
-import List from "components/List"
 import ViewModeToggle, { ViewMode } from "components/ViewModeToggle"
 
 interface ViewDaemonsProps {
@@ -34,7 +33,7 @@ export const ViewDaemonsQuery = graphql`
   }
 `
 
-class ViewDaemons extends React.Component<ViewDaemonsProps, ViewDaemonState> {
+class ViewDaemons extends React.Component<ViewDaemonsProps & WithRouter, ViewDaemonState> {
   state: ViewDaemonState = { viewMode: ViewMode.List }
 
   renderQuilt () {
@@ -63,7 +62,7 @@ class ViewDaemons extends React.Component<ViewDaemonsProps, ViewDaemonState> {
         <div><h2 className="Header__title">Daemons</h2></div>
         <ButtonGroup>
           <ViewModeToggle
-            onSelectView={ viewMode => this.setState({ viewMode }) }
+            onSelectView={ vm => this.setState({ viewMode: vm }) }
             selectedView={ viewMode }
           />
           <LinkButton to="/daemons/create" fill small>Create Daemon</LinkButton>
@@ -76,24 +75,10 @@ class ViewDaemons extends React.Component<ViewDaemonsProps, ViewDaemonState> {
     const { application } = this.props
 
     return (
-      <List className="Daemons__list">
-        { application.daemons!.items.map((daemon) => {
-          return (
-            <Link
-              key={ daemon.id }
-              className="Daemon__listItem"
-              to={ `/daemons/${ daemon.id }/edit` }
-            >
-              <div>
-                <h2>{ daemon.name }</h2> - { daemon.owner.username }
-              </div>
-              <div className="List__right">
-                { daemon.averageResponseTime || "?" }s <Icon icon="av-timer" />
-              </div>
-            </Link>
-          )
-        }) }
-      </List>
+      <DaemonList
+        daemons={ application.daemons!.items }
+        onClickDaemon={ daemon => router.push(`/daemons/${ daemon.id }`) }
+      />
     )
   }
 
@@ -113,4 +98,4 @@ class ViewDaemons extends React.Component<ViewDaemonsProps, ViewDaemonState> {
   }
 }
 
-export default ViewDaemons
+export default withRouter(ViewDaemons)

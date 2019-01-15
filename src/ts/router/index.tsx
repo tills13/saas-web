@@ -26,6 +26,8 @@ import EditSnake, { EditSnakeQuery } from "routes/EditSnake"
 import ViewSnake, { ViewSnakeQuery } from "routes/ViewSnake"
 import ViewSnakes, { viewSnakesPrepareVariables, ViewSnakesQuery } from "routes/ViewSnakes"
 
+import Test from "routes/Test"
+
 import { renderLoading } from "./utils"
 
 export default createFarceRouter({
@@ -71,6 +73,8 @@ export default createFarceRouter({
           />
           <Route Component={ EditSnake } path=":snakeId/edit" query={ EditSnakeQuery } />
         </Route>
+
+        <Route path="test" Component={ Test } />
       </Route>
     </Route>
   )

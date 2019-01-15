@@ -7,6 +7,9 @@ import { graphql } from "react-relay"
 import ErrorBoundary from "../ErrorBoundary"
 import Navigation from "../Navigation"
 
+import { ThemeProvider } from "styled"
+import { defaultTheme } from "theme"
+
 interface DashboardProps {
   className?: string
   simpleNavigation: boolean
@@ -59,19 +62,22 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     const mClassName = classnames("Dashboard", className)
 
     return (
-      <ErrorBoundary>
-        <div ref={ this.containerRef } className={ mClassName } onScroll={ this.onScroll }>
-          <Navigation
-            compact={ compactNav }
-            simple={ simpleNavigation }
-            viewer={ viewer }
-            onItemClick={ this.onNavItemClick }
-          />
-          <div className="Dashboard__content">
-            { children }
+      <ThemeProvider theme={ defaultTheme }>
+        <ErrorBoundary>
+          <div ref={ this.containerRef } className={ mClassName } onScroll={ this.onScroll }>
+            <Navigation
+              compact={ compactNav }
+              simple={ simpleNavigation }
+              viewer={ viewer }
+              onItemClick={ this.onNavItemClick }
+            />
+            <div className="Dashboard__content">
+              { children }
+            </div>
           </div>
-        </div>
-      </ErrorBoundary>
+        </ErrorBoundary>
+      </ThemeProvider>
+
     )
   }
 }

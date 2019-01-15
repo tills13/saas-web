@@ -39,7 +39,6 @@ export default createFragmentContainer(
       id
 
       ...SnakeListItem_snake
-      ...SnakeAvatar_snake
     }
   `
 )

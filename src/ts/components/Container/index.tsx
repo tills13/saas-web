@@ -1,18 +1,25 @@
-import "./index.scss"
-
-import classnames from "classnames"
 import React from "react"
+import styled from "styled-components"
 
-interface ContainerProps extends React.AllHTMLAttributes<HTMLDivElement> {
+interface ContainerProps {
   className?: string
 }
 
-export default React.forwardRef<HTMLDivElement, ContainerProps>(function (props, ref) {
-  const mClassName = classnames("Container", props.className)
+const Container = styled.div`
+  width: 1000px;
+  max-width: 100%;
+  flex: 0 1 1000px;
+  margin: 0px auto;
 
+  @media screen and (max-width: 1250px) {
+    padding: 0px 20px;
+  }
+`
+
+export default React.forwardRef<HTMLDivElement, ContainerProps>(function (props, ref) {
   return (
-    <div className={ mClassName } ref={ ref }>
+    <Container { ...props } ref={ ref }>
       { props.children }
-    </div>
+    </Container>
   )
 })

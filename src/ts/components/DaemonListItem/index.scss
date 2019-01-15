@@ -1,0 +1,41 @@
+.SnakeListItem {
+  display: flex;
+  justify-content: space-between;
+
+  cursor: pointer;
+
+  .SnakeListItem__info {
+    display: flex;
+    align-items: center;
+
+    .SnakeListItem__name {
+      margin-right: 12px;
+      font-weight: bold;
+    }
+
+    .SnakeAvatar {
+      margin-right: 12px;
+    }
+  }
+
+  .SnakeListItem__extra {
+    display: flex;
+    align-self: flex-end;
+
+    > * {
+      &.SnakeListItem__actions {
+        display: none;
+      }
+
+      &:not(:last-child) {
+        margin-right: 6px;
+      }
+    }
+  }
+
+  &:hover {
+    .SnakeListItem__actions {
+      display: block;
+    }
+  }
+}
